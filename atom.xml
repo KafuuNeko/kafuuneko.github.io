@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://i.kafuu.cc</id>
+    <title>KafuuNeko</title>
+    <updated>2021-04-10T00:01:32.634Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://i.kafuu.cc"/>
+    <link rel="self" href="https://i.kafuu.cc/atom.xml"/>
+    <subtitle>&lt;body&gt;&lt;script language=&quot;javaScript&quot;&gt;
+now = new Date(),hour = now.getHours()
+if(hour &lt; 6){document.write(&quot;凌晨好！&quot;)}
+else if (hour &lt; 9){document.write(&quot;早上好！&quot;)}
+else if (hour &lt; 12){document.write(&quot;上午好！&quot;)}
+else if (hour &lt; 14){document.write(&quot;中午好！&quot;)}
+else if (hour &lt; 17){document.write(&quot;下午好！&quot;)}
+else if (hour &lt; 19){document.write(&quot;傍晚好！&quot;)}
+else {document.write(&quot;晚上好！&quot;)}
+document.write(&quot;欢迎来到我的博客～～&quot;)
+&lt;/script&gt;&lt;/body&gt;</subtitle>
+    <logo>https://i.kafuu.cc/images/avatar.png</logo>
+    <icon>https://i.kafuu.cc/favicon.ico</icon>
+    <rights>All rights reserved 2021, KafuuNeko</rights>
+    <entry>
+        <title type="html"><![CDATA[串口调试工具(DCOM)]]></title>
+        <id>https://i.kafuu.cc/post/uP-j_qepQ/</id>
+        <link href="https://i.kafuu.cc/post/uP-j_qepQ/">
+        </link>
+        <updated>2021-02-02T11:24:04.000Z</updated>
+        <content type="html"><![CDATA[<p>基于WPF开发的串口调试工具</p>
+<p>发送支持字符串、文件、十六进制、二进制</p>
+<p>支持将接收消息内容以字符串、十六进制、二进制形式呈现</p>
+<p>支持将接收的数据保存到文件</p>
+<p>仓库：<a href="https://github.com/KafuuNeko/DCOM">Github</a></p>
+<p>下载：<a href="https://files.kafuu.cc/__files//Resources/DCOM/DCOM.zip">DCOM</a></p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617953491178.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1617953494120.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://i.kafuu.cc/post-images/1617953497150.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://i.kafuu.cc/post-images/1617953499661.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://i.kafuu.cc/post-images/1617953503855.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[左倾红黑树实现及注释]]></title>
+        <id>https://i.kafuu.cc/post/cho8KcfUV/</id>
+        <link href="https://i.kafuu.cc/post/cho8KcfUV/">
+        </link>
+        <updated>2020-10-27T07:19:04.000Z</updated>
+        <content type="html"><![CDATA[<p>左倾红黑树插入结果可视化：</p>
+<p>插入顺序:6 7 1 5 3 4 2</p>
+<p>put:6</p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617953251791.png" alt="" loading="lazy"></figure>
+<p>put:7<br>
+<img src="https://i.kafuu.cc/post-images/1617953261564.png" alt="" loading="lazy"></p>
+<p>put:1<br>
+<img src="https://i.kafuu.cc/post-images/1617953275085.png" alt="" loading="lazy"></p>
+<p>put:5<br>
+<img src="https://i.kafuu.cc/post-images/1617953290276.png" alt="" loading="lazy"></p>
+<p>put:3<br>
+<img src="https://i.kafuu.cc/post-images/1617953300399.png" alt="" loading="lazy"></p>
+<p>put:4<br>
+<img src="https://i.kafuu.cc/post-images/1617953311030.png" alt="" loading="lazy"></p>
+<p>put:2<br>
+<img src="https://i.kafuu.cc/post-images/1617953322311.png" alt="" loading="lazy"></p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+
+template&lt;class _Key, class _Value&gt;
+class LLRBT
+{
+	enum color_t { BLACK, RED };
+	
+	struct Node 
+	{
+		_Key		key;	
+		_Value 		value;
+		
+		size_t 		count; //此节点所有孩子节点数+1 
+		color_t		color; //指向本节点的链接颜色 
+		
+		struct Node *left, 
+					*right;
+		
+		Node(	const _Key &amp; 	pKey, 
+				const _Value &amp; 	pValue, 
+				color_t 		pColor	= RED,	
+				size_t 			pCount	= 1,		
+				struct Node *	pLeft	= nullptr, 	 
+				struct Node *	pRight	= nullptr)
+				
+			: key(pKey), value(pValue), count(pCount), color(pColor), left(pLeft), right(pRight) {	}
+					
+	};
+	
+	
+	//定义根节点 
+	Node * root_ = nullptr; 
+
+	void clear(Node * node)
+	{
+		if(node == nullptr) return;
+
+		clear(node-&gt;left);
+		clear(node-&gt;right);
+		
+		delete node;
+	}
+	
+	//判断一个节点是否为红节点(即链接到此节点的链接颜色为红色) 
+	bool is_red(Node * node) const
+	{
+		return (node) ? (node-&gt;color == RED) : false;
+	}
+	
+	//取节点的所有孩子节点及其自身的节点数 
+	size_t size(Node * node) const
+	{
+		return (node) ? (node-&gt;count) : 0;
+	}
+	
+	//判断红黑树中是否存在指定的节点
+	bool contains(Node * node, const _Key &amp; key)
+	{
+		while(node)
+		{
+			if		(key &lt; node-&gt;key) 	node = node-&gt;left;
+			else if	(node-&gt;key &lt; key)	node = node-&gt;right;
+			else						return true;
+		}
+		return false;
+	}
+
+	//取最小节点 
+	Node * min(Node * node)
+	{
+		while(node &amp;&amp; node-&gt;left) node = node-&gt;left;
+		return node;
+	}
+	
+	
+	//左旋转节点的右链接 
+	Node * rotate_left(Node * node)
+	{
+		Node * p 	= node-&gt;right;
+		
+		node-&gt;right = p-&gt;left;
+		p	-&gt;left 	= node;
+		
+		p	-&gt;color	= node-&gt;color; 
+		node-&gt;color = RED;
+		
+		//更新节点数量统计 
+		p	-&gt;count	= node-&gt;count;
+		node-&gt;count	= size(node-&gt;left) + size(node-&gt;right) + 1;
+		
+		return p;
+	}
+	
+	//右旋转节点的左链接 
+	Node * rotate_right(Node * node)
+	{
+		Node * p	= node-&gt;left;
+		
+		node-&gt;left	= p-&gt;right;
+		p	-&gt;right	= node;
+		
+		p	-&gt;color = node-&gt;color;
+		node-&gt;color	= RED;
+		
+		//更新节点数量统计 
+		p	-&gt;count	= node-&gt;count;
+		node-&gt;count = size(node-&gt;left) + size(node-&gt;right) + 1;
+		
+		return p;
+	}
+	
+	//节点颜色转换(分解4-节点或向父节点'借'节点操作) 
+	void flip_colors(Node * node)
+	{
+		node-&gt;color			= (node-&gt;color == RED) 			? BLACK : RED;
+		node-&gt;left-&gt;color	= (node-&gt;left-&gt;color == RED) 	? BLACK : RED;
+		node-&gt;right-&gt;color	= (node-&gt;right-&gt;color == RED) 	? BLACK : RED;
+	}
+	
+	//插入新的节点 
+	Node * put(Node * parent, const _Key &amp; key, const _Value &amp; value)
+	{
+		if(!parent) return new Node(key, value, RED);
+		
+		if		(key &lt; parent-&gt;key) parent-&gt;left  = put(parent-&gt;left, key, value);
+		else if	(parent-&gt;key &lt; key) parent-&gt;right = put(parent-&gt;right, key, value);
+		else						parent-&gt;value = value;
+		
+		/*左节点连接是黑色，右节点连接是红色，则左转节点
+		左倾红黑树不允许红色链接出现在右边，若有红色链接出现在右边就进行左旋转操作 
+		
+		('..'代表红色节点，'.'代表黑色节点)
+		    3				5
+		      ..	=&gt;	  ..
+		       ..		 ..
+		         5		3
+		*/ 
+		if(!is_red(parent-&gt;left) &amp;&amp; is_red(parent-&gt;right))		parent = rotate_left(parent);
+		
+		/*
+		节点连接连续红色，右转节点 
+		      5
+		     ..				3
+		    ..			   ...
+		   3		=&gt;	  .. ..
+		  ..			  1   5
+		 ..
+		 1
+		*/
+		if(is_red(parent-&gt;left) &amp;&amp; is_red(parent-&gt;left-&gt;left))	parent = rotate_right(parent);
+		
+		
+		/*
+		左右连接全为红色，则将左右连接设置为红色，其父节点设为红色 
+		   3			  3
+		  ...		=&gt;	 . .
+		 ..  ..         .   .
+		 1    5         1   5 
+		*/ 
+		if(is_red(parent-&gt;left) &amp;&amp; is_red(parent-&gt;right))		flip_colors(parent);
+		
+		//更新节点数量统计 
+		parent-&gt;count = size(parent-&gt;left) + size(parent-&gt;right) + 1;
+		
+		return parent;
+	}
+	
+	//恢复左倾红黑树的平衡性 
+	Node * balance(Node * node)
+	{
+		//'借孩子'操作可能导致红色节点出现在右边，这在左倾红黑树中是不可以出现的，需要左旋转进行修复 
+		if(is_red(node-&gt;right)) 							node = rotate_left(node);
+		//左节点连接是黑色，右节点连接是红色，则左转节点 
+		if(!is_red(node-&gt;left) &amp;&amp; is_red(node-&gt;right))		node = rotate_left(node);
+		//左节点连接连续红色，右转节点 
+		//is_red(node-&gt;left)若为红色节点则node-&gt;left必定存在
+		//所以此处is_red(node-&gt;left-&gt;left)是安全的
+		if(is_red(node-&gt;left) &amp;&amp; is_red(node-&gt;left-&gt;left))	node = rotate_right(node);
+		//左右连接全为红色，则将左右连接设置为红色，其父节点设为红色 
+		if(is_red(node-&gt;left) &amp;&amp; is_red(node-&gt;right))		flip_colors(node);
+		
+		node-&gt;count = size(node-&gt;left) + size(node-&gt;right) + 1;
+		
+		return node;
+	}
+
+	//借一个红色节点给左孩子 
+	Node * move_red_left(Node * node)
+	{
+		//首先向父节点借一个节点 
+		flip_colors(node);
+		
+		if(is_red(node-&gt;right-&gt;left))
+		{
+			//它的亲兄弟节点不是2-节点，从其亲兄弟借一个节点到左节点中
+			node-&gt;right = rotate_right(node-&gt;right);
+			node = rotate_left(node);
+		}
+		
+		return node;
+	}
+	
+	//移除最小的节点 
+	Node * remove_min(Node * node)
+	{
+		if(node-&gt;left == nullptr)
+		{
+			delete node;
+			return nullptr;
+		}
+		
+		/* 关于删除最小节点的规则
+		确保当前节点不是2-节点
+		1.如果当前节点的左节点不是2-节点，则继续
+		2.如果当前节点的左节点是-2节点，且它的亲兄弟节点不是2-节点，则从其亲兄弟借一个节点到左节点中
+		3.如果当前节点的左节点是-2，且它的亲兄弟也是2-节点，则将父节点中的最小键及其兄弟节点合并为一个4-节点 */
+		if(!is_red(node-&gt;left) &amp;&amp; !is_red(node-&gt;left-&gt;left))
+		{
+			//非2-节点，父亲或亲兄弟节点借一个节点给左节点，以确保左节点不是2-节点
+			node = move_red_left(node);
+		}
+
+		node-&gt;left = remove_min(node-&gt;left);
+		
+		//删除操作完成后需要由下至上分解所有4-节点
+		return balance(node);
+	} 
+	
+	//借一个节点给右孩子 
+	Node * move_red_right(Node * node)
+	{
+		//同move_red_left的注释
+		flip_colors(node);
+		
+		if(is_red(node-&gt;left-&gt;left))
+		{
+			node = rotate_right(node);
+		}
+		
+		return node;
+	}
+	
+	//移除最大的节点 
+	Node * remove_max(Node * node)
+	{
+		/* 此处相较于删除最小节点多了一个步骤
+		若左孩子为红节点则进行右旋操作，让右节点成为红节点以便接下来的删除操作 
+		根据左倾树的性质 若左孩子非红色节点，则必然存在有右子节点
+
+		假设此处不进行右旋，则下列例子的平衡将遭到破坏
+		    2
+		  ..	由于2节点的右孩子为空，所以2节点是最大节点，此时C1.0处的代码将直接
+		 ..		删除2节点，其左节点也被被抛弃
+		1
+
+		*/
+		if(is_red(node-&gt;left)) node = rotate_right(node);
+		
+		//C1.0
+		if(node-&gt;right == nullptr)
+		{
+			delete node;
+			return nullptr;
+		}
+		
+		if(!is_red(node-&gt;right) &amp;&amp; !is_red(node-&gt;right-&gt;left))
+		{
+			node = move_red_right(node);
+		}
+		
+		node-&gt;right = remove_max(node-&gt;right);
+		
+		//删除操作完成后需要由下至上进行恢复
+		return balance(node);
+	} 
+	
+	//将移除最小的节点和移除最大的节点实现结合在一起，即可实现删除任意节点 
+	Node * remove(Node * node, const _Key &amp; key)
+	{
+		if(key &lt; node-&gt;key)
+		{
+			//和删除最小节点时的操作类似，判断节点的左孩子是否为2-节点，若非2-节点则需要借一个红色节点给左孩子
+			if(!is_red(node-&gt;left) &amp;&amp; !is_red(node-&gt;left-&gt;left))
+			{
+				node = move_red_left(node);
+			}
+			node-&gt;left = remove(node-&gt;left, key);
+		}
+		else
+		{
+			if(is_red(node-&gt;left)) node = rotate_right(node);
+			
+			if(node-&gt;key == key &amp;&amp; (node-&gt;right == nullptr))
+			{
+				delete node;
+				return nullptr;
+			}
+			
+			//和删除最大节点的操作类似
+			if(!is_red(node-&gt;right) &amp;&amp; !is_red(node-&gt;right-&gt;left))
+			{
+				node = move_red_right(node);
+			}
+			
+			if(node-&gt;key == key)
+			{
+				//找到node的后继节点
+				Node * minNode = min(node-&gt;right);
+
+				//将后继节点的key-value移动给node
+				node-&gt;key 	= std::move(minNode-&gt;key);
+				node-&gt;value = std::move(minNode-&gt;value);
+				
+				//删除最小节点无需使用节点的key/value数据，只会不断向左直到最小的那个节点 				
+				node-&gt;right = remove_min(node-&gt;right);
+			}
+			else
+			{
+				node-&gt;right = remove(node-&gt;right, key);
+			}
+		}
+		
+		//删除操作完成后需要由下至上进行恢复
+		return balance(node);
+	}
+	
+	void print(Node * node) const
+	{
+		if(node == nullptr) return;
+		 
+		std::cout &lt;&lt; ((node-&gt;color == RED) ? 'R' : 'B') &lt;&lt; '(' &lt;&lt; (node-&gt;key) &lt;&lt; ')' &lt;&lt; ' '; 
+		print(node-&gt;left);
+		print(node-&gt;right);
+		
+		std::cout &lt;&lt; &quot;BACK &quot;; 
+	}
+	
+public:
+
+	LLRBT() = default;
+
+	LLRBT(const LLRBT &amp; rhs) = delete;
+	LLRBT(const LLRBT &amp;&amp; rhs) = delete;
+
+	LLRBT &amp; operator=(const LLRBT &amp; rhs) = delete;
+	LLRBT &amp; operator=(const LLRBT &amp;&amp; rhs) = delete;
+
+	~LLRBT()
+	{
+		clear(root_);
+	}
+
+	void clear()
+	{
+		clear(root_);
+		root_ = nullptr;
+	}
+
+	size_t size() const
+	{
+		return root_ ? size(root_) : 0;
+	}
+	
+	void put(const _Key &amp; key, const _Value &amp; value)
+	{
+		root_ = put(root_, key, value);
+		root_-&gt;color = BLACK; 
+	}
+	
+	_Value * get(const _Key &amp; key) const
+	{
+		for(Node * node = root_; node != nullptr; )
+		{
+			if		(node-&gt;key &lt; key)	node = node-&gt;right;
+			else if	(key &lt; node-&gt;key)	node = node-&gt;left;
+			else						return &amp;(node-&gt;value);
+		}
+		
+		return nullptr;
+	}
+	
+	void remove_min()
+	{
+		if(root_ == nullptr) return;
+		
+		if(!is_red(root_-&gt;left) &amp;&amp; !is_red(root_-&gt;right))
+		{
+			root_-&gt;color = RED;
+		}
+		
+		root_ = remove_min(root_);
+		
+		if(root_) root_-&gt;color = BLACK; 
+	}
+	
+	void remove_max()
+	{
+		if(root_ == nullptr) return;
+		
+		if(!is_red(root_-&gt;left) &amp;&amp; !is_red(root_-&gt;right))
+		{
+			root_-&gt;color = RED;
+		}
+		
+		root_ = remove_max(root_);
+		
+		if(root_) root_-&gt;color = BLACK; 
+	}
+	
+	
+	void remove(const _Key &amp; key)
+	{
+		//判断树中是否存在这个key
+		if(!contains(root_, key)) return;
+		
+		if(!is_red(root_-&gt;left) &amp;&amp; !is_red(root_-&gt;right))
+		{
+			root_-&gt;color = RED;
+		}
+		
+		root_ = remove(root_, key);
+		
+		if(root_) root_-&gt;color = BLACK; 
+	}
+	
+	void print() const
+	{
+		print(root_);
+		std::cout &lt;&lt; std::endl;
+	}
+};
+
+int main()
+{
+	
+	int testCount = 7;
+	int keys[] = {6, 7, 1, 5, 3, 4, 2};
+
+	LLRBT&lt;int, int&gt; st;
+	
+	for(int i = 0; i &lt; testCount; ++i)
+	{
+		std::cout &lt;&lt; &quot;put:&quot; &lt;&lt; keys[i] &lt;&lt; std::endl;
+		st.put(keys[i], keys[i]);
+		//st.print();
+	}
+
+	for(int j = 1; j &lt;= testCount; ++j)
+	{
+		st.remove(j);
+		
+		std::cout &lt;&lt; &quot;\nremove:&quot; &lt;&lt; j &lt;&lt; &quot;\nsize:&quot; &lt;&lt; st.size() &lt;&lt; std::endl;
+
+		for(int i = 1; i &lt;= testCount; ++i)
+		{
+			int * p = st.get(i);
+			std::cout &lt;&lt; (p ? *p : 0) &lt;&lt; ' ';
+		}
+			
+		std::cout &lt;&lt; std::endl;
+		st.print();
+		std::cout &lt;&lt; std::endl;
+	}
+	
+		
+	std::cout &lt;&lt; std::endl;
+
+	std::cin.get();
+	
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ciphertext]]></title>
+        <id>https://i.kafuu.cc/post/kERjJhAnP/</id>
+        <link href="https://i.kafuu.cc/post/kERjJhAnP/">
+        </link>
+        <updated>2020-09-26T02:21:58.000Z</updated>
+        <content type="html"><![CDATA[<p>基于QT平台以及32轮TEA加密算法的跨平台开源文本加密程序</p>
+<p>下载地址：<a href="https://files.kafuu.cc/index.php?p=2F5265736F75726365732F43697068657274657874">https://files.kafuu.cc/index.php?p=2F5265736F75726365732F43697068657274657874</a></p>
+<p>项目地址：<a href="https://github.com/KafuuNeko/Ciphertext">https://github.com/KafuuNeko/Ciphertext</a></p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952698273.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[C++实现TEA加密算法]]></title>
+        <id>https://i.kafuu.cc/post/iHUmPxM0i/</id>
+        <link href="https://i.kafuu.cc/post/iHUmPxM0i/">
+        </link>
+        <updated>2020-08-27T12:15:54.000Z</updated>
+        <content type="html"><![CDATA[<p>TEA实现代码Header Only</p>
+<p>已实现功能：自由长度字节集加解密、数据流加解密、文件加解密、字符串加解密</p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952614895.png" alt="" loading="lazy"></figure>
+<p>项目地址：<a href="https://github.com/KafuuNeko/CPPTEA">https://github.com/KafuuNeko/CPPTEA</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Pixiv图片自动爬取]]></title>
+        <id>https://i.kafuu.cc/post/i3D4fXPMI/</id>
+        <link href="https://i.kafuu.cc/post/i3D4fXPMI/">
+        </link>
+        <updated>2020-08-20T23:18:34.000Z</updated>
+        <content type="html"><![CDATA[<p>自动爬取指定Tag的所有图片，并将图片以及作者信息保存到本地目录./pixiv/[tag]/[id]</p>
+<p><a href="https://github.com/KafuuNeko/PixivWebCrawler">代码仓库</a></p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952507072.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[STM32绘制折线统计图]]></title>
+        <id>https://i.kafuu.cc/post/wc2h528UJ/</id>
+        <link href="https://i.kafuu.cc/post/wc2h528UJ/">
+        </link>
+        <updated>2020-08-17T10:45:18.000Z</updated>
+        <content type="html"><![CDATA[<p>绘制折线统计图最关键的在于‘给定两点绘制一条线’，最简单的方法莫过于使用直线方程的斜截式y = kx + b以及</p>
+<p>由y = kx + b =&gt; kx+b-y = 0 =&gt; kx+b-y = 0 =&gt; kx-y=-b =&gt; -kx+y = b</p>
+<p>我们可以很轻易的使用 kx-y=-b计算出b的值，以及k=(y1 – y0) / (x1-x0)计算出k值</p>
+<pre><code>void DrawLine(float x0, float y0, float x1, float y1)
+{
+    float k = (y1-y0) / (x1-x0);
+    float b = -k * x0 + y0;
+    float y = 0.0f;
+
+    for(float x = x0; x &lt;= x1; x += 0.2)
+    {
+        y = k * x + b;
+        y = y + 0.5;
+        BMP[Y_SIZE-(int)y][(int)(x+0.5)] = 1;
+    }
+}
+</code></pre>
+<p>DDA算法</p>
+<p>DDA算法是计算机图形学中最基础简单的绘制直线算法，其主要思想是由直线公式y = kx + b推导出来的。</p>
+<p>在求出k和b的值的情况下，我们就能知道指定x对应的y值，由y=kx+b可知如果x值步进1，那么y就步进k+b，相同的，如果y步进1则x的步进(1-b)/k，接着向下取整即可得到要绘制的点</p>
+<pre><code>void DrawLineDDA(float x0, float y0, float x1, float y1)
+{
+    u8 i=1;
+    float dx, dy, length, x, y;
+    if (fabs(x1 - x0) &gt;= fabs(y1 - y0)) length = fabs(x1 - x0);
+    else length = fabs(y1 - y0);
+    dx = (x1 - x0) / length;
+    dy = (y1 - y0) / length;
+    x = x0;
+    y = y0;
+    while (i&lt;=length) {
+        BMP[Y_SIZE-(int)(y + 0.5)][(int)(x+0.5)] = 1;
+        x = x + dx;
+        y = y + dy;
+        i++;
+    }
+}
+</code></pre>
+<p>基于以上两种算法（任选其一），就可以很轻松的做出折线统计图了：<a href="https://files.kafuu.cc//__files/Resources/Code/STM32/LineChart.c">点击查看LineChart.c</a></p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952126002.jpg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[RPN/逆波兰式]]></title>
+        <id>https://i.kafuu.cc/post/EAk40KKHw/</id>
+        <link href="https://i.kafuu.cc/post/EAk40KKHw/">
+        </link>
+        <updated>2020-08-17T07:06:16.000Z</updated>
+        <content type="html"><![CDATA[<p>逆波兰式（Reverse Polish notation，RPN，或逆波兰记法），也叫后缀表达式（将运算符写在操作数之后）</p>
+<p><a href="https://github.com/KafuuNeko/CRPN">https://github.com/KafuuNeko/CRPN</a></p>
+<p>一.将一个普通的中缀表达式转换为逆波兰表达式</p>
+<p>首先定义一个存储运算符的栈S，以及一个存放结果的字符串R</p>
+<p>a.接着遍历普通中缀表达式的每个字符，定义当前玻璃到的字符名称为C<br>
+  若C是数字，则直接加入结果R<br>
+  若C为运算符，则判断该运算符类型<br>
+  1.若为右括号’)’，则不断弹出栈S中的符号输出至结果，直至遇到左括号<br>
+  2.若为左括号'(‘，则直接将此运算符加入到栈S<br>
+  3.若为数学运算符(+, -, <em>, /, %)则判断运算符优先级<br>
+    最低优先级：左括号'(‘<br>
+    第二优先级：+ -<br>
+    第一优先级：</em> / %<br>
+    接着获取栈S顶栈运算符的优先级，若顶栈运算符优先级大于或等于C运算符优先级，则弹出栈S顶栈运算符，加入至结果R，并重复此步骤，直至栈S顶栈运算符的优先级小于C运算符的优先级或栈S为空，接着将C运算符入栈S</p>
+<p>b.处理完表达式字符串后，如果栈S内还有残留数据，那么依次出栈，加入到结果R</p>
+<p>ExampleA：20 + 10 * 8</p>
+<p>1[C:20]:数字直接加入结果<br>
+           R=[20], S=[]</p>
+<p>2[C:+] :运算符+，则判断栈S顶栈运算符的优先级，因为此时栈S为空，所以直接加入到栈S<br>
+           运算符R=[20], S=[+]</p>
+<p>3[C:10]:数字直接加入结果<br>
+           R=[20, 10], S=[+]</p>
+<p>4[C:<em>] :运算符</em>，当前栈S顶栈运算符为+，优先级低于*，所以C直接加入到栈S<br>
+           R=[20, 10], S=[+, *]</p>
+<p>5[C:8] :数字直接加入结果<br>
+           R=[20, 10, 8], S=[+, *]</p>
+<p>处理完成，但此时栈不为空，则依次弹出栈内元素至结果</p>
+<p>最终结果R=[20, 10, 8, *, +] 20 10 8 * +</p>
+<p>ExampleB：10 + 5 * (20 - 5 - 10) + 8 - 10 / 2<br>
+   1[C:10] :数字直接加入结果<br>
+           R=[10], S=[]</p>
+<p>2[C:+]  :运算符+，则判断栈S顶栈运算符的优先级，因为此时栈S为空，所以直接加入到栈S<br>
+           运算符R=[10], S=[+]</p>
+<p>3[C:5]  :数字直接加入结果<br>
+           R=[10, 5], S=[+]</p>
+<p>4[C:<em>]  :运算符</em>，当前栈S顶栈运算符为+，优先级低于*，所以C直接加入到栈S<br>
+           R=[10, 5], S=[+, *]</p>
+<p>5[C:(]  :左括号，直接将此运算符加入到栈S<br>
+           R=[10, 5], S=[+, *, (]</p>
+<p>6[C:20] :数字直接加入结果<br>
+           R=[10, 5, 20], S=[+, *, (]</p>
+<p>7[C:-]  :运算符-，栈S顶栈为左括号'('，因为左括号优先级小于-，所以C直接加入栈S<br>
+           R=[10, 5, 20], S=[+, *, (, -]</p>
+<p>8[C:5]  :数字直接加入结果<br>
+           R=[10, 5, 20, 5], S=[+, *, (, -]</p>
+<p>9[C:-]  :运算符-，栈S顶栈运算符与C运算符优先级相同，弹出栈S顶栈内容至R后栈S顶栈为左括号'('，优先级小于运算符C，所以C再此时入栈S<br>
+           R=[10, 5, 20, 5, -], S=[+, *, (, -]</p>
+<p>10[C:10]:数字直接加入结果<br>
+           R=[10, 5, 20, 5, -, 10], S=[+, *, (, -]</p>
+<p>11[C:)] :右括号')'，不断弹出栈S中的符号输出至结果，直至遇到左括号<br>
+           R=[10, 5, 20, 5, -, 10, -], S=[+, *]</p>
+<p>12[C:+] :运算符+，弹出栈S内所有优先级大于或等于运算符+的符号至结果R后将C入栈<br>
+           R=[10, 5, 20, 5, -, 10, -, *, +], S=[+]</p>
+<p>13[C:8] :数字直接加入结果<br>
+           R=[10, 5, 20, 5, -, 10, -, *, +, 8], S=[+]</p>
+<p>14[C:-] :运算符-，弹出栈S内所有优先级大于或等于运算符+的符号至结果R后将C入栈<br>
+           R=[10, 5, 20, 5, -, 10, -, *, +, 8, +], S=[-]</p>
+<p>15[C:10] :数字直接加入结果<br>
+           R=[10, 5, 20, 5, -, 10, -, *, +, 8, +, 10], S=[-]</p>
+<p>16[C:/] :运算符/，此时栈S顶栈运算符‘-’的优先级小于‘/’，所以C直接加入栈S<br>
+           R=[10, 5, 20, 5, -, 10, -, *, +, 8, +, 10], S=[-, /]</p>
+<p>17[C:2] :数字直接加入结果<br>
+           R=[10, 5, 20, 5, -, 10, -, *, +, 8, +, 10, 2], S=[-, /]</p>
+<p>处理完成，但此时栈不为空，则依次弹出栈内元素至结果<br>
+   R=[10, 5, 20, 5, -, 10, -, *, +, 8, +, 10, 2, /, -]<br>
+   最终结果：10 5 20 5 - 10 - * + 8 + 10 2 / -</p>
+<p>二.计算逆波兰表达式<br>
+计算方式十分简单，我们先定义一个存放数字的栈S<br>
+接着遍历逆波兰表达式，遇到数字则加入数字栈，遇到运算符则弹出两个数字栈顶栈数字，并使用此运算符对这两个数字进行计算，并将计算结果加入到数字栈内</p>
+<p>ExampleA：20 10 8 * +<br>
+    1[C:20] :C加入到栈S<br>
+            S=[20]</p>
+<p>2[C:10] :C加入到栈S<br>
+            S=[20, 10]</p>
+<p>3[C:8] :C加入到栈S<br>
+            S=[20, 10, 8]</p>
+<p>4[C:*] :取出栈S顶栈两个元素 N1:8, N2:10<br>
+            使用此运算符计算结果：R:N1 * N2 = 80，并将结果重新入栈<br>
+            S=[20, 80]</p>
+<p>5[C:+] :取出栈S顶栈两个元素 N1:20, N2:80<br>
+            使用此运算符计算结果：R:N1 + N2 = 100，并将结果重新入栈<br>
+            S=[100]</p>
+<p>当完成这些步骤后，栈S内剩下的最后一个元素即为表达式的计算结果，如果最后栈内元素不唯一，或在遍历到运算符时栈内元素数量少于2个，则都判定为此表达式有误</p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952030071.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[哈夫曼(Huffman)编码]]></title>
+        <id>https://i.kafuu.cc/post/ozH07LlZx/</id>
+        <link href="https://i.kafuu.cc/post/ozH07LlZx/">
+        </link>
+        <updated>2020-08-16T01:05:09.000Z</updated>
+        <content type="html"><![CDATA[<p>哈夫曼编码(Huffman Coding)，又称霍夫曼编码，是一种编码方式，哈夫曼编码是可变字长编码(VLC)的一种。Huffman于1952年提出一种编码方法，该方法完全依据字符出现概率来构造异字头的平均长度最短的码字，有时称之为最佳编码，一般就叫做Huffman编码（有时也称为霍夫曼编码）。</p>
+<p>演示源码：<a href="https://github.com/KafuuNeko/HuffmanDemo">https://github.com/KafuuNeko/HuffmanDemo</a></p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617951942199.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1617951944678.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[我的世界插件 - 雷暴之夜]]></title>
+        <id>https://i.kafuu.cc/post/CqvD9O8TI/</id>
+        <link href="https://i.kafuu.cc/post/CqvD9O8TI/">
+        </link>
+        <updated>2020-08-15T09:00:29.000Z</updated>
+        <content type="html"><![CDATA[<p>一.介绍</p>
+<p>版本要求：1.15.2 Java版我的世界服务器</p>
+<p>安装此插件后我的世界入夜将有概率触发雷暴之夜事件，在雷暴之夜，僵尸、苦力怕、蜘蛛将获得Buff，并且有大量的雷电精准落到生物上</p>
+<p><a href="https://files.kafuu.cc//__files/Minecraft/Plugin/Thunderstorm.jar">点击这里下载雷暴之夜插件</a></p>
+<p><a href="https://github.com/KafuuNeko/Thunderstorm">点击插件雷暴之夜源码</a></p>
+<p>二.配置</p>
+<p>可打开MC/Thunderstorm/config.yml设置参数</p>
+<p>probability 入夜后进入雷暴之夜的概率<br>
+precondition:<br>
+thunder 进入雷暴之夜前提条件，若为true则必须在雷雨天入夜才可能进入雷暴之夜<br>
+monsters:<br>
+amount 进入雷暴之夜后怪物数量<br>
+ticks 进入雷暴之夜后怪物刷新间隔<br>
+buff 进入雷暴之夜后怪物获得的buff等级<br>
+speed<br>
+damage_resistance<br>
+health_boost<br>
+fire_resistance<br>
+increase_damage<br>
+absorption<br>
+random_lightning<br>
+interval 雷击间隔时间，单位为Tick<br>
+probability:<br>
+player 每次雷击玩家被雷击的概率<br>
+other 每次雷击其它生物被雷击的概率</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[使用freessl.cn申请Let’s encrypt V2多域名通配符证书]]></title>
+        <id>https://i.kafuu.cc/post/gEoKvnpp0/</id>
+        <link href="https://i.kafuu.cc/post/gEoKvnpp0/">
+        </link>
+        <updated>2020-08-14T03:59:03.000Z</updated>
+        <content type="html"><![CDATA[<p>一.获取证书</p>
+<p>进入<a href="https://freessl.cn/">https://freessl.cn/</a>，选择Let’s encrypt<br>
+V2，并填写域名后点击创建免费的SSL证书<br>
+<img src="https://i.kafuu.cc/post-images/1617951583087.png" alt="" loading="lazy"></p>
+<p>接着填写您的邮箱，选择证书类型为ECC，SCR生成选择浏览器生成，接着点击点击创建<br>
+<img src="https://i.kafuu.cc/post-images/1617951588342.png" alt="" loading="lazy"></p>
+<p>接着根据提示，为您的域名添加两条TXT记录<br>
+<img src="https://i.kafuu.cc/post-images/1617951593746.png" alt="" loading="lazy"></p>
+<p>添加完成后点击配置完成，检测一下，若检测通过（务必等检测通过后点击验证，有时候配置DNS后生效时间可能会有点长，请耐心等待），则点击验证，若通过则下载文件</p>
+<p>下载的压缩包内将包含两个文件：full_chain.pem以及private.key</p>
+<p>二.SSL配置</p>
+<p>请确保已经安装mod_ssl，如果未安装请先安装</p>
+<p>CentOS：yum install mod_ssl</p>
+<p>以文本打开full_chain.pem，会发现里面有两段串码，前一部分是证书，后一部分为证书链。将这个文件复制为2个文件，一个保留前一部分，做证书文件，另一个保留后一部分，做证书链文件。</p>
+<p>创建两个文件public.pem以及chain.pem，public.pem文件内容为full_chain.pem前一段码，chain.pem文件内容为full_chain.pem后一段码</p>
+<p>接着配置ssl.conf(/etc/httpd/conf.d)文件</p>
+<p># 添加 SSL 协议支持协议，去掉不安全的协议<br>
+SSLProtocol all -SSLv2 -SSLv3<br>
+# 修改加密套件如下<br>
+SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
+SSLHonorCipherOrder on<br>
+# 证书公钥配置（如果pem只有一个，那么public为第一段码）<br>
+SSLCertificateFile cert/public.pem<br>
+# 证书私钥配置<br>
+SSLCertificateKeyFile cert/private.key<br>
+# 证书链配置，如果该属性开头有<br>
+‘#’字符，请删除掉（如果pem只有一个，那么chain为第第二段码）<br>
+SSLCertificateChainFile cert/chain.pem</p>
+<p>示范：</p>
+<p>&lt;VirtualHost *:443&gt;<br>
+ServerName www.kafuu.cc:443<br>
+DocumentRoot &quot;/var/www/html/main/root&quot;<br>
+SSLEngine on<br>
+SSLProtocol all -SSLv2 -SSLv3<br>
+SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
+SSLHonorCipherOrder on<br>
+SSLCertificateFile /var/www/ssl/public.pem<br>
+SSLCertificateKeyFile /var/www/ssl/private.key<br>
+SSLCertificateChainFile /var/www/ssl/chain.pem<br>
+&lt;/VirtualHost&gt;</p>
+<p>三.防火墙配置：</p>
+<p>firewall-cmd –query-service https ##查看http服务是否支持，返回yes或者no<br>
+firewall-cmd –add-service=https ##临时开放https服务<br>
+firewall-cmd –add-service=https –permanent ##永久开放https服务<br>
+然后重启防火墙即可</p>
+]]></content>
+    </entry>
+</feed>
