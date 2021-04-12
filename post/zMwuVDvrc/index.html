@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>哈夫曼(Huffman)编码 | KafuuNeko</title>
+<title>数论：幂乘 | KafuuNeko</title>
 
 <link rel="shortcut icon" href="https://i.kafuu.cc/favicon.ico?v=1618204810791">
 
@@ -91,12 +91,16 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    哈夫曼(Huffman)编码
+                    数论：幂乘
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-08-16 ·
+                        · 2019-08-21 ·
                     </time>
+                    
+                        <a href="https://i.kafuu.cc/tag/yy_YnwkB8/" class="post-tags">
+                            # 数论
+                        </a>
                     
                         <a href="https://i.kafuu.cc/tag/MCT7FIul8/" class="post-tags">
                             # 算法
@@ -104,10 +108,46 @@
                     
                 </div>
                 <div class="post-content">
-                    <p>哈夫曼编码(Huffman Coding)，又称霍夫曼编码，是一种编码方式，哈夫曼编码是可变字长编码(VLC)的一种。Huffman于1952年提出一种编码方法，该方法完全依据字符出现概率来构造异字头的平均长度最短的码字，有时称之为最佳编码，一般就叫做Huffman编码（有时也称为霍夫曼编码）。</p>
-<p>演示源码：<a href="https://github.com/KafuuNeko/HuffmanDemo">https://github.com/KafuuNeko/HuffmanDemo</a></p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617951942199.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1617951944678.png" alt="" loading="lazy"></figure>
+                    <ul>
+<li>
+<p>求x的幂乘可以利用x^n = (x ^ 2) ^ (n / 2)的性质，用反复平方法快速求出 ：</p>
+<p>pow(x, n)</p>
+<ul>
+<li>1 (n=0时)</li>
+<li>pow(x * x, n / 2) (n为偶数时)</li>
+<li>pow(x * x, n / 2) * x (n为奇数时)</li>
+</ul>
+</li>
+<li>
+<p>例如：2^11展开如下所示：</p>
+<ul>
+<li>2^11 = ((2 * 2) ^ 5) * 2</li>
+<li>4^5 = ((4 * 4) ^ 2) * 4</li>
+<li>8^2 = (8 * 8) ^ 2</li>
+<li>16^2 = (16 * 16) ^ 1</li>
+<li>256^1 = ((256 * 256) ^ 0) * 256</li>
+<li>65536^0 = 1</li>
+</ul>
+</li>
+<li>
+<p>递归反复平方法</p>
+<pre><code class="language-cpp">pow(x, n)
+	if(n == 0) return 1;
+	if((n &amp; 1) == 0)
+		return pow(x * x, n / 2);
+	else
+		return pow(x * x, n / 2) * x;
+
+//C++实现
+constexpr double mypow(double x, uint32_t n) noexcept
+{
+	return (n == 0) ? 1 : ((n &amp; 1) == 0) ?
+					pow(x * x, n / 2) : 
+					(pow(x * x, n / 2) * x);
+}
+</code></pre>
+</li>
+</ul>
 
                 </div>
             </article>
@@ -116,8 +156,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://i.kafuu.cc/post/CqvD9O8TI/" class="post-title gt-a-link">
-                    我的世界插件 - 雷暴之夜
+                <a href="https://i.kafuu.cc/post/kGEMmaOzR/" class="post-title gt-a-link">
+                    KMP算法
                 </a>
             </div>
         
