@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://i.kafuu.cc</id>
     <title>KafuuNeko</title>
-    <updated>2021-04-10T03:33:05.089Z</updated>
+    <updated>2021-04-12T01:09:40.773Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://i.kafuu.cc"/>
     <link rel="self" href="https://i.kafuu.cc/atom.xml"/>
@@ -20,6 +20,145 @@ document.write(&quot;欢迎来到我的博客～～&quot;)
     <logo>https://i.kafuu.cc/images/avatar.png</logo>
     <icon>https://i.kafuu.cc/favicon.ico</icon>
     <rights>All rights reserved 2021, KafuuNeko</rights>
+    <entry>
+        <title type="html"><![CDATA[DJI SPARK 朝阳]]></title>
+        <id>https://i.kafuu.cc/post/phsGV5Yf4/</id>
+        <link href="https://i.kafuu.cc/post/phsGV5Yf4/">
+        </link>
+        <updated>2021-04-11T13:42:22.000Z</updated>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1618148566943.JPG" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Effective  Modern C++ Auto]]></title>
+        <id>https://i.kafuu.cc/post/E3vQz_jt1/</id>
+        <link href="https://i.kafuu.cc/post/E3vQz_jt1/">
+        </link>
+        <updated>2021-04-10T16:42:58.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>
+<p>条款5：优先使用auto，而非显示型别声明</p>
+<ul>
+<li>
+<p>auto可以用来表示编译器才掌握的类别</p>
+<p>因此可以用auto声明/存储一个闭包变量，且内存量也和该闭包一样，而使用std::function声明的、存储的一个闭包变量是std::function的一个示例，所以不管给定签名如何，它都占有固定尺寸的内存而这个尺寸对于其存储的闭包而言不一定够用，若是如此，std::function的构造函数就会分配堆上的内存来存储该闭包，且编译器的实现细节一般会限制内联，并会产生间接的函数调用，所以std::function来调用闭包几乎必然比起使用“auto”手法来得又大又慢！</p>
+</li>
+<li>
+<p>显示声明可能导致你既不想要也没想到的隐式型别转换</p>
+</li>
+<li>
+<p>auto变量必须初始化，基本上对会导致兼容性和效率问题的型别不匹配的现象免疫</p>
+</li>
+</ul>
+</li>
+<li>
+<p>条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</p>
+<ul>
+<li>
+<p>有的时候，auto的推导结果与程序员所要的结果完全不同，例如下列代码</p>
+<pre><code class="language-cpp">std::vector&lt;bool&gt; foo() 
+{
+	std::vector&lt;bool&gt; r;
+	//...
+	return r;
+}
+
+//k的值取决于std::vector&lt;bool&gt;::reference的实现
+auto k = foo()[0]; //k的型别被推断为std::vector&lt;bool&gt;::reference而不是bool
+//有一种实现让对象含有一个指针，指涉到一个机器字，该机器字有那个被引用的比特，再加上基于那个比特对应的字的偏移量
+//foo()返回一个临时对象，在“auto k = foo()[0];”此表达式完成后此对象将被析构，此时k将含有一个空悬指针，使用k将造成未定义结果
+</code></pre>
+</li>
+<li>
+<p>因为std::vector<bool>做过特化，用了一种压缩形式表示持有的bool元素，每个bool元素用一个比特来表示，但这种做法给operator[]带来了一个问题，因为按理来说std::vector<T>的operator[]应该返回一个T&amp;，然而C++中禁止比特引用，所以就需要使用std::vector<bool>::reference型别代理</p>
+</li>
+<li>
+<p>std::vector<bool>::reference是个代理类的实例，所谓代理类，就是为了模拟增广其他型别的类。代理类的用途广泛。比如说，std::vector<bool>::reference就是为了制造std::vector<bool>的operator[]返回了一个比特的引用假象。再比如说，标准库中的智能指针也是代理类，它们是为了将资源管理嫁接到裸指针之上</p>
+</li>
+<li>
+<p>总之，隐形的代理类和auto无法和平共处，所以上面的代码应使用显式型别初始化</p>
+<pre><code class="language-cpp">auto k = static_cast&lt;bool&gt;(foo()[0]);//正确写法
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Effective  Modern C++ 型别推导]]></title>
+        <id>https://i.kafuu.cc/post/LJvcapNxG/</id>
+        <link href="https://i.kafuu.cc/post/LJvcapNxG/">
+        </link>
+        <updated>2021-04-10T16:26:35.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>
+<p>条款1：理解模板型别推导</p>
+<pre><code class="language-cpp">template&lt;typename T&gt;
+
+void f(ParamType param);
+
+f(expression);
+</code></pre>
+<hr>
+<blockquote>
+<p>情况1：ParamType是个指针或引用，但不是个万能引用</p>
+</blockquote>
+<ol>
+<li>若expression具有引用型别，则将引用部分忽略</li>
+<li>然后，对expr的类型与ParamType进行模式匹配，以决定T的类型</li>
+<li>若ParamType是引用类型也基本同上</li>
+</ol>
+<blockquote>
+<p>情况2：ParamType是个万能引用(&amp;&amp;)</p>
+</blockquote>
+<ol>
+<li>如果传入的expression是左值，T和ParamType都会被推导为左值引用</li>
+<li>如果expression是个右值，则类似情况1进行推导</li>
+</ol>
+<p>例如：</p>
+<pre><code class="language-cpp">void f(T &amp;&amp;param);//(此处T是模板)
+int i = 10;
+f(i);  //推导结果⇒ void f(int &amp;param)
+</code></pre>
+<p>推导过程：因传入的expression是个左值，所以T被推导为int型左值引用(int &amp;)，紧接着(int&amp; &amp;&amp;)被折叠为(int &amp;)</p>
+<blockquote>
+<p>情况3：ParamType既非指针也非引用</p>
+</blockquote>
+<ol>
+<li>如果expression具有引用型别，则忽略引用部分</li>
+<li>忽略const以及volatile修饰</li>
+</ol>
+<blockquote>
+<p>数组实参</p>
+</blockquote>
+<p>数组以及函数型别的实参会退化为相应的指针，除非被用来初始化引用</p>
+</li>
+<li>
+<p>条款2：理解auto型别推导</p>
+<ul>
+<li>auto推导和模板型别推导基本一致，其唯一的区别在于auto会假定大括号括起来的初始化表达式代表一个std::initializer_list，但模板型别推导不会</li>
+<li>但如果模板中的参数类型为std::initializer_list<T>，则模板推导机制会推导出T应有的型别</li>
+<li>在函数返回值或lambda式形参中使用auto将会使用模板型别推导而非auto型别推导</li>
+</ul>
+</li>
+<li>
+<p>条款3：理解decltype</p>
+<ul>
+<li>大多数情况下，decltype会得出变量或表达式的型别而不做任何修改</li>
+<li>因为在C++的定义中，表达式(x)也是一个左值，所以对于型别为T的左值表达式，除非该表达式仅有一个名字，decltype总是得出型别T&amp;，假设x是一个T型左值，decltype(x)推导出的类型是T而decltype((x))推导出的类型是T&amp;</li>
+<li>C++14支持decltype(auto)，表示使用decltype的推导规则进行推导</li>
+</ul>
+</li>
+<li>
+<p>条款4：掌握查看类别推导结果的方法</p>
+<ul>
+<li>使用boots的typeindex::type_id_with_cvr可以完全正确的推导结果</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[串口调试工具(DCOM)]]></title>
         <id>https://i.kafuu.cc/post/uP-j_qepQ/</id>
@@ -710,104 +849,6 @@ int main()
             S=[100]</p>
 <p>当完成这些步骤后，栈S内剩下的最后一个元素即为表达式的计算结果，如果最后栈内元素不唯一，或在遍历到运算符时栈内元素数量少于2个，则都判定为此表达式有误</p>
 <figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952030071.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[哈夫曼(Huffman)编码]]></title>
-        <id>https://i.kafuu.cc/post/ozH07LlZx/</id>
-        <link href="https://i.kafuu.cc/post/ozH07LlZx/">
-        </link>
-        <updated>2020-08-16T01:05:09.000Z</updated>
-        <content type="html"><![CDATA[<p>哈夫曼编码(Huffman Coding)，又称霍夫曼编码，是一种编码方式，哈夫曼编码是可变字长编码(VLC)的一种。Huffman于1952年提出一种编码方法，该方法完全依据字符出现概率来构造异字头的平均长度最短的码字，有时称之为最佳编码，一般就叫做Huffman编码（有时也称为霍夫曼编码）。</p>
-<p>演示源码：<a href="https://github.com/KafuuNeko/HuffmanDemo">https://github.com/KafuuNeko/HuffmanDemo</a></p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617951942199.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1617951944678.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[我的世界插件 - 雷暴之夜]]></title>
-        <id>https://i.kafuu.cc/post/CqvD9O8TI/</id>
-        <link href="https://i.kafuu.cc/post/CqvD9O8TI/">
-        </link>
-        <updated>2020-08-15T09:00:29.000Z</updated>
-        <content type="html"><![CDATA[<p>一.介绍</p>
-<p>版本要求：1.15.2 Java版我的世界服务器</p>
-<p>安装此插件后我的世界入夜将有概率触发雷暴之夜事件，在雷暴之夜，僵尸、苦力怕、蜘蛛将获得Buff，并且有大量的雷电精准落到生物上</p>
-<p><a href="https://files.kafuu.cc//__files/Minecraft/Plugin/Thunderstorm.jar">点击这里下载雷暴之夜插件</a></p>
-<p><a href="https://github.com/KafuuNeko/Thunderstorm">点击插件雷暴之夜源码</a></p>
-<p>二.配置</p>
-<p>可打开MC/Thunderstorm/config.yml设置参数</p>
-<p>probability 入夜后进入雷暴之夜的概率<br>
-precondition:<br>
-thunder 进入雷暴之夜前提条件，若为true则必须在雷雨天入夜才可能进入雷暴之夜<br>
-monsters:<br>
-amount 进入雷暴之夜后怪物数量<br>
-ticks 进入雷暴之夜后怪物刷新间隔<br>
-buff 进入雷暴之夜后怪物获得的buff等级<br>
-speed<br>
-damage_resistance<br>
-health_boost<br>
-fire_resistance<br>
-increase_damage<br>
-absorption<br>
-random_lightning<br>
-interval 雷击间隔时间，单位为Tick<br>
-probability:<br>
-player 每次雷击玩家被雷击的概率<br>
-other 每次雷击其它生物被雷击的概率</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[使用freessl.cn申请Let’s encrypt V2多域名通配符证书]]></title>
-        <id>https://i.kafuu.cc/post/gEoKvnpp0/</id>
-        <link href="https://i.kafuu.cc/post/gEoKvnpp0/">
-        </link>
-        <updated>2020-08-14T03:59:03.000Z</updated>
-        <content type="html"><![CDATA[<p>一.获取证书</p>
-<p>进入<a href="https://freessl.cn/">https://freessl.cn/</a>，选择Let’s encrypt<br>
-V2，并填写域名后点击创建免费的SSL证书<br>
-<img src="https://i.kafuu.cc/post-images/1617951583087.png" alt="" loading="lazy"></p>
-<p>接着填写您的邮箱，选择证书类型为ECC，SCR生成选择浏览器生成，接着点击点击创建<br>
-<img src="https://i.kafuu.cc/post-images/1617951588342.png" alt="" loading="lazy"></p>
-<p>接着根据提示，为您的域名添加两条TXT记录<br>
-<img src="https://i.kafuu.cc/post-images/1617951593746.png" alt="" loading="lazy"></p>
-<p>添加完成后点击配置完成，检测一下，若检测通过（务必等检测通过后点击验证，有时候配置DNS后生效时间可能会有点长，请耐心等待），则点击验证，若通过则下载文件</p>
-<p>下载的压缩包内将包含两个文件：full_chain.pem以及private.key</p>
-<p>二.SSL配置</p>
-<p>请确保已经安装mod_ssl，如果未安装请先安装</p>
-<p>CentOS：yum install mod_ssl</p>
-<p>以文本打开full_chain.pem，会发现里面有两段串码，前一部分是证书，后一部分为证书链。将这个文件复制为2个文件，一个保留前一部分，做证书文件，另一个保留后一部分，做证书链文件。</p>
-<p>创建两个文件public.pem以及chain.pem，public.pem文件内容为full_chain.pem前一段码，chain.pem文件内容为full_chain.pem后一段码</p>
-<p>接着配置ssl.conf(/etc/httpd/conf.d)文件</p>
-<p># 添加 SSL 协议支持协议，去掉不安全的协议<br>
-SSLProtocol all -SSLv2 -SSLv3<br>
-# 修改加密套件如下<br>
-SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
-SSLHonorCipherOrder on<br>
-# 证书公钥配置（如果pem只有一个，那么public为第一段码）<br>
-SSLCertificateFile cert/public.pem<br>
-# 证书私钥配置<br>
-SSLCertificateKeyFile cert/private.key<br>
-# 证书链配置，如果该属性开头有<br>
-‘#’字符，请删除掉（如果pem只有一个，那么chain为第第二段码）<br>
-SSLCertificateChainFile cert/chain.pem</p>
-<p>示范：</p>
-<p>&lt;VirtualHost *:443&gt;<br>
-ServerName www.kafuu.cc:443<br>
-DocumentRoot &quot;/var/www/html/main/root&quot;<br>
-SSLEngine on<br>
-SSLProtocol all -SSLv2 -SSLv3<br>
-SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
-SSLHonorCipherOrder on<br>
-SSLCertificateFile /var/www/ssl/public.pem<br>
-SSLCertificateKeyFile /var/www/ssl/private.key<br>
-SSLCertificateChainFile /var/www/ssl/chain.pem<br>
-&lt;/VirtualHost&gt;</p>
-<p>三.防火墙配置：</p>
-<p>firewall-cmd –query-service https ##查看http服务是否支持，返回yes或者no<br>
-firewall-cmd –add-service=https ##临时开放https服务<br>
-firewall-cmd –add-service=https –permanent ##永久开放https服务<br>
-然后重启防火墙即可</p>
 ]]></content>
     </entry>
 </feed>
