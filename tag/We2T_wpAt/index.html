@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Effective Auto | KafuuNeko</title>
+<title>C++ | KafuuNeko</title>
 
 <link rel="shortcut icon" href="https://i.kafuu.cc/favicon.ico?v=1618313778797">
 
@@ -25,13 +25,13 @@
 
 
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
 <body>
 
 <view class="bg-fixed bg">
 <div class="main gt-bg-theme-color-first">
-    <nav class="navbar navbar-expand-lg">
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg">
     <div class="navbar-brand">
         <img class="user-avatar" src="/images/avatar.png" alt="头像">
         <a class="site-name gt-c-content-color-first" href="/">
@@ -87,90 +87,57 @@
     </div>
 </nav>
 
-    <div class="post-container">
-        <div class="post-detail gt-bg-theme-color-second">
-            <article class="gt-post-content">
-                <h2 class="post-title">
-                    Effective Auto
-                </h2>
-                <div class="post-info">
-                    <time class="post-time gt-c-content-color-first">
-                        · 2021-04-11 ·
-                    </time>
-                    
-                        <a href="https://i.kafuu.cc/tag/LK8GbjLK_/" class="post-tags">
-                            # 笔记整理
-                        </a>
-                    
-                </div>
-                <div class="post-content">
-                    <ul>
-<li>
-<p>条款5：优先使用auto，而非显示型别声明</p>
-<ul>
-<li>
-<p>auto可以用来表示编译器才掌握的类别</p>
-<p>因此可以用auto声明/存储一个闭包变量，且内存量也和该闭包一样，而使用std::function声明的、存储的一个闭包变量是std::function的一个示例，所以不管给定签名如何，它都占有固定尺寸的内存而这个尺寸对于其存储的闭包而言不一定够用，若是如此，std::function的构造函数就会分配堆上的内存来存储该闭包，且编译器的实现细节一般会限制内联，并会产生间接的函数调用，所以std::function来调用闭包几乎必然比起使用“auto”手法来得又大又慢！</p>
-</li>
-<li>
-<p>显示声明可能导致你既不想要也没想到的隐式型别转换</p>
-</li>
-<li>
-<p>auto变量必须初始化，基本上对会导致兼容性和效率问题的型别不匹配的现象免疫</p>
-</li>
-</ul>
-</li>
-<li>
-<p>条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</p>
-<ul>
-<li>
-<p>有的时候，auto的推导结果与程序员所要的结果完全不同，例如下列代码</p>
-<pre><code class="language-cpp">std::vector&lt;bool&gt; foo() 
-{
-	std::vector&lt;bool&gt; r;
-	//...
-	return r;
-}
-
-//k的值取决于std::vector&lt;bool&gt;::reference的实现
-auto k = foo()[0]; //k的型别被推断为std::vector&lt;bool&gt;::reference而不是bool
-//有一种实现让对象含有一个指针，指涉到一个机器字，该机器字有那个被引用的比特，再加上基于那个比特对应的字的偏移量
-//foo()返回一个临时对象，在“auto k = foo()[0];”此表达式完成后此对象将被析构，此时k将含有一个空悬指针，使用k将造成未定义结果
-</code></pre>
-</li>
-<li>
-<p>因为std::vector<bool>做过特化，用了一种压缩形式表示持有的bool元素，每个bool元素用一个比特来表示，但这种做法给operator[]带来了一个问题，因为按理来说std::vector<T>的operator[]应该返回一个T&amp;，然而C++中禁止比特引用，所以就需要使用std::vector<bool>::reference型别代理</p>
-</li>
-<li>
-<p>std::vector<bool>::reference是个代理类的实例，所谓代理类，就是为了模拟增广其他型别的类。代理类的用途广泛。比如说，std::vector<bool>::reference就是为了制造std::vector<bool>的operator[]返回了一个比特的引用假象。再比如说，标准库中的智能指针也是代理类，它们是为了将资源管理嫁接到裸指针之上</p>
-</li>
-<li>
-<p>总之，隐形的代理类和auto无法和平共处，所以上面的代码应使用显式型别初始化</p>
-<pre><code class="language-cpp">auto k = static_cast&lt;bool&gt;(foo()[0]);//正确写法
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-
-                </div>
-            </article>
+        <div class="current-tag-container">
+            <h2 class="title gt-c-content-color-first">
+                #C++
+            </h2>
         </div>
-
+        <div class="post-list-container">
+    <div class="post-inner">
         
-            <div class="next-post">
-                <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://i.kafuu.cc/post/LJvcapNxG/" class="post-title gt-a-link">
-                    Effective  型别推导
-                </a>
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="https://i.kafuu.cc/post/KqvHFouCX/">
+                            <span class="post-title gt-c-content-color-first">C++ 奇异递归模板模式(Curiously recurring template pattern)</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2021-04-13 ·
+                        </time>
+                        
+                            <a href="https://i.kafuu.cc/tag/We2T_wpAt/" class="post-tag">
+                                # C++
+                            </a>
+                        
+                            <a href="https://i.kafuu.cc/tag/AJWNIgzwq/" class="post-tag">
+                                # 分享
+                            </a>
+                        
+                            <a href="https://i.kafuu.cc/tag/iQ0aEGWPW/" class="post-tag">
+                                # 教程
+                            </a>
+                        
+                    </div>
+                </div>
+                
+                    <a href="https://i.kafuu.cc/post/KqvHFouCX/" class="post-feature-image"
+                       style="background-image: url('https://i.kafuu.cc/post-images/KqvHFouCX.JPG')">
+                    </a>
+                
             </div>
         
-
-        
-
-        
-
-        
+    </div>
+</div>
+        <div class="pagination-container">
+    
+    
+</div>
 
         <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
@@ -224,5 +191,6 @@ document.write("欢迎来到我的博客～～")
     </div>
 </div>
 </view>
+
 </body>
 </html>
