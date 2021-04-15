@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://i.kafuu.cc</id>
     <title>KafuuNeko</title>
-    <updated>2021-04-14T04:16:53.640Z</updated>
+    <updated>2021-04-15T05:53:54.354Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://i.kafuu.cc"/>
     <link rel="self" href="https://i.kafuu.cc/atom.xml"/>
@@ -20,6 +20,17 @@ document.write(&quot;欢迎来到我的博客～～&quot;)
     <logo>https://i.kafuu.cc/images/avatar.png</logo>
     <icon>https://i.kafuu.cc/favicon.ico</icon>
     <rights>All rights reserved 2021, KafuuNeko</rights>
+    <entry>
+        <title type="html"><![CDATA[NUCLEAR CONTAMINATION]]></title>
+        <id>https://i.kafuu.cc/post/VeHTbkCnB/</id>
+        <link href="https://i.kafuu.cc/post/VeHTbkCnB/">
+        </link>
+        <updated>2021-04-15T05:49:26.000Z</updated>
+        <content type="html"><![CDATA[<p><img src="https://i.kafuu.cc/post-images/1618465772705.jpg" alt="" loading="lazy"><br>
+<img src="https://i.kafuu.cc/post-images/1618465775895.webp" alt="" loading="lazy"></p>
+<p>Japanese government decided to dump over 1.23 million tons of Fukushima radioactive waste water stored into the Pacific Ocean</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[C++ 奇异递归模板模式(Curiously recurring template pattern)]]></title>
         <id>https://i.kafuu.cc/post/KqvHFouCX/</id>
@@ -1081,7 +1092,8 @@ private:
         <link href="https://i.kafuu.cc/post/phsGV5Yf4/">
         </link>
         <updated>2021-04-11T13:42:22.000Z</updated>
-        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1618148566943.JPG" alt="" loading="lazy"></figure>
+        <content type="html"><![CDATA[<p><img src="https://i.kafuu.cc/post-images/1618376684303.jpg" alt="" loading="lazy"><br>
+<a href="https://1drv.ms/u/s!Akr0VI7cRjUunVo7YsmontEKQmgB?e=bRctmm">原图下载</a></p>
 ]]></content>
     </entry>
     <entry>
@@ -1753,17 +1765,6 @@ int main()
 <p>已实现功能：自由长度字节集加解密、数据流加解密、文件加解密、字符串加解密</p>
 <figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952614895.png" alt="" loading="lazy"></figure>
 <p>项目地址：<a href="https://github.com/KafuuNeko/CPPTEA">https://github.com/KafuuNeko/CPPTEA</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Pixiv图片自动爬取]]></title>
-        <id>https://i.kafuu.cc/post/i3D4fXPMI/</id>
-        <link href="https://i.kafuu.cc/post/i3D4fXPMI/">
-        </link>
-        <updated>2020-08-20T23:18:34.000Z</updated>
-        <content type="html"><![CDATA[<p>自动爬取指定Tag的所有图片，并将图片以及作者信息保存到本地目录./pixiv/[tag]/[id]</p>
-<p><a href="https://github.com/KafuuNeko/PixivWebCrawler">代码仓库</a></p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952507072.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
