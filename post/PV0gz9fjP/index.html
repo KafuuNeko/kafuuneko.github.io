@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>单片机 | KafuuNeko</title>
+<title>二维矩阵和 | KafuuNeko</title>
 
 <link rel="shortcut icon" href="https://i.kafuu.cc/favicon.ico?v=1624004282844">
 
@@ -25,13 +25,13 @@
 
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
 <body>
 
 <view class="bg-fixed bg">
 <div class="main gt-bg-theme-color-first">
-    <div class="main-content">
-        <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg">
     <div class="navbar-brand">
         <img class="user-avatar" src="/images/avatar.png" alt="头像">
         <a class="site-name gt-c-content-color-first" href="/">
@@ -87,53 +87,121 @@
     </div>
 </nav>
 
-        <div class="current-tag-container">
-            <h2 class="title gt-c-content-color-first">
-                #单片机
-            </h2>
-        </div>
-        <div class="post-list-container">
-    <div class="post-inner">
-        
-            <div class="post gt-bg-theme-color-second">
-                <div class="post-left">
-                    <div>
-                        
-                        <a href="https://i.kafuu.cc/post/wc2h528UJ/">
-                            <span class="post-title gt-c-content-color-first">STM32绘制折线统计图</span>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    二维矩阵和
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-02-06 ·
+                    </time>
+                    
+                        <a href="https://i.kafuu.cc/tag/iQ0aEGWPW/" class="post-tags">
+                            # 教程
                         </a>
-                    </div>
-                    <div class="gt-post-content post-abstract gt-c-content-color-second">
-                        
-                    </div>
-                    <div class="post-info">
-                        <time class="post-time gt-c-content-color-first">
-                            发布于 · 2020-08-17 ·
-                        </time>
-                        
-                            <a href="https://i.kafuu.cc/tag/BZhyo03E1/" class="post-tag">
-                                # 单片机
-                            </a>
-                        
-                            <a href="https://i.kafuu.cc/tag/MCT7FIul8/" class="post-tag">
-                                # 算法
-                            </a>
-                        
-                    </div>
+                    
                 </div>
-                
-                    <a href="https://i.kafuu.cc/post/wc2h528UJ/" class="post-feature-image"
-                       style="background-image: url('https://i.kafuu.cc/post-images/wc2h528UJ.jpg')">
-                    </a>
-                
+                <div class="post-content">
+                    <p>二维前缀和，前缀和即当前元素与之前的元素之和，例如现有一个3行4列的矩阵</p>
+<p>定义：本例中x和y从1开始，例如：(1, 1)的值为6，(2, 1)的值为7</p>
+<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1618564153192.png" alt="" loading="lazy"></figure>
+<p>(1, 1)的前缀和即1 + 2 + 5 + 6 = 14</p>
+<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1618564157530.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>依次计算(0, 0)、(0, 1)、(1, 0)的前缀和</p>
+<ul>
+<li>(0, 0)</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://i.kafuu.cc/post-images/1618564163225.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>(0, 1)</p>
+<figure data-type="image" tabindex="4"><img src="https://i.kafuu.cc/post-images/1618564169965.png" alt="" loading="lazy"></figure>
+</li>
+<li>
+<p>(1, 0)</p>
+<figure data-type="image" tabindex="5"><img src="https://i.kafuu.cc/post-images/1618564177626.png" alt="" loading="lazy"></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>根据上面的结果，计算(1, 1)的前缀和</p>
+<figure data-type="image" tabindex="6"><img src="https://i.kafuu.cc/post-images/1618564183738.png" alt="" loading="lazy"></figure>
+<p>(0, 1)的前缀和的值为3（红色矩形中的值相加）</p>
+<p>(1, 0)的前缀和的值为6（蓝色矩形中的值相加）</p>
+<p>计算(1，1)前缀和的值只需将红色矩形(0, 1)的前缀和值加上蓝色矩形(1, 0)的前缀和值，然后减去这两个矩形重叠的部分的前缀和的值（因为(0, 1)和(1, 0)的前缀和的包含了(0, 0)，也就是(0, 0)的前缀和值被多加了一遍，所以需要减去），再加上(1，1)处的值即可计算出(1, 1)的前缀和值</p>
+<p>3(红色矩形) + 6(蓝色矩形) - 1(重叠的部分) + 6(自身的值) = 14</p>
+<p>所以可以得出递推公式：DP(x, y) = DP(x - 1, y) + DP(x, y - 1) - DP(x - 1, y - 1) + M(x, y)</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int M, N;
+int Martix[101][101];
+int DP[101][101];
+
+int main() {
+	std::cin &gt;&gt; M &gt;&gt; N;
+
+	for (int i = 1; i &lt;= M; ++i) {
+		for (int j = 1; j &lt;= N; ++j) {
+			std::cin &gt;&gt; Martix[i][j];
+		}
+	}
+
+	for (int i = 1; i &lt;= M; ++i) {
+		for (int j = 1; j &lt;= N; ++j) {
+			DP[i][j] = DP[i - 1][j] + DP[i][j - 1] - DP[i - 1][j - 1] + Martix[i][j];
+		}
+	}
+
+	printf(&quot;前缀和：\n&quot;);
+
+	for (int i = 1; i &lt;= M; ++i) {
+		for (int j = 1; j &lt;= N; ++j) {
+			printf(&quot;%d &quot;, DP[i][j]);
+		}
+		printf(&quot;\n&quot;);
+	}
+
+	return 0;
+}
+
+/*
+input:
+3 4
+1 2 3 4
+5 6 7 8
+9 10 11 12
+
+output:
+1 3 6 10
+6 14 24 36
+15 33 54 78
+*/
+</code></pre>
+</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://i.kafuu.cc/post/kGEMmaOzR/" class="post-title gt-a-link">
+                    KMP算法
+                </a>
             </div>
         
-    </div>
-</div>
-        <div class="pagination-container">
-    
-    
-</div>
+
+        
+
+        
+
+        
 
         <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
@@ -187,6 +255,5 @@ document.write("欢迎来到我的博客～～")
     </div>
 </div>
 </view>
-
 </body>
 </html>
