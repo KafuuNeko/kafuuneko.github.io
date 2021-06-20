@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>使用freessl.cn申请Let’s encrypt V2多域名通配符证书 | KafuuNeko</title>
+<title>适用于树莓派4b的Java16 | KafuuNeko</title>
 
 <link rel="shortcut icon" href="https://i.kafuu.cc/favicon.ico?v=1624178966183">
 
@@ -91,64 +91,18 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    使用freessl.cn申请Let’s encrypt V2多域名通配符证书
+                    适用于树莓派4b的Java16
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-08-14 ·
+                        · 2021-06-20 ·
                     </time>
-                    
-                        <a href="https://i.kafuu.cc/tag/iQ0aEGWPW/" class="post-tags">
-                            # 教程
-                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>一.获取证书</p>
-<p>进入<a href="https://freessl.cn/">https://freessl.cn/</a>，选择Let’s encrypt<br>
-V2，并填写域名后点击创建免费的SSL证书<br>
-<img src="https://i.kafuu.cc/post-images/1617951583087.png" alt="" loading="lazy"></p>
-<p>接着填写您的邮箱，选择证书类型为ECC，SCR生成选择浏览器生成，接着点击点击创建<br>
-<img src="https://i.kafuu.cc/post-images/1617951588342.png" alt="" loading="lazy"></p>
-<p>接着根据提示，为您的域名添加两条TXT记录<br>
-<img src="https://i.kafuu.cc/post-images/1617951593746.png" alt="" loading="lazy"></p>
-<p>添加完成后点击配置完成，检测一下，若检测通过（务必等检测通过后点击验证，有时候配置DNS后生效时间可能会有点长，请耐心等待），则点击验证，若通过则下载文件</p>
-<p>下载的压缩包内将包含两个文件：full_chain.pem以及private.key</p>
-<p>二.SSL配置</p>
-<p>请确保已经安装mod_ssl，如果未安装请先安装</p>
-<p>CentOS：yum install mod_ssl</p>
-<p>以文本打开full_chain.pem，会发现里面有两段串码，前一部分是证书，后一部分为证书链。将这个文件复制为2个文件，一个保留前一部分，做证书文件，另一个保留后一部分，做证书链文件。</p>
-<p>创建两个文件public.pem以及chain.pem，public.pem文件内容为full_chain.pem前一段码，chain.pem文件内容为full_chain.pem后一段码</p>
-<p>接着配置ssl.conf(/etc/httpd/conf.d)文件</p>
-<p># 添加 SSL 协议支持协议，去掉不安全的协议<br>
-SSLProtocol all -SSLv2 -SSLv3<br>
-# 修改加密套件如下<br>
-SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
-SSLHonorCipherOrder on<br>
-# 证书公钥配置（如果pem只有一个，那么public为第一段码）<br>
-SSLCertificateFile cert/public.pem<br>
-# 证书私钥配置<br>
-SSLCertificateKeyFile cert/private.key<br>
-# 证书链配置，如果该属性开头有<br>
-‘#’字符，请删除掉（如果pem只有一个，那么chain为第第二段码）<br>
-SSLCertificateChainFile cert/chain.pem</p>
-<p>示范：</p>
-<p>&lt;VirtualHost *:443&gt;<br>
-ServerName www.kafuu.cc:443<br>
-DocumentRoot &quot;/var/www/html/main/root&quot;<br>
-SSLEngine on<br>
-SSLProtocol all -SSLv2 -SSLv3<br>
-SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
-SSLHonorCipherOrder on<br>
-SSLCertificateFile /var/www/ssl/public.pem<br>
-SSLCertificateKeyFile /var/www/ssl/private.key<br>
-SSLCertificateChainFile /var/www/ssl/chain.pem<br>
-&lt;/VirtualHost&gt;</p>
-<p>三.防火墙配置：</p>
-<p>firewall-cmd –query-service https ##查看http服务是否支持，返回yes或者no<br>
-firewall-cmd –add-service=https ##临时开放https服务<br>
-firewall-cmd –add-service=https –permanent ##永久开放https服务<br>
-然后重启防火墙即可</p>
+                    <p><a href="https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz">Download</a></p>
+<p>Or:</p>
+<p>weget https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz</p>
 
                 </div>
             </article>
@@ -157,8 +111,8 @@ firewall-cmd –add-service=https –permanent ##永久开放https服务<br>
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://i.kafuu.cc/post/t2U6P6fsi/" class="post-title gt-a-link">
-                    我的世界服务器与插件开发相关链接
+                <a href="https://i.kafuu.cc/post/KqvHFouCX/" class="post-title gt-a-link">
+                    C++ 奇异递归模板模式(Curiously recurring template pattern)
                 </a>
             </div>
         

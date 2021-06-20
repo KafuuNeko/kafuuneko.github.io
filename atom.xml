@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://i.kafuu.cc</id>
     <title>KafuuNeko</title>
-    <updated>2021-06-18T08:21:50.686Z</updated>
+    <updated>2021-06-20T08:49:28.661Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://i.kafuu.cc"/>
     <link rel="self" href="https://i.kafuu.cc/atom.xml"/>
@@ -20,6 +20,17 @@ document.write(&quot;欢迎来到我的博客～～&quot;)
     <logo>https://i.kafuu.cc/images/avatar.png</logo>
     <icon>https://i.kafuu.cc/favicon.ico</icon>
     <rights>All rights reserved 2021, KafuuNeko</rights>
+    <entry>
+        <title type="html"><![CDATA[适用于树莓派4b的Java16]]></title>
+        <id>https://i.kafuu.cc/post/INOc7XxL0/</id>
+        <link href="https://i.kafuu.cc/post/INOc7XxL0/">
+        </link>
+        <updated>2021-06-20T02:51:57.000Z</updated>
+        <content type="html"><![CDATA[<p><a href="https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz">Download</a></p>
+<p>Or:</p>
+<p>weget https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[C++ 奇异递归模板模式(Curiously recurring template pattern)]]></title>
         <id>https://i.kafuu.cc/post/KqvHFouCX/</id>
@@ -1753,18 +1764,6 @@ int main()
 <p>下载地址：<a href="https://files.kafuu.cc/index.php?p=2F5265736F75726365732F43697068657274657874">https://files.kafuu.cc/index.php?p=2F5265736F75726365732F43697068657274657874</a></p>
 <p>项目地址：<a href="https://github.com/KafuuNeko/Ciphertext">https://github.com/KafuuNeko/Ciphertext</a></p>
 <figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952698273.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[C++实现TEA加密算法]]></title>
-        <id>https://i.kafuu.cc/post/iHUmPxM0i/</id>
-        <link href="https://i.kafuu.cc/post/iHUmPxM0i/">
-        </link>
-        <updated>2020-08-27T12:15:54.000Z</updated>
-        <content type="html"><![CDATA[<p>TEA实现代码Header Only</p>
-<p>已实现功能：自由长度字节集加解密、数据流加解密、文件加解密、字符串加解密</p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952614895.png" alt="" loading="lazy"></figure>
-<p>项目地址：<a href="https://github.com/KafuuNeko/CPPTEA">https://github.com/KafuuNeko/CPPTEA</a></p>
 ]]></content>
     </entry>
 </feed>
