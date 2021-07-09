@@ -6,10 +6,10 @@
 
 <title>KMP算法 | KafuuNeko</title>
 
-<link rel="shortcut icon" href="https://i.kafuu.cc/favicon.ico?v=1624245984480">
+<link rel="shortcut icon" href="https://kafuu.cc/favicon.ico?v=1625803579497">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://i.kafuu.cc/styles/main.css">
+<link rel="stylesheet" href="https://kafuu.cc/styles/main.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
@@ -79,7 +79,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1624245984480" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1625803579497" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -98,11 +98,11 @@
                         · 2019-01-09 ·
                     </time>
                     
-                        <a href="https://i.kafuu.cc/tag/We2T_wpAt/" class="post-tags">
+                        <a href="https://kafuu.cc/tag/We2T_wpAt/" class="post-tags">
                             # C++
                         </a>
                     
-                        <a href="https://i.kafuu.cc/tag/MCT7FIul8/" class="post-tags">
+                        <a href="https://kafuu.cc/tag/MCT7FIul8/" class="post-tags">
                             # 算法
                         </a>
                     
@@ -114,7 +114,7 @@
 <p>一.NEXT数组应用</p>
 <p>NEXT数组是KMP算法的核心，它指向当文本与模式串失配时模式串将要回退到的位置。</p>
 <p>假定模式字符串为 aabaab，那么这个模式串的NEXT是(暂且不管怎么获得的){-1,0,1,0,1,2}</p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617950793113.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://kafuu.cc/post-images/1617950793113.png" alt="" loading="lazy"></figure>
 <p>当模式串在第0位发生失配，文本指针i向后移动一位</p>
 <p>当模式串在第1位发生失配，模式串指针回退到第0位</p>
 <p>当模式串在第2位发生失配，模式串指针回退到第1位</p>
@@ -122,28 +122,28 @@
 <p>当模式串在第4位发生失配，模式串指针回退到第1位</p>
 <p>当模式串在第5位发生失配，模式串指针回退到第2位</p>
 <p>例：寻找字符串‘aababaabaaba’中’aabaab’首次出现的起始位置，那么匹配过程是这样的：</p>
-<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1617950810518.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="3"><img src="https://i.kafuu.cc/post-images/1617950817901.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="4"><img src="https://i.kafuu.cc/post-images/1617950824751.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="5"><img src="https://i.kafuu.cc/post-images/1617950831748.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://kafuu.cc/post-images/1617950810518.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://kafuu.cc/post-images/1617950817901.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://kafuu.cc/post-images/1617950824751.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://kafuu.cc/post-images/1617950831748.png" alt="" loading="lazy"></figure>
 <p>当模式串在第4位发生失配，模式串指针回退到第1位</p>
-<figure data-type="image" tabindex="6"><img src="https://i.kafuu.cc/post-images/1617950850660.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="7"><img src="https://i.kafuu.cc/post-images/1617950856418.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://kafuu.cc/post-images/1617950850660.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="https://kafuu.cc/post-images/1617950856418.png" alt="" loading="lazy"></figure>
 <p>当模式串在第1位发生失配，模式串指针回退到第0位</p>
-<figure data-type="image" tabindex="8"><img src="https://i.kafuu.cc/post-images/1617950868835.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="9"><img src="https://i.kafuu.cc/post-images/1617950874761.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="https://kafuu.cc/post-images/1617950868835.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="https://kafuu.cc/post-images/1617950874761.png" alt="" loading="lazy"></figure>
 <p>当模式串在第0位发生失配，文本指针i向后移动一位</p>
-<figure data-type="image" tabindex="10"><img src="https://i.kafuu.cc/post-images/1617950911893.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="11"><img src="https://i.kafuu.cc/post-images/1617950914851.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="12"><img src="https://i.kafuu.cc/post-images/1617950917571.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="13"><img src="https://i.kafuu.cc/post-images/1617950920205.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="14"><img src="https://i.kafuu.cc/post-images/1617950922749.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="15"><img src="https://i.kafuu.cc/post-images/1617950925266.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="10"><img src="https://kafuu.cc/post-images/1617950911893.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="11"><img src="https://kafuu.cc/post-images/1617950914851.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://kafuu.cc/post-images/1617950917571.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="13"><img src="https://kafuu.cc/post-images/1617950920205.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="14"><img src="https://kafuu.cc/post-images/1617950922749.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="15"><img src="https://kafuu.cc/post-images/1617950925266.png" alt="" loading="lazy"></figure>
 <p>匹配完成，获取’aabaab’首次出现的起始位置为5</p>
-<figure data-type="image" tabindex="16"><img src="https://i.kafuu.cc/post-images/1617950945171.gif" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="16"><img src="https://kafuu.cc/post-images/1617950945171.gif" alt="" loading="lazy"></figure>
 <p>二.制取NEXT数组</p>
 <p>重新观察一下模式串’aabaab’的NEXT数组<br>
-<img src="https://i.kafuu.cc/post-images/1617950980020.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617950980020.png" alt="" loading="lazy"></p>
 <p>当j=5的位置发生失配时，next数组指示模式串指针j回退到2位置</p>
 <p>观察j=5位置，可以发现</p>
 <p>substr[j-1] = substr[next[j-1]]  =&gt; substr[4] = substr[next[4]] =&gt; substr[4] = substr[1]</p>
@@ -151,9 +151,9 @@
 <p>也就是说 j = 5的前两个元素与next[5]所指向的2的前两个元素相等</p>
 <p>正因为这样，在j=5位置发生失配时，j指针才能直接回退到2</p>
 <p>例如用这个模式串去搜索aabaacaabaab</p>
-<figure data-type="image" tabindex="17"><img src="https://i.kafuu.cc/post-images/1617950997110.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="17"><img src="https://kafuu.cc/post-images/1617950997110.png" alt="" loading="lazy"></figure>
 <p>在j=5的位置发生失配，j指针回退到2</p>
-<figure data-type="image" tabindex="18"><img src="https://i.kafuu.cc/post-images/1617951010547.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="18"><img src="https://kafuu.cc/post-images/1617951010547.png" alt="" loading="lazy"></figure>
 <p>回退后我们可以保证模式串j=0,j=1位置的字符必定与文本i=3,i=4位置的字符相等，所以只需判断移动后模式串j位置的字符与文本i位置的字符是否相等即可</p>
 <p>我们取得‘aabaab’的所有前缀，无视每个前缀的最后一个元素，每个前缀除去最后一个元素，后缀与前缀的重叠次数就是next的值，第一个next值固定为-1，第二个next值固定为0</p>
 <p>S                   NEXT</p>
@@ -165,7 +165,7 @@
 <p>aabaab          2（aabaa的前后缀有a、aa、aab、aaba、a、aa、baa、abaa）（相同的有两个）</p>
 <p>这样，我们就求得了NEXT数组={-1, 0, 1, 0, 1, 2}</p>
 <p>再次观察</p>
-<figure data-type="image" tabindex="19"><img src="https://i.kafuu.cc/post-images/1617951025435.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="19"><img src="https://kafuu.cc/post-images/1617951025435.png" alt="" loading="lazy"></figure>
 <p>可知，如果我们想知道next[j+1]的值，只需判断T[j]是否等于T[ next[j] ]</p>
 <p>1.我们可以定义一个临时变量：k = next[j]</p>
 <p>2.如果k = -1，那么next[j + 1] = 0，否则继续步骤3</p>
@@ -173,12 +173,12 @@
 <p>4.如果T[j] != T[k]，那么k=next[k]，重复判断步骤2</p>
 <p>例：J表示模式串索引，T表示模式串数组，N表示模式串NEXT数组</p>
 <p>一、j = 2, N[j]=？</p>
-<figure data-type="image" tabindex="20"><img src="https://i.kafuu.cc/post-images/1617951038829.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="20"><img src="https://kafuu.cc/post-images/1617951038829.png" alt="" loading="lazy"></figure>
 <p>假定 k = N[j – 1] = N[1] = 0</p>
 <p>判断 T[j – 1]  是否等于 T[k]：T[j-1] = T[1] 是否等于 T[k] = T[0]</p>
 <p>T[1] = T[0]  =&gt; ‘a’ 等于 ‘a’</p>
 <p>因为T[1] = T[0]，所以N[j] = k + 1 =&gt; N[2] = 1</p>
-<figure data-type="image" tabindex="21"><img src="https://i.kafuu.cc/post-images/1617951050468.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="21"><img src="https://kafuu.cc/post-images/1617951050468.png" alt="" loading="lazy"></figure>
 <p>二、j = 3, N[j]=？</p>
 <p>假定 k = N[j – 1] = N[2] = 1</p>
 <p>判断 T[j – 1]  是否等于 T[k]：T[j-1] = T[2] 是否等于 T[k] = T[1]</p>
@@ -187,7 +187,7 @@
 <p>再次判断 T[j – 1]  是否等于 T[k]，T[2] = T[0] =&gt; ‘b’ 不等于 ‘a’</p>
 <p>所以k = N[k] = N[0] = -1</p>
 <p>因为k = -1，所以N[3] = 0</p>
-<figure data-type="image" tabindex="22"><img src="https://i.kafuu.cc/post-images/1617951065316.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="22"><img src="https://kafuu.cc/post-images/1617951065316.png" alt="" loading="lazy"></figure>
 <p>制取Next数组代码：</p>
 <pre><code>size_t npos = static_cast&lt;size_t&gt;(-1);
 
@@ -276,7 +276,7 @@ sizr_t* KMP_MakeNext(const char* substr, size_t len)
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://i.kafuu.cc/post/JHP7BjZhA/" class="post-title gt-a-link">
+                <a href="https://kafuu.cc/post/JHP7BjZhA/" class="post-title gt-a-link">
                     PCQQ8.6协议分析
                 </a>
             </div>
@@ -329,7 +329,7 @@ document.write("欢迎来到我的博客～～")
     </div>
     <div>
         Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
-                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://i.kafuu.cc/atom.xml" target="_blank">RSS</a></a>
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuu.cc/atom.xml" target="_blank">RSS</a></a>
     </div>
 </div>
 

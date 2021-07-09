@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://i.kafuu.cc</id>
+    <id>https://kafuu.cc</id>
     <title>KafuuNeko</title>
-    <updated>2021-06-21T03:26:27.023Z</updated>
+    <updated>2021-07-09T04:06:22.901Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://i.kafuu.cc"/>
-    <link rel="self" href="https://i.kafuu.cc/atom.xml"/>
+    <link rel="alternate" href="https://kafuu.cc"/>
+    <link rel="self" href="https://kafuu.cc/atom.xml"/>
     <subtitle>&lt;body&gt;&lt;script language=&quot;javaScript&quot;&gt;
 now = new Date(),hour = now.getHours()
 if(hour &lt; 6){document.write(&quot;凌晨好！&quot;)}
@@ -17,13 +17,13 @@ else if (hour &lt; 19){document.write(&quot;傍晚好！&quot;)}
 else {document.write(&quot;晚上好！&quot;)}
 document.write(&quot;欢迎来到我的博客～～&quot;)
 &lt;/script&gt;&lt;/body&gt;</subtitle>
-    <logo>https://i.kafuu.cc/images/avatar.png</logo>
-    <icon>https://i.kafuu.cc/favicon.ico</icon>
+    <logo>https://kafuu.cc/images/avatar.png</logo>
+    <icon>https://kafuu.cc/favicon.ico</icon>
     <rights>All rights reserved 2021, KafuuNeko</rights>
     <entry>
         <title type="html"><![CDATA[适用于树莓派4b的Java16]]></title>
-        <id>https://i.kafuu.cc/post/INOc7XxL0/</id>
-        <link href="https://i.kafuu.cc/post/INOc7XxL0/">
+        <id>https://kafuu.cc/post/INOc7XxL0/</id>
+        <link href="https://kafuu.cc/post/INOc7XxL0/">
         </link>
         <updated>2021-06-20T02:51:57.000Z</updated>
         <content type="html"><![CDATA[<p><a href="https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz">Download</a></p>
@@ -33,8 +33,8 @@ document.write(&quot;欢迎来到我的博客～～&quot;)
     </entry>
     <entry>
         <title type="html"><![CDATA[C++ 奇异递归模板模式(Curiously recurring template pattern)]]></title>
-        <id>https://i.kafuu.cc/post/KqvHFouCX/</id>
-        <link href="https://i.kafuu.cc/post/KqvHFouCX/">
+        <id>https://kafuu.cc/post/KqvHFouCX/</id>
+        <link href="https://kafuu.cc/post/KqvHFouCX/">
         </link>
         <updated>2021-04-13T06:54:51.000Z</updated>
         <content type="html"><![CDATA[<ul>
@@ -356,19 +356,19 @@ ButtonDialog().set_title(&quot;Hi&quot;).set_button_type(ButtonType.cancel).show
     </entry>
     <entry>
         <title type="html"><![CDATA[NUCLEAR CONTAMINATION]]></title>
-        <id>https://i.kafuu.cc/post/VeHTbkCnB/</id>
-        <link href="https://i.kafuu.cc/post/VeHTbkCnB/">
+        <id>https://kafuu.cc/post/VeHTbkCnB/</id>
+        <link href="https://kafuu.cc/post/VeHTbkCnB/">
         </link>
         <updated>2021-04-13T05:49:26.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://i.kafuu.cc/post-images/1618465772705.jpg" alt="" loading="lazy"><br>
-<img src="https://i.kafuu.cc/post-images/1618465775895.webp" alt="" loading="lazy"></p>
+        <content type="html"><![CDATA[<p><img src="https://kafuu.cc/post-images/1618465772705.jpg" alt="" loading="lazy"><br>
+<img src="https://kafuu.cc/post-images/1618465775895.webp" alt="" loading="lazy"></p>
 <p>Japanese government decided to dump over 1.23 million tons of Fukushima radioactive waste water stored into the Pacific Ocean</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Effective 转向现代C++]]></title>
-        <id>https://i.kafuu.cc/post/AuPMgwCJW/</id>
-        <link href="https://i.kafuu.cc/post/AuPMgwCJW/">
+        <id>https://kafuu.cc/post/AuPMgwCJW/</id>
+        <link href="https://kafuu.cc/post/AuPMgwCJW/">
         </link>
         <updated>2021-04-12T03:58:21.000Z</updated>
         <content type="html"><![CDATA[<ul>
@@ -1099,18 +1099,18 @@ private:
     </entry>
     <entry>
         <title type="html"><![CDATA[DJI SPARK 朝阳]]></title>
-        <id>https://i.kafuu.cc/post/phsGV5Yf4/</id>
-        <link href="https://i.kafuu.cc/post/phsGV5Yf4/">
+        <id>https://kafuu.cc/post/phsGV5Yf4/</id>
+        <link href="https://kafuu.cc/post/phsGV5Yf4/">
         </link>
         <updated>2021-04-11T13:42:22.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://i.kafuu.cc/post-images/1618376684303.jpg" alt="" loading="lazy"><br>
+        <content type="html"><![CDATA[<p><img src="https://kafuu.cc/post-images/1618376684303.jpg" alt="" loading="lazy"><br>
 <a href="https://1drv.ms/u/s!Akr0VI7cRjUunVo7YsmontEKQmgB?e=bRctmm">原图下载</a></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Effective Auto]]></title>
-        <id>https://i.kafuu.cc/post/E3vQz_jt1/</id>
-        <link href="https://i.kafuu.cc/post/E3vQz_jt1/">
+        <id>https://kafuu.cc/post/E3vQz_jt1/</id>
+        <link href="https://kafuu.cc/post/E3vQz_jt1/">
         </link>
         <updated>2021-04-10T16:42:58.000Z</updated>
         <content type="html"><![CDATA[<ul>
@@ -1165,8 +1165,8 @@ auto k = foo()[0]; //k的型别被推断为std::vector&lt;bool&gt;::reference而
     </entry>
     <entry>
         <title type="html"><![CDATA[Effective  型别推导]]></title>
-        <id>https://i.kafuu.cc/post/LJvcapNxG/</id>
-        <link href="https://i.kafuu.cc/post/LJvcapNxG/">
+        <id>https://kafuu.cc/post/LJvcapNxG/</id>
+        <link href="https://kafuu.cc/post/LJvcapNxG/">
         </link>
         <updated>2021-04-10T16:26:35.000Z</updated>
         <content type="html"><![CDATA[<ul>
@@ -1239,8 +1239,8 @@ f(i);  //推导结果⇒ void f(int &amp;param)
     </entry>
     <entry>
         <title type="html"><![CDATA[串口调试工具(DCOM)]]></title>
-        <id>https://i.kafuu.cc/post/uP-j_qepQ/</id>
-        <link href="https://i.kafuu.cc/post/uP-j_qepQ/">
+        <id>https://kafuu.cc/post/uP-j_qepQ/</id>
+        <link href="https://kafuu.cc/post/uP-j_qepQ/">
         </link>
         <updated>2021-02-02T11:24:04.000Z</updated>
         <content type="html"><![CDATA[<p>基于WPF开发的串口调试工具</p>
@@ -1249,35 +1249,35 @@ f(i);  //推导结果⇒ void f(int &amp;param)
 <p>支持将接收的数据保存到文件</p>
 <p>仓库：<a href="https://github.com/KafuuNeko/DCOM">Github</a></p>
 <p>下载：<a href="https://files.kafuu.cc/__files//Resources/DCOM/DCOM.zip">DCOM</a></p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617953491178.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="2"><img src="https://i.kafuu.cc/post-images/1617953494120.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="3"><img src="https://i.kafuu.cc/post-images/1617953497150.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="4"><img src="https://i.kafuu.cc/post-images/1617953499661.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="5"><img src="https://i.kafuu.cc/post-images/1617953503855.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://kafuu.cc/post-images/1617953491178.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://kafuu.cc/post-images/1617953494120.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://kafuu.cc/post-images/1617953497150.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://kafuu.cc/post-images/1617953499661.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://kafuu.cc/post-images/1617953503855.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[左倾红黑树实现及注释]]></title>
-        <id>https://i.kafuu.cc/post/cho8KcfUV/</id>
-        <link href="https://i.kafuu.cc/post/cho8KcfUV/">
+        <id>https://kafuu.cc/post/cho8KcfUV/</id>
+        <link href="https://kafuu.cc/post/cho8KcfUV/">
         </link>
         <updated>2020-10-27T07:19:04.000Z</updated>
         <content type="html"><![CDATA[<p>左倾红黑树插入结果可视化：</p>
 <p>插入顺序:6 7 1 5 3 4 2</p>
 <p>put:6</p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617953251791.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://kafuu.cc/post-images/1617953251791.png" alt="" loading="lazy"></figure>
 <p>put:7<br>
-<img src="https://i.kafuu.cc/post-images/1617953261564.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617953261564.png" alt="" loading="lazy"></p>
 <p>put:1<br>
-<img src="https://i.kafuu.cc/post-images/1617953275085.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617953275085.png" alt="" loading="lazy"></p>
 <p>put:5<br>
-<img src="https://i.kafuu.cc/post-images/1617953290276.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617953290276.png" alt="" loading="lazy"></p>
 <p>put:3<br>
-<img src="https://i.kafuu.cc/post-images/1617953300399.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617953300399.png" alt="" loading="lazy"></p>
 <p>put:4<br>
-<img src="https://i.kafuu.cc/post-images/1617953311030.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617953311030.png" alt="" loading="lazy"></p>
 <p>put:2<br>
-<img src="https://i.kafuu.cc/post-images/1617953322311.png" alt="" loading="lazy"></p>
+<img src="https://kafuu.cc/post-images/1617953322311.png" alt="" loading="lazy"></p>
 <pre><code>#include &lt;iostream&gt;
 #include &lt;cstdlib&gt;
 #include &lt;ctime&gt;
@@ -1756,14 +1756,14 @@ int main()
     </entry>
     <entry>
         <title type="html"><![CDATA[Ciphertext]]></title>
-        <id>https://i.kafuu.cc/post/kERjJhAnP/</id>
-        <link href="https://i.kafuu.cc/post/kERjJhAnP/">
+        <id>https://kafuu.cc/post/kERjJhAnP/</id>
+        <link href="https://kafuu.cc/post/kERjJhAnP/">
         </link>
         <updated>2020-09-26T02:21:58.000Z</updated>
         <content type="html"><![CDATA[<p>基于QT平台以及32轮TEA加密算法的跨平台开源文本加密程序</p>
 <p>下载地址：<a href="https://files.kafuu.cc/index.php?p=2F5265736F75726365732F43697068657274657874">https://files.kafuu.cc/index.php?p=2F5265736F75726365732F43697068657274657874</a></p>
 <p>项目地址：<a href="https://github.com/KafuuNeko/Ciphertext">https://github.com/KafuuNeko/Ciphertext</a></p>
-<figure data-type="image" tabindex="1"><img src="https://i.kafuu.cc/post-images/1617952698273.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://kafuu.cc/post-images/1617952698273.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
