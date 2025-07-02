@@ -1,0 +1,912 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Effective 转向现代C++ | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Effective 转向现代C++
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-04-12 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/We2T_wpAt/" class="post-tags">
+                            # C++
+                        </a>
+                    
+                        <a href="https://kafuuneko.me/tag/LK8GbjLK_/" class="post-tags">
+                            # 笔记整理
+                        </a>
+                    
+                        <a href="https://kafuuneko.me/tag/AJWNIgzwq/" class="post-tags">
+                            # 分享
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <ul>
+<li>
+<p>条款7：在创建对象时注意区分()和{}</p>
+<ul>
+<li>
+<p>大括号初始化对解析语法(vexing parse)免疫。C++规定：任何能够解析为声明的都要解析为声明，而这会带来副作用，程序员本来想要以默认方式构造一个对象，但却一不小心声明了一个函数，例如：</p>
+<pre><code class="language-cpp">Widget w1(10); //调用Widget的构造函数，传入形参10
+Widget w2();   //!!声明了一个返回值型别为Widget的函数，这显然不是我们想要的
+Widget w3{};   //调用没有形参的Widget构造函数
+</code></pre>
+</li>
+<li>
+<p>大括号禁止内建型别之间进行隐式窄化型别的转换(narrowing conversion)。如果大括号内的表达式无法保证能够采用进行初始化的对象来表达。则代码不能通过编译</p>
+<pre><code class="language-cpp">double x, y, z;
+int sum1 {x + y + z};//错误！double之和可能无法用int表达
+int sum2 (x + y + z);//没问题(表达式的值被截断为int)
+int sum3 = x + y + z;//同上
+</code></pre>
+</li>
+<li>
+<p>在构造函数重载决议期间，只要有任何可能，大括号初始化物就会与带有std::initializer_list型别的形参相匹配，即使其他重载版本有着貌似更加匹配的形参表</p>
+</li>
+<li>
+<p>使用小括号还是大括号，会造成的结果大相径庭的一个例子是：使用两个实参来创建一个std::vector&lt;数值型别&gt;对象</p>
+</li>
+<li>
+<p>在模板内容进行对象创建时，到底应使用小括号还是大括号会成为一个棘手的问题，例如：</p>
+<pre><code class="language-cpp">//以任意数量的实参来创建一个任意型别的对象
+template&lt;class T, class Ts&gt;
+void doSomeWork(Ts&amp;&amp; ...params)
+{
+	T localObject(std::forward&lt;Ts&gt;(params)...);//使用小括号
+	T localObject{std::forward&lt;Ts&gt;(params)...};//使用大括号
+}
+
+doSomeWork&lt;std::vector&lt;int&gt;&gt;(10, 20);
+//如果doSomeWork在创建localObject时使用了小括号，结果会得到一个包含10个元素的std::vector
+//如果doSomeWork在创建localObject时使用了大括号，结果会得到一个包含10和20两个元素的std::vector
+//哪个才是对的呢？doSomeWork不可能下这个判断，只有调用者有决定权
+//这正是标准库函数std::make_shared和std::make_unique所面临的问题
+//而这些函数解决问题的办法时在内部使用了小括号，并把这个决定以文档的形式广而告之
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款8：优先选用nullptr，而非0或NULL</p>
+<ul>
+<li>
+<p>相对于0或NULL，优先选用nullptr，可以避免整数和指针型别之间重载</p>
+<pre><code class="language-cpp">void f1(Widget* pw) { ... }
+
+template&lt;class T&gt;
+void f2(T pw) { f1(pw); }
+
+f2(0); // T被推导为int型，编译器禁止int型隐式转换为指针型，所以无法通过编译
+f2(nullptr); // T被推导为nullptr_t，通过编译
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款9：优先选用别名声明，而非typedef</p>
+<ul>
+<li>
+<p>别名名称在处理涉及函数指针型别时，比较容易理解</p>
+<pre><code class="language-cpp">typedef void (*FP)(int, const std::string&amp;);
+//等价于
+using FP = void (*)(int, const std::string&amp;);
+</code></pre>
+</li>
+<li>
+<p>别名名称可以模板化，typedef不行</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+using MyAllocList = std::list&lt;T, MyAlloc&lt;T&gt;&gt;;
+MyAllocList&lt;Widget&gt; lw;
+
+//如果非要使用typedef的话，就需要从头自己动手了
+template&lt;class T&gt;
+struct MyAllocList {
+	typedef std::list&lt;T, MyAlloc&lt;T&gt;&gt; type;
+};
+MyAllocList&lt;Widget&gt;::type lw;
+</code></pre>
+</li>
+<li>
+<p>别名模板可以令人免写“::type”后缀，并且在模板内，对于内嵌typedef的引用要求加上typename后缀</p>
+<pre><code class="language-cpp">//如果要在模板内使用typedef来创建一个链表，它容纳的对象型由别的模板形参指定的话，那就需要给typedef的名字加一个typename前缀
+template&lt;class T&gt;
+class Widget {
+	//带依赖型别必须前面加一个typename
+	//因为此时编译器并不确定MyAllocList&lt;T&gt;::type命名了一个型别，可能是别的东西，例如是一个数据成员
+	typename MyAllocList&lt;T&gt;::type list;
+};
+
+//如果MyAllocList是由别名模板定义的，那么就不需要写typename声明了
+template&lt;class T&gt;
+class Widget {
+	//此处MyAllocList&lt;T&gt;是型别模板，他必然命名了一个型别。
+	//综上，MyAllocList&lt;T&gt;是个非依赖性类别，所以typename既不需要也不允许
+	MyAllocList&lt;T&gt; list;
+};
+</code></pre>
+</li>
+<li>
+<p>C++11以型别特征的形式给了程序员以执行此类变换的工具。类别特征是在头文件&lt;type_traits&gt;给出的一整套模板。其中一些用于执行变换功能用途</p>
+<pre><code class="language-cpp">std::remove_const&lt;T&gt;::type
+std::remove_reference&lt;T&gt;::type
+std::add_lvalue_reference&lt;T&gt;::type
+
+//在C++14中，他们有对应的别名模板
+std::remove_const_t&lt;T&gt;
+std::remove_reference&lt;T&gt;
+std::add_lvalue_reference&lt;T&gt;
+
+//如果想要在C++11中使用其对应的别名模板，则自己声明即可
+template&lt;T&gt;
+using remove_const_t = typename std::remove_const&lt;T&gt;::type;
+template&lt;T&gt;
+using remove_reference_t= typename std::remove_reference&lt;T&gt;::type;
+template&lt;T&gt;
+using add_lvalue_reference_t= typename std::add_lvalue_reference&lt;T&gt;::type;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款10：优先选用限定作用的域的枚举型别，而非不限作用域的枚举型别</p>
+<ul>
+<li>
+<p>如果在一对大括号里声明一个名字，则该名字的可见性就被限定在括号括起来的作用域内。但这个规则不适用于C++98风格的枚举型别定义的枚举量。这些枚举量的名字属于包含着这个枚举型别的作用域，这就意味着此作用域内不能有其他实体取相同的名字</p>
+<pre><code class="language-cpp">enum Color { black, white, red };
+auto white = false; //错误！white已在范围内被声明了
+</code></pre>
+</li>
+<li>
+<p>这些枚举量的名字泄露到枚举型别所在的作用域的这一事实，催生了此类枚举型别的官方术语：不限定的(un scoped)枚举型别。它们在C++中的对等物，限定作用域的(scoped)枚举型别，却不会以这样的方式泄露名字</p>
+<pre><code class="language-cpp">enum class Color { black, white, red };
+auto white = false; // 没问题，范围内并无其他“white”
+Color c = white; // 错误！范围内无名为“white”的枚举量
+Color c = Color::white; // 没问题
+auto  c = Color::white; // 同样没问题，并且符合条款5的建议
+</code></pre>
+</li>
+<li>
+<p>由于限定作用域的枚举类型是通过“enum class”声明的，所以它们也被称为枚举类</p>
+<ul>
+<li>限定作用域的枚举型别，现在称之为不限范围的枚举型别</li>
+<li>限定作用域的枚举型别仅在枚举型别内可见。它们只能通过强制类型转换以转换至其他型别</li>
+<li>限定作用域的枚举型别和不限范围的枚举型别都支持底层型别指定。限定作用域的枚举型别的默认底层型别是int，而不限范围的枚举型别没有默认底层型别</li>
+<li>限定作用域的枚举型别总是可以进行前置声明，而不限范围的枚举型别却只有在指定了默认底层型别的前前提下才可以进行前置声明</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>条款11：优先选用删除函数，而非private未定义函数</p>
+<ul>
+<li>
+<p>删除函数无法通过任何方法使用，所以即便是成员和友元函数中的代码也无法使用一个被删除了的函数</p>
+</li>
+<li>
+<p>习惯上，删除函数会被声明为public，而非private。因为把新函数声明为public会得到较好的错误信息</p>
+</li>
+<li>
+<p>任何函数都能成为删除函数，但只有成员函数能声明成private</p>
+<pre><code class="language-cpp">//假定有一个非成员函数
+bool isLucky(int n);
+
+//C++的C渊源决定了可以凑合看作数值的型别都可以隐式转换为int，但有些调用尽管可以编译但语义上却了无意义
+if(isLucky('a')) ... //‘a’是幸运数吗？
+if(isLucky(true)) ... //&quot;true&quot;又如何？
+if(isLucky(3.5)) ... //是不是应该先截断为3再检查是否为幸运数？
+
+//在删除函数后
+bool isLucky(char) = delete;
+bool isLucky(bool) = delete;
+bool isLucky(double) = delete;
+
+if(isLucky('a')) ... //错误！
+if(isLucky(true)) ... //错误！
+if(isLucky(3.5)) ... //错误！
+if(isLucky(2)) ... //正确
+
+//综上：尽管删除函数不可被使用，但它们还是程序的一部分。
+//因此，它们在重载决议时还是会纳入考量
+</code></pre>
+</li>
+<li>
+<p>删除函数可以阻止那些不应该进行的模板具现，而private不行</p>
+<pre><code class="language-cpp">//假设需要一个和内建指针协作的模板
+template&lt;class T&gt;
+void processPointer(T* ptr);
+
+//指针中有两个异类，一个是void*指针，因为无法对起执行提领、自增、自减等操作。
+//还有一个是char*指针，因为它们基本上表示的是C风格的字符串，而不是指涉单个字符串的指针。
+//我们假定这样的特殊处理手法是在采用这两个型别时拒绝调用。
+//只需要删除这些具现
+template&lt;&gt;
+void processPointer&lt;void&gt;(void*) = delete;
+
+template&lt;&gt;
+void processPointer&lt;char&gt;(char*) = delete;
+
+//那么如果使用void*和char*调用是非法的，那么很有可能使用const void*和const char*也是非法的
+//所以基本上这些具实也该删除
+template&lt;&gt;
+void processPointer&lt;const void&gt;(const void*) = delete;
+
+template&lt;&gt;
+void processPointer&lt;const char&gt;(const char*) = delete;
+
+//如果要来个斩草除根，你还需要删除const volatile void *和const volatile char*
+//这些重载版本，还有那些指涉到其他标准库字符型别的指针的重载版本
+//这些字符型包括：std::wchar_t、std::char16_t和std::char32_t
+</code></pre>
+</li>
+<li>
+<p>如果是类内部的函数模板，并且你想通过private声明禁用某些具现是做不到的</p>
+<pre><code class="language-cpp">//如果是类内部的函数模板，并且你想通过private声明来禁用某些实现，这是做不到的
+//因为你不可能给予成员函数模板的特化以不同于主模板的访问层级
+
+class Widget {
+public:
+	template&lt;class T&gt;
+	void processPointer(T* ptr)
+	{ ... }
+
+private:
+	template&lt;&gt;
+	void processPointer&lt;void&gt;(void*); //错误！！
+
+};
+
+//问题在于，模板特化是必须在名字空间作用域而非基类作用域内撰写的
+//这个毛病在删除函数身上就不会表现出来，因为一来它们根本不需要不同的访问层级
+//二来也因为成员函数模板可以在类外被删除
+
+class Widget {
+public:
+	template&lt;class T&gt;
+	void processPointer(T* ptr)
+	{ ... }
+};
+
+template&lt;&gt; //仍然具备public访问层级，但被删除了
+void Widget::processPointer&lt;void&gt;(void*) = delete;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款12：为意在改写的函数添加override声明</p>
+<ul>
+<li>由于改写(override)和重载(overload)读起来很像，尽管是两个毫不相干的概念，我们还是要澄清，正是虚函数改写，使得基类接口派生类函数成为了可能</li>
+</ul>
+<pre><code class="language-cpp">class Base {
+public:
+	virtual void doWork(); //基类中的虚函数
+};
+
+class Derived: public Base {
+public:
+	virtual void doWork(); //改写了Base::doWirj
+};
+</code></pre>
+<ul>
+<li>而如果要这个改写动作真的发生，有一系列要求必须满足
+<ul>
+<li>基类中的函数必须是虚函数</li>
+<li>基类和派生类中的函数名字必须完全相同(析构函数例外)</li>
+<li>基类和派生类的函数形参类别必须完全相同</li>
+<li>基类和派生类中的函数属性常量(constness)必须完全相同</li>
+<li>基类和派生类中的函数返回值和异常规格必须完全相同</li>
+<li>基类和派生类中的函数引用饰词(reference qualifier)必须完全相同（C++11）</li>
+</ul>
+</li>
+<li>成员函数引用饰词使得对于左值和右值对象(*this)的处理能够区分开来</li>
+</ul>
+</li>
+<li>
+<p>条款13：优先选用const_iterator，而非iterator</p>
+<ul>
+<li>
+<p>const_iterator指涉到不可被修改的值。只要有可能就应该使用const的标准实践声明，任何时候只要你需要应该迭代器而其指涉到的内容没有修改必要，你就应该使用const_iterator</p>
+</li>
+<li>
+<p>这一点对于C++98和C++11都成立，但在C++98中，const_iterator得到的支持不够全面。建立它们不容易，而建立好了以后使用它们的方式也受限。例如：</p>
+<pre><code class="language-cpp">std::vector&lt;int&gt; values;
+...
+//这里使用iterator并非正确选择，因为代码中并无任何地方修改了iterator指涉的内容
+std::vector&lt;int&gt;::iterator it = std::find(values.begin(), values.end(), 1993);
+values.insert(it, 1998);
+
+//可是在C++98中，要将这段代码修改为const_iterator要废很大功夫
+//下面是一种概念上貌似站得住脚的途径，但其实并不正确：
+typedef std::vector&lt;int&gt;::iterator IterT;
+typedef std::vector&lt;int&gt;::const_iterator ConstIterT;
+
+std::vector&lt;int&gt; values;
+...
+ConstIterT ci = std::find(static_cast&lt;ConstIterT&gt;(values.begin()), 
+													static_cast&lt;ConstIterT&gt;(values.end()), 
+													1983);
+values.insert(static_cast&lt;IterT&gt;(ci), 1998); //可能无法通过编译，理由见下
+
+//因为values是C++98中的非const容器
+//而并没有什么简单的方法能从一个非const容器得到其对应的const容器
+//所以在std::find调用语句中使用了强制类型转换，将非const迭代器转换为const迭代器
+//还有一些别的方法取得对应的const容器，例如可以绑定到一个引用到const的变量，再在find中使用这个变量
+
+//而在C++98中，插入和删除的位置只能以iterator指定，而不接受const_iterator
+//而从const_iterator到iterator并不存在可移植的型别转换(就算C++11也是如此)
+</code></pre>
+</li>
+<li>
+<p>C++11中，使用const_iterator变的非常容易。容器的成员函数cbegin和cend都返回了const_iterator型别，并且STL成员函数若要取用指示位置的迭代器，它们也要求使用const_iterator型别。</p>
+<pre><code class="language-cpp">std::vector&lt;int&gt; values;
+...
+auto it = std::find(values.cbegin(), values.cend(), 1993);
+values.insert(it, 1998);
+</code></pre>
+</li>
+<li>
+<p>只有在想撰写最通用化的库代码的时候，C++11对于const_iterator的支持显得不够充分。这些代码会考虑到某些容器、或类似容器的数据结构会以非成员函数的方式提供begin和end(还有cbegin、cend和rbegin等)，而不是以成员函数的方式。举例来说，刚才我们写的这段代码可以写成下面findAndInsert模板的通用形式</p>
+<pre><code class="language-cpp">template&lt;typename C, typename V&gt;
+void findAndInsert(C&amp; container, const V&amp; targetVal, const V&amp; insertVal)
+{
+	using std::cbegin;
+	using std::cend;
+
+	auto it = std::find(cbegin(container), cend(container), targeValue);
+	container.insert(it, insertVal);
+}
+
+//以上代码在C++14中可以运行，但在C++11中不行。因为C++11中没有cbegin、cend、rbegin、rend、crbegin和crend
+//但你可以在C++11中很容易实现这些缺失的模板
+template&lt;class C&gt;
+auto cbegin(const C&amp; container)-&gt;decltype(std::begin(container))
+{
+	return std::begin(container);
+}
+
+//这个cbegin模板接受了一个形参C，实参型别可以是任何表示类似容器的数据结构
+//并通过其引用到const型别的形参container来访问该实参。如果C对应一个传统容器型别(例如：vector&lt;int&gt;)
+//则container就是该容器型别的引用到const的版本(例如：const vector&lt;int&gt;&amp;)
+//调用（C++11提供的）非成员函数版本的begin函数并传入一个const容器会产生一个const_iterator
+//而模板返回的正是这个迭代器
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款14：只要函数不会发射异常，就为其加上noexcept声明</p>
+<ul>
+<li>
+<p>在C++11形成过程中，逐渐达成了一个共识，那就是关于函数发射异常这件事，真正只要的信息是它到底会不会发射，非黑即白。当你明明知道一个函数不会发射异常却未给它加上noexcept声明的话，这就算接口规格缺陷！</p>
+</li>
+<li>
+<p>相对于不带noexcept声明的函数，带有noexcept声明的函数有更多机会得到优化</p>
+<pre><code class="language-cpp">//考察一下C++98和C++11在表达函数不会发射异常时的差异。
+//考虑一个函数f，欲向调用方暴躁它们不会接收到异常
+
+int f(int x) throw(); //f不会发射异常：C++98风格
+int f(int x) noexcept; //f不会发射异常：C++11风格
+
+//如果，在运行期间，一个异常逸出f的作用域，则f的异常规则被违反
+//在C++98异常规格下，调用栈会开解至f的调用方，然后执行一些与本条款无关的动作后，程序执行中止
+//而在C++11异常规格下，运行期行为会稍有不同：程序中止前，栈只是可能会开解 
+</code></pre>
+<ul>
+<li>在带有noexcept声明的函数中，优化器不需要在异常传出函数的前提下，将执行期栈保持在可开解状态；也不需要在异常溢出函数的前提下，保证所有其中的对象以其被构造的顺序逆序完成析构。而那些以“throw()”异常规格声明的函数就享受不到这样的优化灵活性</li>
+</ul>
+</li>
+<li>
+<p>noexcept性质对于移动操作、swap、函数释放函数和析构函数最有价值</p>
+<ol>
+<li>关于移动操作
+<ul>
+<li>当向std::vector型别对象添加新的元素时，可能会空间不够(即std::vector型别对象的尺寸(size)和其容量(capacity)相等)。当这件事发生时，std::vector型别对象会分配一个新的、更大的内存块(chunk)来存储元素，然后将现存的内存块复制到新内存</li>
+<li>在C++98中，这种转移的做法是先把元素逐个从旧内存复制到新内存，然后将旧内存中的对象析构。这个做法使得push_back能够提供异常安全保证：如果在复制元素的过程中抛出了异常，则std::vector型别对象会保持原样不变，因为在旧内存中的元素直至所有的元素被成功复制入新内存后才会被析构</li>
+<li>而在C++11中，针对std::vector型别对象元素的复制操作替换为了移动操作，这样违法了push_back的强异常安全保证：假如移动到第n+1个元素时抛出了异常，n个元素以及从其中移出。恢复到原始状态可能不行，因为把对象逐个移回原始内存这个动作本身可能存在异常</li>
+<li>因为遗留的代码可能依赖于push_back的强异常安全保证，这么一来C++11的实现就半年一声不吭地把push_back内部的复制操作全部采用移动替代，除非它知道移动操作不会发射异常。所以std::vector::push_back以及C++98中其他因为强异常安全保证的函数(std::vector::reserve、std::deque::insert等)利用了“能移动则移动，必须复制才复制”的策略</li>
+</ul>
+</li>
+<li>关于swap
+<ul>
+<li>
+<p>标准库中的swap是否带有noexcept声明取决于用户定义的swap是否带有noexcept声明。例如，标准库为数组和std::pair准备的swap函数如下：</p>
+<pre><code class="language-cpp">template&lt;class T, size_t N&gt;
+void swap(T (&amp;a)[N], T (&amp;b)[N]) noexcept(noexcept(swap(*a, *b)));
+
+template&lt;class T1, class T2&gt;
+struct pair {
+	void swap(pair&amp; p) noexcept(noexcept(swap(first, p.first)) &amp;&amp; noexcept(swap(second, p.second)));
+};
+//它们到底是不是具有noexcept性质取决于它们的noexcept分句中的表达式结果是否为noexcept
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>noexcept声明是函数接口的组成部分</p>
+<ul>
+<li>只有在保证函数实现长期居于noexcept性质的前提下，才给予noexcept</li>
+</ul>
+</li>
+<li>
+<p>大多数函数都是异常中立的，不具备noexcept性质</p>
+<ul>
+<li>异常中立的函数永远不具备noexcept性质</li>
+<li>有些函数(尤其是移动操作和swap)具有noexcept性质的收益是如此之高，以至于只要有任何可能就应该将它们的实现加上noexcept</li>
+<li>但不可扭曲函数的实现，使之符合noexcept的性质</li>
+<li>在1标准容器库中，只要发现容器移动操作可能写成不抛出异常的，实现者就往往会把这些操作加上noexcept声明，即使标准并不要求他们这样做</li>
+</ul>
+</li>
+<li>
+<p>对于某些函数来说，具备noexcept性质非常重要，所以他们默认就算这样的</p>
+<ul>
+<li>在C++11中，内存释放函数和所有析构函数(无论用户定义的还是编译器自动生成的)都隐式的具备noexcept性质。</li>
+<li>析构函数<strong>唯一</strong>未具备noexcept的场合就算所在类中有数据成员(包括继承以及在其他数据成员中包含的数据成员)的型别显式地将其析构函数声明未可能发射异常的(即未其加上了&quot;noexcept(false)&quot;声明)。这种析构函数标准库里一个也没有</li>
+</ul>
+</li>
+<li>
+<p>有些库的接口设计者会把函数区分为带有宽松契约(wide contract)和带有狭隘契约(narrow contract)的不同种类</p>
+<ul>
+<li>
+<p>带有宽松契约的函数，是没有前置条件的。要调用这样的函数，无须关心程序状态，对于传入的实参也没有限制。如果你在撰写的是个带有宽松契约的函数，并且你知道它不会发射异常，那么建议给它加个noexcept声明</p>
+</li>
+<li>
+<p>但对于带有狭隘契约的函数来说，情况有那么点微妙。</p>
+<p>假设你正在撰写一个函数f，带有一个std::string型别的形参，并假设f的自然实现不会产生异常。这就说明f应该是应该noexcept声明</p>
+<p>再假设f有个前提条件：std::string型别形参不得超过32个字符，f并无义务去校验这个前置条件，因为函数会断言前置条件一定满足。即便有前置条件，为f加上noexcept声明看上去也合情合理</p>
+<p>但再假设f的实现者选择去校验前置条件，若前置条件不满足则抛出一个异常，但如果f已经加上了noexcept声明就不好办了，因为这么一来异常会导致程序中止</p>
+<p>所以一般只把noexcept声明保留给那些带有宽松的契约的函数</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>条款15：只要有可能使用constexpr，就使用它</p>
+<ul>
+<li>
+<p>关于constexpr对象具备const属性，也是编译阶段就已知的(严格的说，它们的值是在翻译期间决定的)</p>
+<pre><code class="language-cpp">int sz; //非constexpr变量
+constexpr auto arraySize1 = sz; //错误！sz的值在编译器未知
+std::array&lt;int, sz&gt; data1; //错误！同上
+
+constexpr auto arraySize2 = 10; //没问题，10是个编译器常量
+std::array&lt;int, arraySize2&gt; data2; //没问题，因为arraySize2是constexpr 
+
+//注意！！const并未提供和constexpr同样的保证，因为const对象不一定经由编译期已知值来初始化
+int sz; //非constexpr变量
+const auto arraySize = sz; //没问题，arraySize是sz的一个const副本
+std::array&lt;int, arraySize&gt; data1; //错误！arraySize的值并非编译期可知
+</code></pre>
+</li>
+<li>
+<p>如果你想让编译器提供保证，让变量拥有一个值，用于编译期常量语境，那么能达到这个目的的工具是constexpr，而非const</p>
+</li>
+<li>
+<p>constexpr函数在调用时若传入的实参是编译器已知的，则会产出编译期结果</p>
+<ol>
+<li>constexpr函数可以用在要求编译期常量的语境中。在这样的语境中，若你传给一个constexpr函数的实参是编译期已知的，则结果也会在编译期间计算出来。如果任意一个实参值在编译期未知，则你的代码无法通过编译</li>
+<li>在调用constexpr函数时，若传入的值有一个或多个在编译期未知，则它的运作方式和普通函数无异，即它也是在运行期执行结果的计算。这意味着，如果函数执行的是同样的操作，仅仅应用的语境一个是要求编译期常量的，一个是用于所有其他值的话，那就不必写两个函数。constexpr函数就可以同时满足所有需求</li>
+</ol>
+</li>
+<li>
+<p>在C++11中，constexpr函数不得包含多于一个可执行语句，但在C++14中限制条件大大地放宽了</p>
+<pre><code class="language-cpp">//在C++11中用constexpr实现pow
+constexpr int pow(int base, int exp) noexcept
+{
+	return (exp == 0 ? 1 : base * pow(base, exp - 1));
+}
+
+//在C++14中用constexpr实现pow还可以这样
+constexpr int pow(int base, int exp) noexcept
+{
+	auto result = 1;
+	for(int i = 0; i &lt; exp; ++i) result *= base;
+	return result;
+}
+</code></pre>
+</li>
+<li>
+<p>constexpr函数仅限于传入和返回字面型别，意思就算这样的型别能够持有编译期可以决议的值。在C++11中，所有的内建型别，除了void，都符合这个条件。但用户自定义型别同样可能也是字面型别，因为它的构造函数和其它成员函数可能也是constexpr函数</p>
+<pre><code class="language-cpp">class Point {
+public:
+	constexpr Point(double xVal = 0, double yVal = 0) noexcept
+						: x(xVal), y(yVal) { }
+	constexpr double xValue() const noexcept {return x;}
+	constexpr double yValue() const noexcept {return y;}
+
+	void setX(double newX) noexcept { x = newX; }
+	void setY(double newY) noexcept { y = newY; }
+
+private:
+	double x, y;
+};
+
+//此处，Point的构造函数被声明为了constexpr函数，由于传入它的实参在编译期可知
+//构造出来的Point对象数据成员，其值也是在编译期可知的。
+//如此初始化出来的Point对象也自然具备了constexpr属性
+
+constexpr Point p1(9.4, 27.7); //没问题，在编译期“运行”constexpr构造函数
+constexpr Point p2(28.8, 5.3);
+
+//类似地，访问器xValue和yValue也可以声明为constexpr
+//原因在于，若它们是通过一个在编译期已知的值的Point对象，即一个constexpr Point对象来调用的话
+//数据成员x和y的值就可以在编译期获知
+
+//从而，就能撰写出这样的constexpr函数，它调用Point的访问器并使其返回结果来初始化constexpr对象
+constexpr Point midpoint(const Point&amp; p1, const Point&amp; p2) noexcept
+{
+	return { (p1.xValue() + p2.xValue()) / 2,
+					 (p1.yValue() + p2.yValue()) / 2 };
+}
+
+constexpr auto mid = midpoint(p1, p2);
+
+//尽管在其初始化过程中涉及了构造函数、访问器、还有个非成员函数的调用，却可以在只读内存中得以创建！
+//这意味着，你可以将一个诸如mid.xValue()*10的表达式运用到模板形参中，或指定枚举量的表达式中！
+//因为Point::xValue返回的是double，mid.xValue()*10的型别也是double
+//而浮点型别固然不能用于具现模板，或指定枚举值，但却可以用诸如static_cast&lt;int&gt;的表达式来生成整数型别
+</code></pre>
+</li>
+<li>
+<p>在C++11中，constexpr函数都隐式地被声明为了const的了(这里是指成员函数的const饰词，意味着函数不能修改其操作对象，严格的说是不能修改其非mutable数据成员)，其次，它们的返回型别是void，而在C++11中，void并不是个字面型别。不过这两个限制在C++14中都被解除了，所以在C++14中，就连设置器也可以声明为constexpr</p>
+<pre><code class="language-cpp">class Point {
+public:
+	...
+	constexpr void setX(double newX) noexcept { x = newX; }
+	constexpr void setY(double newY) noexcept { y = newY; }
+	...
+};
+
+//所以可以写出这样的代码
+
+constexpr Point reflection(const Point&amp; p) noexcept
+{
+	Point result;
+	result.setX(-p.xValue());
+	result.setY(-p.yValue());
+	return result;
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款16：保证const成员函数的线程安全性</p>
+<ul>
+<li>
+<p>可以肯定地说,，const成员函数都会运行在并发执行的条件下，所以你应该保证const成员函数的线程安全性，除非可以确信它们不会用在并发语境中，例如：</p>
+<pre><code class="language-cpp">class Polynomial {
+public:
+	using RootsType = std::vector&lt;double&gt;;
+	
+	RootsType roots() const 
+		{
+			if (!rootsAreValid) {  
+				//如果缓存无效，则计算根，并存入rootVals
+				...
+				rootsAreValid = true;
+			}
+			return rootVals;
+		}
+
+private:
+	mutable bool rootsAreValid { false };
+	mutable RootsType rootVals {};
+};
+
+//从概念上来说，roots不会改变它操作的Polynomial对象
+//然而作为缓存活动的组成部分，它可能需要修改rootVals和rootsAreValid的值(这是mutable的经典用例)
+//设想性质有两个线程同时在同一个Polynomial对象上调用roots
+Polynomial p;
+//线程1                     线程2
+auto rootsOfP = p.roots(); auto valsGivingZero = p.roots(); 
+</code></pre>
+<ul>
+<li>roots是一个const成员函数，这意味着它代表的是一个<strong>读操作</strong>。多个线程在没有同步的条件下执行读操作<strong>被认为是安全的，<strong>然而在本例中却并不安全。因为在roots内部，这些线程中的一个或两个可能企图更改数据成员rootsAreValid和rootVals，也就意味着这段代码可能有不同的多个线程在没有同步的情况下读写同一块内存，而着就算</strong>数据竞险(data race)</strong>，这段代码存在未定义行为</li>
+<li>最常见且常见的解决办法就是引入一个mutex(互斥量mutual exclusion)</li>
+</ul>
+<pre><code class="language-cpp">class {
+...
+		RootsType roots() const 
+		{
+			std::lock_guard&lt;std::mutex&gt; g(m);
+			if (!rootsAreValid) {
+				...
+				rootsAreValid = true;
+			}
+			return rootVals;
+		}
+
+private:
+	...
+	mutable std::mutex m; 
+	//之所以要声明为mutable，是因为加锁和解锁都不是const成员函数所为
+	//如果没有这么一个声明，在roots内，m就会被当作是个const对象处理
+};
+</code></pre>
+<ul>
+<li>但由于std::mutex是个只移型别(move-only type)，也就是只能移动但不能复制的型别，将m加入Polynomial的副作用就算Polunomial失去了可复制性</li>
+<li>关于std::mutex以及std::lock_guard请参阅：<a href="https://zh.cppreference.com/w/cpp/thread/mutex">https://zh.cppreference.com/w/cpp/thread/mutex</a> <a href="https://zh.cppreference.com/w/cpp/thread/lock_guard">https://zh.cppreference.com/w/cpp/thread/lock_guard</a></li>
+</ul>
+</li>
+<li>
+<p>运用std::atomic型别的变量会比运用互斥量提供更好的性能，但前者仅适用对单个变量或内存区域的操作</p>
+<ul>
+<li>就一些特定情况而言，可以使用成本更低的std::atomic，例如要计算一个成员函数被调用的次数</li>
+<li>具体参阅：<a href="https://zh.cppreference.com/w/cpp/atomic/atomic">https://zh.cppreference.com/w/cpp/atomic/atomic</a></li>
+</ul>
+<pre><code class="language-cpp">class Point {
+public:
+	...
+	double distanceFromOrigin() const noexcept
+	{
+		++callCount; //带原性的自增操作
+		return std::sqrt((x*x) + (y*y));
+	}
+
+private:
+	mutable std::atomic&lt;unsigned&gt; callCount{ 0 };
+	...
+};
+</code></pre>
+<ul>
+<li>值得注意的是std::atomic也是只移型别，与std::mutex有着相同的副作用，但开销往往较小</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>条款17：理解特种成员函数的生成机制</p>
+<ul>
+<li>特种函数生成机制
+<ul>
+<li>
+<p>特种成员函数指的是那些C++会自动生成的成员函数。C++98有四种特种成员函数：默认构造函数、析构函数、复制构造函数，以及复制赋值运算符。而在C++11中多了移动构造函数和移动赋值运算符</p>
+</li>
+<li>
+<p>这些函数仅在需要时才会生成，也就是在某些代码使用了它们，而在类中未显式声明的场合。仅当一个类没有声明任何一个构造函数时才会默认生成构造函数</p>
+</li>
+<li>
+<p>生成的特种成员函数都具有public访问层级且是inline的，除析构函数其他都是非虚的</p>
+</li>
+<li>
+<p>如果位于一个派生类中，并且基类的析构函数是虚函数，在这种情况下，编译器为派生类生成的析构函数也是个虚函数</p>
+</li>
+<li>
+<p>移动构造函数和移动赋值函数是“按成员移动”的，按成员移动是由两部分组成，一部分是在支持移动操作的成员是执行移动操作，另一部分是在不支持移动操作的成员上执行复制操作</p>
+</li>
+<li>
+<p>移动操作不同于两种复制操作是彼此独立的，移动操作并不彼此独立：声明了其中一个，就会阻止编译器生成另一个。这种机制的理由在于，假设你声明了一个移动构造函数，你实际上<strong>表明移动操作的实现方式将会与编译器生成的默认按成员的移动构造函数多少有些不同</strong>。而若按成员进行移动构造操作有不合用之处的话，那么按成员进行移动赋值运算符极有可能也会有不合用之处。综上，声明一个移动构造函数会阻止编译器去生成移动赋值运算符，反之同理</p>
+</li>
+<li>
+<p>一旦显式声明了复制操作，这个类就不会再生成移动操作。因为声明复制操作(无论是复制构造还是复制赋值)的行为表明了对象的常规复制途径(按成员复制)对于该类并不适用。编译器从而判定，既然成员复制不适用于复制操作，则按成员移动极有可能也不适用于移动操作</p>
+</li>
+<li>
+<p>反之亦然，一旦声明了移动操作(无论是移动构造还是移动赋值)，编译器就会废除赋值操作(删除它们)</p>
+</li>
+<li>
+<p>大三定律：如果你声明了复制构造函数、复制赋值运算符，或析构函数中的任何一个，你就得同时声明这三个。它根植于这样的思想：如果有改写复制操作的需求，往往就意味着该类需要进行某种资源管理，而这就意味着：</p>
+<ol>
+<li>在一种复制操作中进行的任何资源管理，也极有可能在另一种复制操作中也需要进行</li>
+<li>该类的析构函数也会参与到该资源的管理中</li>
+</ol>
+</li>
+<li>
+<p>如果存在用户声明的析构函数，则平凡的按成员复制也不适于该类。根据这个推论，优酷进一步得出结论，如果声明了析构函数，则复制操作就不该被自动生成，因为它们的行为不可能正确</p>
+</li>
+<li>
+<p>不过在C++98标准被接受的时代，这样的论证没有得到充分的重视，所以在C++98中，用户声明的析构函数即使存在，也不会影响编译器生成复制操作的意愿。这种情况在C++11中仍然得到了保持</p>
+</li>
+<li>
+<p>由于大三律背后的理由仍然车里，在结合了复制操作就会阻止隐式生成移动构造函数的事实，就推动了C++11中的这样一个规定：只要用户声明了析构函数，就不会生成移动操作</p>
+</li>
+<li>
+<p>综上，移动操作生成的条件（如果需要生成）仅当以下三者同时成立</p>
+<ol>
+<li>该类未声明任何复制操作</li>
+<li>该类未声明任何移动操作</li>
+<li>该类未声明任何析构函数</li>
+</ol>
+</li>
+<li>
+<p>C++11标准规定，在已存在复制操作或析构操作的条件下，仍然自动生成复制操作已经成为了<strong>被废弃的行为</strong>，如果你有一些代码已经存在任一复制操作或析构函数的条件下，仍然依赖复制操作的自动生成的话，就得考虑升级这些类。假定编译器生成的这些函数有着正确的行为（即按成员复制类的非静态数据成员正是你所需要的行为），那么可以通过“=default”来显式地表达这个想法</p>
+</li>
+<li>
+<p>总而言之，在C++11中，支配特种成员函数的机制如下：</p>
+<ul>
+<li>默认构造函数：与C++98的机制相同。仅当类中不包含用户声明的构造函数时才生成</li>
+<li>析构函数：与C++98的机制基本相同，唯一的区别在于析构函数默认为noexcept。与C++98的机制相同，仅当基类的析构函数为虚时，派生类的析构函数才是虚的</li>
+<li>复制构造函数：运行期行为与C++98相同：按成员进行非静态数据成员的复制构造。仅当类中不包含用户声明的复制构造函数时才生成。如果该类声明了移动操作，则复制构造函数将被删除。在已经存在复制赋值运算符或析构函数的条件下，仍然生成复制构造函数已经成为了被废弃的行为</li>
+<li>复制赋值运算符：运行期行为与C++98相同：按成员进行非静态数据成员的复制赋值。仅当类中不包含用户声明的复制赋值运算符时才生成。如果该类声明了移动操作，则复制构造函数将被删除。在已经存在复制构造函数或析构函数的条件下，仍然生成复制赋值运算符已经成为了废弃的行为</li>
+<li>移动构造函数和移动赋值运算符：都按成员进行非静态数据成员的移动操作。仅当类中不包含用户声明的复制操作、移动操作和析构函数时才生成</li>
+</ul>
+</li>
+<li>
+<p>成员函数模板在任何情况下都不会抑制特种成员函数的生成</p>
+<pre><code class="language-cpp">class Widget {
+	...
+	template&lt;typename T&gt;
+	Widget(const T&amp; rhs); //以任意型别构造Widget
+
+	template&lt;typename T&gt;
+	Widget&amp; operator=(const T&amp; rhs); //以任意型别对Widget赋值
+	...
+};
+</code></pre>
+<ul>
+<li>编译器会始终生成Widget的复制和移动操作（假定支配其生成的条件都得到了满足），即使这些模板的具现结果生成了复制构造函数或复制赋值运算符的签名（当T的值为Widget时就会发生这种情况）。条款26会告诉你，这么一个边缘场景有着至关重要的推论</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/phsGV5Yf4/" class="post-title gt-a-link">
+                    DJI SPARK 朝阳
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

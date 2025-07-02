@@ -1,0 +1,373 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>IEEE标准 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    IEEE标准
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-08-08 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/LfhFVuP3_/" class="post-tags">
+                            # 计科基础
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <ul>
+<li>
+<p>IEEE标准</p>
+<p>电气和电子工程师协会（IEEE）定义的单精度和双精度存储浮点数的标准如下图所示</p>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1632198564876.png" alt="" loading="lazy"></figure>
+<p>单精度占用32位，双精度占用64位。单精度和双精度符号都只占用1位（0为正，1为负）。单精度指数占用8位，使用偏移量127，位数占用23位。双精度指数占用11位，使用偏移量1023，尾数占用52位。</p>
+<ul>
+<li>
+<p>规范化</p>
+<p>为了使表示法固定部分统一，科学计数法（用于十进制）和浮点数表示法（用于二进制）都在小数点左边使用了唯一非零数码，这称为规范化。十进制系统中的数码可能是1~9，而二进制系统中该数码是1。</p>
+</li>
+<li>
+<p>符号、指数和尾数</p>
+<p>在应该二进制数规范化后，我们只存储了一个数的三部分信息：符号、指数和尾数。</p>
+<ol>
+<li>
+<p>符号</p>
+<p>一个数的符号可以用一个二进制位来存储，0为正1为负。</p>
+</li>
+<li>
+<p>指数</p>
+<p>指数（2的次幂）定义为小数点移动的位数。小数点向左移为正向右移为负。</p>
+<p>因为指数是有符号的数，尽管这可以用二进制补码来存储，但被一种称为余码系统的表示法取而代之。在该余码系统中，正的和负的整数可以作为无符号存储。为了表示正的或负的整数，一个偏移量加到每个数字中，将他妈统一移到非负的一边。这个偏移量的值是2^(m-1)，m是内存单元存储指数的大小。</p>
+</li>
+<li>
+<p>尾数</p>
+<p>尾数是小数点右边的二进制数。它定义了该数的精度。尾数是作为无符号整数存储的。但它不是整数，而是像整数那样存储小数部分。因为在尾数中，如果在数字左边插入多余的0，这个值会改变，而在一个真正的整数中，如果在数字左边插入多余的0，这个值不会改变。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>IEEE标准浮点数转二进制</p>
+<ol>
+<li>在S中存储符号（0或1）</li>
+<li>将数字转换为二进制</li>
+<li>规范化</li>
+<li>找到E和M的值</li>
+<li>连接S、E和M</li>
+</ol>
+<ul>
+<li>例1：将3.6875转为二进制（单精度）
+<ol>
+<li>
+<p>符号为正：S=0</p>
+</li>
+<li>
+<p>十进制转换为二进制：3.6875=0b11.1011</p>
+<ol>
+<li>
+<p>直接将整数部分转换为二进制（无符号）：3 == 0b11</p>
+</li>
+<li>
+<p>计算小数部分二进制</p>
+<ol>
+<li>取小数部分乘2得到积，将积整数部分取出。接着继续用2乘以剩下的小数部分，直到积的小数部分为0，或达到精度限制。下例：</li>
+</ol>
+<pre><code class="language-cpp">取3.6875的小数部分：0.6875
+
+计算                  积的整数部分
+(0.6875 * 2) = 1.375     1
+(0.375  * 2) = 0.75      0
+(0.75   * 2) = 1.5       1
+(0.5    * 2) = 1.0       1 
+小数部分为0，计算结束。
+将积的整数部分按计算顺序排序即可得到小数部分的二进制：1011
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>规范化：0b11.1011 = (0b1.11011) * (2^1)</p>
+<ol>
+<li>将0b11.1011的小数向左移1位，即得到0b1.11011。指数则为移动的位数（左移为正右移为负），在本例中的指数为1。规范化结果：(0b1.11011) * (2^1)</li>
+</ol>
+</li>
+<li>
+<p>找到E和M的值</p>
+<ol>
+<li>E = 规范化指数 + 偏移量 = 1 + 127 = 128 = 0b10000000</li>
+<li>M = 规范化后的小数部分 = 0b11011(在后面补上23-5个0)</li>
+</ol>
+</li>
+<li>
+<p>连接S、E、M</p>
+<ol>
+<li>S = 0b0，E = 0b10000000，M = 0b11011000000000000000000</li>
+<li>R = S E M = 0b0 10000000 11011000000000000000000</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>例2：将-0.0234375转为二进制（单精度）
+<ol>
+<li>
+<p>符号为负：S=1</p>
+</li>
+<li>
+<p>十进制转二进制：0.0234375 = 0.0000011</p>
+<ol>
+<li>直接将整数部分转换为二进制（无符号）：0 == 0b0</li>
+<li>计算小数部分二进制</li>
+</ol>
+<pre><code class="language-cpp">取0.0234375小数部分：0.0234375
+
+(0.0234375 * 2) = 0.046875   0
+(0.046875  * 2) = 0.09375    0
+(0.09375   * 2) = 0.1875     0
+(0.1875    * 2) = 0.375      0
+(0.375     * 2) = 0.75       0
+(0.75      * 2) = 1.5        1
+(0.5       * 2) = 1.0        1
+小数部分为0，计算结束。
+将积的整数部分按计算顺序排序即可得到小数部分的二进制：0000011
+</code></pre>
+</li>
+<li>
+<p>规范化：0b0.0000011 = (0b1.1) * (2^-6)</p>
+<ol>
+<li>将0b0.0000011的小数向右移6位，即得到0b1.1。指数则为移动的位数（左移为正右移为负），在本例中的指数为-6。规范化结果：(0b1.1) * (2^-6)</li>
+</ol>
+</li>
+<li>
+<p>找到E和M的值</p>
+<ol>
+<li>E = 规范化指数 + 偏移量 = -6 + 127 = 121 = 0b1111001</li>
+<li>M = 规范化后的小数部分 = 0b1(在后面补上23-1个0)</li>
+</ol>
+</li>
+<li>
+<p>连接S、E、M</p>
+<ol>
+<li>S = 0b1，E = 0b1111001，M = 0b10000000000000000000000</li>
+<li>R = S E M = 0b1 1111001 10000000000000000000000</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>IEEE标准浮点数的数字还原</p>
+<ol>
+<li>找到S、E和M的值</li>
+<li>如果S=0，将符号设为正号，否者设为负号</li>
+<li>找到位移量（E-偏移量）</li>
+<li>对尾数去规范化</li>
+<li>将去规范化对数字变为二进制以求出绝对值</li>
+<li>加上符号</li>
+</ol>
+<p>例：位模式（0b01000000011011000000000000000000）</p>
+<ol>
+<li>首位表示S，后8位表示E，剩下23位是M
+<ol>
+<li>S = 0b0</li>
+<li>E = 0b10000000</li>
+<li>M = 0b11011<s>000000000000000000</s></li>
+</ol>
+</li>
+<li>符号设为正号</li>
+<li>位移量= E-127 = 0b10000000-127 = 128-127 = 1</li>
+<li>将0b1.11011去规范化：0b1.11011 * (2^位移量) = 0b1.11011 * (2^1)</li>
+<li>二进制数是：0b11.1011</li>
+<li>绝对值是：3.6875
+<ol>
+<li>
+<p>计算整数部分：0b11 = 3</p>
+</li>
+<li>
+<p>计算小数部分：0.6875</p>
+<pre><code class="language-cpp">0b11.1011小数部分：1011
+
+1            0            1            1
+(1 * 2^-1) + (0 * 2^-2) + (1 * 2^-3) + (1 * 2^-4)
+= 1*0.5    + 0*0.25     + 1*0.125    + 1*0.0625
+= 0.6875
+</code></pre>
+</li>
+<li>
+<p>整数部分+小数部分：3.6875</p>
+</li>
+</ol>
+</li>
+<li>加上符号：3.6875</li>
+</ol>
+</li>
+<li>
+<p>存储零</p>
+<p>带有整数部分和小数部分对实数设置为0的时候数0.0，无法用以上讨论的步骤存储。为了这个特例，约定在这种情况下符号、指数和尾数都设为0</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考资料：《计算机科学导论》</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/t2U6P6fsi/" class="post-title gt-a-link">
+                    我的世界服务器与插件开发相关链接
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

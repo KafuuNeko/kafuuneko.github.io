@@ -1,0 +1,249 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>C++ argument-dependent lookup 实参依赖查找 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    C++ argument-dependent lookup 实参依赖查找
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-10-19 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/We2T_wpAt/" class="post-tags">
+                            # C++
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>C++实参依赖查找英文缩写为ADL，在查找无限定函数（包括对重载运算符的隐式函数调用）时，通常无限定名字查找所考虑的作用域和命名空间之外，还在其各个实参的命名空间中查找这些函数，例如:</p>
+<pre><code class="language-cpp">namespace ns1
+{
+    template&lt;class T&gt;
+    void foo(T)
+    {
+        std::cout &lt;&lt; &quot;ns1::foo&quot; &lt;&lt; std::endl;
+    }
+    
+    struct X {};
+}
+
+ns1::X x;
+foo(x); //全局命名空间并没有定义foo，但ADL会继续在实参的命名空间中查找
+        //因为这个实参的类型是ns1::X，所以会继续在ns1命名空间中查找foo
+</code></pre>
+<p>实参依赖查找使得使用定义于不同命名空间的运算符成为可能，例如</p>
+<pre><code class="language-cpp">namespace ns1
+{
+    struct X { int32_t value; };
+    
+    const X operator+(const X &amp;lhs, const X &amp;rhs)
+    {
+        return X { lhs.value + rhs.value };
+    }
+}
+
+ns1::X x1{10}, x2{20};
+auto x3 = x1 + x2; //等价于 x3 = operator+(x1, x2);
+                   //全局命名空间中没有operator+(const X&amp;, const X&amp;)
+                   //但因为实参属于ns1命名空间，所以ADL会检验ns1命名空间，并找到operator+(const X&amp;, const
+</code></pre>
+<p>ADL 是在泛型代码中为交换两个对象而建立的手法能成立的原因：</p>
+<pre><code class="language-cpp">using std::swap;
+swap(obj1, obj2);
+</code></pre>
+<pre><code class="language-cpp">namespace ns1
+{
+	struct Object
+	{
+		...
+		void swap(Object &amp;obj) noexcept;
+		...
+	};
+
+	void swap(Object &amp;lhs, Object &amp;rhs) noexcept
+	{
+		lhs.swap(rhs);
+	}
+}
+
+template&lt;class T&gt;
+void foo(T &amp;obj1, T &amp;obj2)
+{
+	using std::swap;
+	swap(obj1, obj2); //无限定函数（未使用名字空间修饰）
+	                  //根据ADL，此swap可以在T所属的命名空间中匹配函数
+	                  //若无匹配的函数，将调用标准库版swap(std::swap)
+}
+
+int32_t a = 1, b = 2;
+Object obj1, obj2;
+
+foo(a, b); //调用的是std::swap
+foo(obj1, obj2); //调用的是ns1::swap(Object &amp;lhs, Object &amp;rhs)
+</code></pre>
+<p>参考：</p>
+<p><a href="https://zh.cppreference.com/w/cpp/language/adl">实参依赖查找</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Argument-dependent_name_lookup">Argument-dependent name lookup - Wikipedia</a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/CN9VKjnkc/" class="post-title gt-a-link">
+                    Effective 智能指针
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

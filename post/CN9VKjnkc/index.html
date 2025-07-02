@@ -1,0 +1,749 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Effective 智能指针 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Effective 智能指针
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-09-21 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <ul>
+<li>
+<p>条款18：使用std::unique_ptr管理具备专属所有权的资源</p>
+<ul>
+<li>
+<p>在默认情况下std::unique_ptr和裸指针有着相同的尺寸，对于大多数操作（包括提领），它们都是精确地执行裸相同地指令</p>
+</li>
+<li>
+<p>自定义析构器后，若析构器是函数指针，那么std::unique_ptr的尺寸一般会增加一到两个字长。若析构器是函数对象，则带来的尺寸变化取决于该函数对象中存储裸多少状态。这意味着当一个自定义析构器既可以用函数，又可以用无捕获的lambda表达式来实现时，lambda表达式是更好的选择：</p>
+<pre><code class="language-cpp">//使用无状态lambda表达式作为自定义析构器
+auto delInvmt1 = [](Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+}
+//返回值尺寸于Investment*相同
+template&lt;typename... Ts&gt;
+std::unique_ptr&lt;Investment, decltype(delInvmt1)&gt; makeInvestment(Ts&amp;&amp;... args);
+
+//使用函数作为自定义析构器
+void delInvmt1(Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+}
+//返回值尺寸等于Investment*的尺寸加上至少函数指针的尺寸
+template&lt;typename... Ts&gt;
+std::unique_ptr&lt;Investment, void(*)(Investment*)&gt; makeInvestment(Ts&amp;&amp;... args);
+
+</code></pre>
+</li>
+<li>
+<p>std::unique_ptr的API被设计成与使用形式相匹配。比如单个对象形式不提供索引运算符(operator[])，儿数组形式则不提供提领运算符(operator*和operator→)</p>
+</li>
+<li>
+<p>std::unique_ptr可以方便高效地转换为std::shared_ptr</p>
+<pre><code class="language-cpp">template&lt;typename... Ts&gt;
+std::unique_ptr&lt;Investment, decltype(delInvmt1)&gt; makeInvestment(Ts&amp;&amp;... args) 
+{ ... }
+
+std::shared_ptr&lt;Investment&gt; sp = makeInvestment( arguments );
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款19：使用std::shared_ptr管理具备共享所有权的资源</p>
+<ul>
+<li>
+<p>std::shared_ptr可以通过访问某资源的引用计数来确定是否自己是最后一个指涉到该资源的</p>
+</li>
+<li>
+<p>这种引用计数的方法会带来一些性能影响</p>
+<ul>
+<li>std::shared_ptr的尺寸是裸指针的两倍。因为它们内部既包含一个指涉到该资源的裸指针，也包含一个指涉到该资源的引用计数的裸指针</li>
+<li>引用计数的内存必须动态分配。</li>
+<li>引用计数的递增和递减必须是原子操作。</li>
+</ul>
+</li>
+<li>
+<p>对于std::shared_ptr，析构器并不是型别的一部分</p>
+<pre><code class="language-cpp">auto loggingDel = [](Widget *pw)
+{ ... }
+
+//在unique_ptr中，析构器是其型别的一部分
+std::unique_ptr&lt;Widget, decltype(loggingDel)&gt; upw(new Widget, loggingDel);
+//但对于std::shared_ptr来说，析构器并不是它型别的一部分
+std::shared_ptr&lt;Widget&gt; spw(new Widget, loggingDel);
+
+//因此拥有不同析构器的unique_ptr并不是同一类型，而拥有不同析构器的shared_ptr可以是同一种类型
+</code></pre>
+</li>
+<li>
+<p>自定义析构器不会改变std::shared_ptr的尺寸。无论析构器是什么型别，std::shared_ptr对象的尺寸都相当于裸指针的两倍</p>
+</li>
+<li>
+<p>每一个std::shared_ptr管理的对象都有一个控制块。除了包含引用计数之外，如果该自定义析构器被指定的话，该控制块还包含自定义析构器的一个复制。如果指了一个自定义内存分配器，控制块也会包含一份它的复制。控制块还可能包含其他附加数据，包括如条款21提到的一个被称之为弱计数的次级引用计数，但我们在本条款中将忽略此类数据</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1632202168990.jpg" alt="" loading="lazy"></figure>
+<pre><code>  - 一个对象的控制块由创建首个指涉到该对象的std::shared_ptr的函数来确定。至少应该是这样运作。毕竟，正在创建指涉到某个对象的std::shared_ptr的函数无从得知是否有其他的std::shared_ptr已经指涉到该对象的，因此，控制块的创建遵循来以下规则
+      - std::make_shared总是创建一个控制块，该控制块会包含指涉到T Object对象的指针(参考上图)
+      - 从具备专属所有权的指针（即std::unique_ptr或std::auto_ptr指针）除法构造一个std::shared_ptr时，会创建一个控制块。因为专属所有权指针不存在控制块（作为构造过程的一部分，std::shared_ptr被指定来其所指涉到的对象所有权，因此那个专属所有权智能指针会被置空）
+      - 当std::shared_ptr构造函数使用裸指针作为实参来调用时，它会创建一个控制块。如果想从一个已经拥有控制块的对象出发来创建一个std::shared_ptr，你大概会传递一个std::shared_ptr或std::weak_ptr而非裸指针作为构造函数实参，使用这两智能指针作为实参，则不会创建新的控制块，因为它们可以依赖传入的智能指针以指涉到任意所需的控制块
+
+  - 这些规则会导致一个后果：从同一个裸指针出发来构造不止一个std：：shared_ptr的话会产生未定义行为。因为这么一来，被指涉到的对象将会有多重的控制块。多重控制块意味着多重引用计数，而多重引用计数意味着该对象将被析构多次（每个引用计数会导致一次析构）。这意味着，如下所示的代码会是行不通的：
+
+      ```cpp
+
+      auto pw = new Widget;
+
+      std::shared_ptr&lt;Widget&gt; spw1(pw, loggingDel);//为*pw创建来一个控制块
+      std::shared_ptr&lt;Widget&gt; spw2(pw, loggingDel);//为*pw创建来第二个控制块
+
+      //double free
+      ```
+
+      - 要避免这些问题，首先，尽可能避免将裸指针传递给一个std::shared_ptr的构造函数。常用的替代手法是使用std::make_shared。然而在上述例子中，由于使用裸自定义析构器，这么一来就无法使用std::shared_make了。其次，如果必须将一个裸指针传递给std::shared_ptr，就直接传递new运算符的结果，而非传递一个裸指针变量
+
+      ```cpp
+      std::shared_ptr&lt;Widget&gt;(new Widget, loggingDel);//直接传递new表达式
+      ```
+
+      - 使用裸指针作为std::shared_ptr构造函数实参时，会有一种令人吃惊的方式导致涉及this指针的多重控制块。
+
+          ```cpp
+          //假设我们的程序使用std::shared_ptr来托管Widget对象，并且有个数据结构用来追踪被处理的Widget
+          std::vector&lt;std::shared_ptr&lt;Widget&gt;&gt; processedWidgets;
+          //假设Widget有个成员函数来做这种处理
+          class Widget {
+          public:
+          	...
+          	void process();
+          	...
+          };
+          //对Widget::process而言，有一种看似合理的方法来完成跟踪操作
+          void Widget::process()
+          {
+          	processedWidgets.emplace_back(this); //错误的做法！将处理完的Widget放入vector
+          }
+          //这代码能通过编译，但它把一个裸指针（this）传入了一个std::shared_ptr容器
+          //由此构造的std::shared_ptr将其所指涉的Widget型别对象(*this)创建一个新的控制块
+          //如果已指涉到该Widget型别的对象的成员函数外部再套层std::shared_ptr
+          auto sp = std::shared_ptr&lt;Widget&gt;();
+          sp-&gt;process(); //未定义行为，目前sp指涉到的对象有两个控制块
+          ```
+
+      - 针对上面的问题，我们可以使用std::enable_shared_from_this安全的由this指针创建一个std::shared_ptr
+
+          ```cpp
+          class Widget: public std::enable_shared_from_this&lt;Widget&gt; {
+          public:
+          	...
+          	void process();
+          	...
+          };
+          //安全的实现方法
+          void Widget::process()
+          {
+          	processedWidgets.emplace_back(shared_from_this());
+          }
+          auto sp = std::shared_ptr&lt;Widget&gt;();
+          sp-&gt;process();//没问题
+          ```
+
+      - 为避免用户在std::shared_ptr指涉到该对象前就调用了引发shared_from_this的成员函数，继承自std::enable_shared_from_this的类通常会将其构造函数声明为private访问层级，并且只允许用户通过调用返回std::shared_ptr的工厂函数来创建对象。例如，Widget看起了可能会长这样
+
+          ```cpp
+          class Widget: public std::enable_shared_from_this&lt;Widget&gt; {
+          public:
+          	template&lt;typename... Ts&gt;
+          	static std::shared_ptr&lt;Widget&gt; create(Ts&amp;&amp;... params);
+          	...
+          private:
+          	Widget() = default;
+          };
+          ```
+
+  - 在典型情况下，在使用了默认构造器和默认内存分配器，并且std::shared_ptr是由std::make_shared创建的前提下，控制块尺寸只有三个字长，并且分配操作实质上没有任何成本（这些成本都被并入至所指涉的地哦下的内存分配中去了）
+
+  - std::shared_ptr的API仅被设计用来处理指涉到单个对象的指针。并没有所谓的std::shared_ptr&lt;T[]&gt;。声明一个智能指针指涉到一个非智能的数组通常标志着设计的拙劣，一方面，std::shared_ptr并未提供operator[]，这么一来，要取得数组的下标，就要基于指针算术的笨拙表达式。另一方面，std::shared_ptr支持派生类到基类的指针型别转换，这对当个对象而言是有意义的，但当应用到数组时，它就会在型别系统上开天窗（也正因如此，std::shared_ptr&lt;T[]&gt;的API禁止此型别的转换）
+</code></pre>
+</li>
+<li>
+<p>条款20：对于类似std::shared_ptr但有可能空悬但指针使用std::weak_ptr</p>
+<ul>
+<li>
+<p>std::weak_ptr像std::shared_ptr那样运作，但又不影响其指涉对象但引用计数</p>
+</li>
+<li>
+<p>std::weak_ptr不能提领，也不能检查是否为空。这是因为std::weak_ptr并不是一种独立但智能指针，而是std::shared_ptr的一种扩充，一般都是通过std::shared_ptr来创建的。</p>
+<pre><code class="language-cpp">auto spw = std::make_shared&lt;Widget&gt;(); 
+std::weak_ptr&lt;Widget&gt; wpw(spw); //wpw和spw指涉到同一个Widget，引用计数保持为1
+spw = nullptr; //引用计数变成0，Widget对象被析构。wpw空悬。
+
+//std::weak_ptr的空悬，也被称之为失效(expired)。可以直接测试：
+if(wpw.expired()) ... //若wpw不再指涉到任何对象
+</code></pre>
+</li>
+<li>
+<p>但通常你想要但效果是：校验一个std::weak_ptr是否已经失效，如果尚未失效，就访问它所指涉到到对象。这个想起来容易，做起来难。由于std::weak_ptr缺乏提领操作，撰写不出这样到代码。即便这样的代码能够撰写出来，将校验和提领分离也会带来竞险：在expired的调用和提领操作之前，另一个线程可能重新赋值或析构最后一个指涉到该对象到std::shared_ptr，而这会导致该对象被析构。在此情况下，提领会引发未定义行为。</p>
+<pre><code class="language-cpp">//综上，我们需要一个原子操作来完成std::weak_ptr是否失效但校验
+//以及在未失效但条件下提供所指涉到到对象到访问
+//这个操作可以由std::weak_ptr创建std::shared_ptr来实现
+std::shared_ptr&lt;Widget&gt; spw1 = wpw.lock(); //若wpw失效，则spw1为空
+auto spw2 = wpw.lock(); //同上，但使用auto
+//另一种形式是用std::weak_ptr作为实参来构造std::shared_ptr。若失效，则抛出异常
+std::shared_ptr&lt;Widget&gt; spw3(wpw); //若wpw失效，抛出std::bad_weak_ptr型别但异常
+</code></pre>
+</li>
+<li>
+<p>std::weak_ptr可能到用武之地包括缓存、观察者列表，以及避免std::shared_ptr指针环路</p>
+</li>
+</ul>
+</li>
+<li>
+<p>条款21：优先选用std::make_unique和std::make_shared，而非直接使用new</p>
+<ul>
+<li>
+<p>std::make_shared是C++11的一部分，但std::make_unique不是。若要在C++11中使用std::make_unique，则需要自行编写：</p>
+<pre><code class="language-cpp">template&lt;typename T, typename... Ts&gt;
+std::unique_ptr&lt;T&gt; make_unique(Ts&amp;...params)
+{
+	return std::unique_ptr&lt;T&gt;(new T(std::forward&lt;Ts&gt;(params)...));
+}
+//不要把你的版本放入std名字空间，因为当升级到C++14标准库实现时，你不会想让它和供应商提供的版本产生冲突
+</code></pre>
+</li>
+<li>
+<p>std::make_unique和std::make_shared是三个make系列函数中的两个。make系列函数会把一个任意实参集合完美转发给动态分配内存对象的构造函数，并返回一个指涉到该对象到智能指针。make系列函数到第三个是std::allocate_shared。它到行为和std::make_shared一样，只不过它的第一个实参是个用以动态分配内存的分配器对象</p>
+</li>
+<li>
+<p>软件工程一个重要的原则：代码冗余应当避免。源代码中的重复会增加编译遍数，导致臃肿的目标代码，并且通常会产生更难上手的代码存根（code base）。它会演化成不一致的代码，而代码存梗终端不一致经常性导致代码缺陷。</p>
+<pre><code class="language-cpp">auto upw1(std::make_unique&lt;Widget&gt;()); //使用make系列函数
+std::unique_ptr&lt;Widget&gt; upw2(new Widget); //不使用make系列函数 Widget被重复写了两遍
+
+auto upw1(std::make_shared&lt;Widget&gt;()); //使用make系列函数
+std::make_shared&lt;Widget&gt; upw2(new Widget); //不使用make系列函数 Widget被重复写了两遍
+</code></pre>
+</li>
+<li>
+<p>使用make系列函数第二个原因与异常安全有关</p>
+<ul>
+<li>
+<p>假设我们有一个函数依据某个优先级来处理一个Widget对象</p>
+<pre><code class="language-cpp">void processWidget(std::shared_ptr&lt;Widget&gt; spw, int priority);
+</code></pre>
+</li>
+<li>
+<p>现在假设有一个函数用来计算相对优先级</p>
+<pre><code class="language-cpp">int computePriority();
+</code></pre>
+</li>
+<li>
+<p>我们在processWidget的调用中用到了该函数，并且这调用中，processWidget使用了new运算符，而非std::make_shared</p>
+<pre><code class="language-cpp">processWidget(
+	std::shared_ptr&lt;Widget&gt;(new Widget), 
+	computePriority() //潜在到资源泄漏
+);
+</code></pre>
+</li>
+<li>
+<p>在processWidget到调用过程中，下列事件必须在processWidget开始执行前发生：</p>
+<ol>
+<li>表达式“new Widget”必须先完成评估求值，即，一个Widget对象必须在堆上创建</li>
+<li>由new产生到裸指针到托管对象std::shared_ptr<Widget>的构造函数必须执行</li>
+<li>computePriority必须运行</li>
+</ol>
+</li>
+<li>
+<p>编译器不必按照上述顺序来生成代码。“new Widget”必须在std::shared_ptr的构造函数得到调用前执行完毕，因为new表达式的结果将用做构造函数的实参之一。但是computePriority却可以在上述两个调用之前、之后，甚至，在极端情况下，会在上述两个调用之间执行。也就是说，编译器可能会放出这样的代码，以按如下时许执行操作</p>
+<ol>
+<li>实施“new Widget”</li>
+<li>执行computePriority</li>
+<li>运行std::shared_ptr构造函数</li>
+</ol>
+</li>
+<li>
+<p>如果生成来这样的代码，并且运行前computePriority产生来异常，那么由第一步动态分配的Widget会被泄漏，因为它将永远不会被存储在第三步才接管的std::shared_ptr中去。使用std::make_shared就可以避免这个问题（对于其它两个make同样适用）。</p>
+<pre><code class="language-cpp">processWidget(std::make_shared&lt;Widget&gt;(), computePriority());
+//std::make_shared和computePriority中肯定会有一个首先被调用
+//如果std::make_shared被首先调用，那么指涉到动态分配到Widget到裸指针会在computePriority被调用前就被安全存储在返回到std::shared_ptr对象中
+//如果是computePriority被首先调用，那么Widget还未被动态分配，所以即便出现异常也不会造成内存泄漏
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>std::make_shared与直接使用new表达式传递给构造函数相比，是性能的提升。使用std::make_shared会让编译器有机会利用更简洁的数据结构产生更小更快的代码（同样适用于std::allocated_shared）</p>
+<pre><code class="language-cpp">std::shared_ptr&lt;Widget&gt; spw(new Widget);
+//上面这段代码会引发两次内存分配，一次是分配Widget，另一个是分配控制块
+
+auto spw = std::make_shared&lt;Widget&gt;();
+//而这段代码只会分配一次内存，std::make_shared会分配单块内存
+//既保存来Widget对象又保存来与之相关联的控制块
+
+//处理内存分配，在释放时使用make_shared构造的shared_ptr也只需要执行一次delete
+</code></pre>
+</li>
+<li>
+<p>无法使用或者不推荐使用make系列函数的场景</p>
+<ol>
+<li>
+<p>需要使用自定义析构器</p>
+</li>
+<li>
+<p>使用大括号初始化物来创建指涉到对象到指针</p>
+<pre><code class="language-cpp">auto upv = std::make_unique&lt;std::vector&lt;int&gt;&gt;(10, 20);
+//这会创建出一个包含10个元素、每个元素值都是20的std::vector
+//因为make系列函数里，对形参进行完美转发对代码使用对是圆括号而非大括号
+
+//如果想使用make系列函数来完美转发大括号初始化物对话，在条款30也给出来一个变通对方案
+auto initList = {10, 20};
+auto upv = std::make_unique&lt;std::vector&lt;int&gt;&gt;(initList);
+</code></pre>
+</li>
+<li>
+<p>std::shared_ptr不使用于自定义了自身版本对operator new和operatpr delete的对象</p>
+<ul>
+<li>通常情况下，类自定义这两种函数被设计成仅用来分配和释法该类精确尺寸的内存块。例如，Widget类的operator new和operator delete被设计用做处理尺寸恰好是sizeof(Widget)的内存块。<strong>而std::allocate_shared所要求的内存数量并不等于动态分配的内存尺寸，而是该尺寸的基础加上控制块的尺寸。</strong></li>
+</ul>
+</li>
+<li>
+<p>尺寸较大的对象，并且有std::weak_ptr指涉到该对象</p>
+<ul>
+<li>由于std::make_shared将控制块和它托管到对象放在同一块内存上分配。当对象的引用计数变为0时，对象被析构。然而，托管对象所占用的内存直到与其关联的控制块也被析构时才会释法，因为同一动态分配的内存块同时包含来两者。</li>
+<li>如前所述，控制块中还有个弱引用计数。std::weak_ptr通过检查控制块里的引用计数（而非弱计数）来校验自己是否失效。假如引用计数为0，则std::weak_ptr则失效</li>
+<li>由于std::weak_ptr会指涉到某个控制块（即，弱计数大于0），该控制块肯定会持续存在。而由于控制块到存在，包含它到内存肯定会持续存在。这么一来，通过对应于std::shared_ptr的make系列函数所分配的内存在最后一个std::shared_ptr和最后一个指涉到它到std::weak_ptr都被析构前，无法得到释放</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>对于不适合使用make系列函数到情况，为了避免异常安全问题，就要确保你直接使用new表达式到时候，立即将表达式到结果传递给智能指针构造函数</p>
+<pre><code class="language-cpp">std::shared_ptr&lt;Widget&gt; spw(new Widget, cusDel);
+processWidget(spw, computePriority());//正确，但并非最优优化
+
+//由于processWidget里的shared_ptr参数是按值传递的，而spw是个左值
+//所以在调用processWidget时会产生一次复制构造
+//而复制一个std::shared_ptr要求对其引用计数进行一次原子递增操作（这会造成性能损失）
+//因此我们需要将它进行移动
+processWidget(std::move(spw), computePriority()); //性能最优解
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款22：使用Pimpl习惯用法时，将特殊成员函数的定义放到实现文件中</p>
+<ul>
+<li>
+<p>Pimpl习惯用法（“pointer to implementation”，即指涉到实现到指针），就是把某类的数据成员用一个指涉到某实现类（或结构体）的指针替代，然后把原来在主类中的数据成员放置到实现类中，并通过指针间接访问这些数据成员</p>
+<pre><code class="language-cpp">//widget.h
+class Widget {
+public:
+	Widget();
+
+private:
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3; //某种用户自定义类型
+};
+</code></pre>
+<ul>
+<li>因为Widget到数据成员属于std::string、std::vector和Gadget等多种型别，这些型别所对应到头文件必须存在，Widget才能通过编译，这就说明Widget的客户必须#include <string>、<vector>，以及gadget.h。<strong>这些头文件增加类Widget的客户的编译时间</strong>，此外，它们也使得这些客户依赖于这些头文件内容。<strong>假如某个头文件的内容发生类改变，则Widget客户必须重新编译</strong>。</li>
+<li>以下是C++98中的Pimpl习惯用法，使用了裸指针、裸new运算符和裸delete运算符，在C++11以及以上版本中这违背了“优先选用智能指针”的条款</li>
+</ul>
+<pre><code class="language-cpp">//widget.h
+class Widget {
+public: 
+	Widget();
+	~Widget();
+
+private:
+	struct Impl;
+	Impl *pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(new Impl) {}
+
+Widget::~Widget()
+{ delete pImpl; }
+</code></pre>
+<ul>
+<li>因此，在C++11及其以上版本中，我们需要使用std::unique_ptr替代裸指针</li>
+</ul>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+</code></pre>
+<ul>
+<li>Widget的析构函数不复存在了。因为我们无需再为其撰写代码，当unique_ptr被析构时，它会自动析构它所指涉到到对象，但遗憾的是，这段代码甚至最平凡的客户代码都不能通过编译</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;widget.h&gt;
+Widget w; //错误！无法通过编译
+</code></pre>
+<ul>
+<li>因为我们使用了unique_ptr，而在主类中，我们未声明析构函数。所以编译器为我们自动生成了一个析构函数。在这个析构函数中使用了std::unique_ptr的默认析构器。默认析构器是在std::unique_ptr内部使用了delete运算符来针对裸指针实施析构函数。然而，在实施delete运算符之前，典型的实现会使用C++11中的static_assert去确保裸指针未指涉到非完整型别。这么一来，当编译器为Widget w的析构函数产生代码时，通常就会遇到一个失败的static_assert，从而导致了错误信息的产生。这个此外信息和w被析构的位置有关，因为Widget的析构函数于其编译器产生的特种成员函数一样，基本上隐式inline的。</li>
+</ul>
+<pre><code class="language-cpp">//unique_ptr默认析构器实现
+template &lt;class _Tp&gt;
+struct default_delete&lt;_Tp[]&gt; {
+private:
+	...
+  template &lt;class _Up&gt;
+  typename _EnableIfConvertible&lt;_Up&gt;::type
+  operator()(_Up* __ptr) const _NOEXCEPT {
+    static_assert(sizeof(_Tp) &gt; 0, &quot;default_delete can not delete incomplete type&quot;);
+    static_assert(!is_void&lt;_Tp&gt;::value, &quot;default_delete can not delete void type&quot;);
+    delete[] __ptr;
+  }
+};
+</code></pre>
+<ul>
+<li>为解决这一问题，只需要保证生成析构std::unique_ptr<a href="Widget::Impl">Widget::Impl</a>代码处的Widget::Impl是个完整的型别即可。只要型别的定义可以被看到，它就是完整的。而Widget::Impl的定义位于widget.cpp中。因此，成功编译的关键在于让编译器看到Widget的析构函数的函数体的位置在widget.cpp内部的Widget::Impl定义之后</li>
+</ul>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+	~Widget();
+
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+Widget::~Widget() {}
+//或
+Widget::~Widget() = default;
+</code></pre>
+<ul>
+<li>
+<p>当在Widget中声明了析构函数，那么编译器将不会自动产生移动操作，即使默认生成的移动操作的行为完全正确，假如你需要支持移动操作，就必须自己声明该函数。既然编译器产生的版本是正确的，你很有可能尝试如下实现：</p>
+<pre><code class="language-cpp">//widget.h
+class Widget {
+public:
+	...
+	Widget(Widget&amp;&amp; rhs) = default;
+	Widget&amp; operator=(Widget&amp;&amp; rhs) = default;
+	...
+};
+</code></pre>
+</li>
+<li>
+<p>这种手法会导致和类中没有声明析构函数一样的问题，产生该问题的基本原因也相同。编译器生成的移动赋值操作需要在重新赋值前析构pImpl指涉到到对象，但在Widget但头文件里pImpl指涉到的是非完整型别。move构造函数处问题的原因有所不同，这里的问题在于，编译器会在move构造函数内抛出异常的事件中生成析构pImpl的代码，而对于pImpl析构要求Impl具备完整型别</p>
+</li>
+<li>
+<p>由于产生的原因一如此前，修复手法也如法炮制，把移动操作的定义移入实现文件内：</p>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+	~Widget();
+	Widget(Widget&amp;&amp; rhs);
+	Widget&amp; operator=(Widget&amp;&amp; rhs);
+
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+Widget::~Widget() = default;
+Widget::Widget(Widget&amp;&amp; rhs) = default;
+Widget::Widget&amp; operator=(Widget&amp;&amp; rhs) = default;
+</code></pre>
+</li>
+<li>
+<p>编译器不会为像std::unique_ptr那样的只移型别生成复制操作，如果Widget需要支持复制操作，则需要自己撰写：</p>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+	~Widget();
+	Widget(Widget&amp;&amp; rhs);
+	Widget&amp; operator=(Widget&amp;&amp; rhs);
+
+	Widget(const Widget &amp;rhs);
+	Widget&amp; operator=(const Widget &amp;rhs);
+
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+Widget::~Widget() = default;
+Widget::Widget(Widget&amp;&amp; rhs) = default;
+Widget::Widget&amp; operator=(Widget&amp;&amp; rhs) = default;
+
+Widget::Widget(const Widget &amp;rhs)
+    : pImpl(std::make_unique&lt;Impl&gt;(*(rhs.pImpl)))
+{
+    
+}
+Widget&amp; Widget::operator=(const Widget &amp;rhs)
+{
+    pImpl = std::make_unique&lt;Impl&gt;(*(rhs.pImpl));
+    return *this;
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>上述建议仅适用于std::unique_ptr，并不适用std::shared_ptr。因为对于std::shared_ptr而言，析构器型别是智能指针的一部分，这使得编译器会产生更小尺寸的运行期代码。如此高效带来的后果是，欲使用编译器生成特种函数（例如，析构函数或移动函数），就要求其指涉到到型别必须是完整型别。而对于std::shared_ptr而言，析构器型别并非智能指针到一部分，这就需要更大尺寸到运行期数据结构以及更慢一些的目标代码，但在使用编译器生成但特种函数时，其指涉到到型别却并不要求是完整型别</p>
+</li>
+</ul>
+</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/vsgUEzDTX/" class="post-title gt-a-link">
+                    Unity Hub安装编辑器validation failed(验证失败)错误解决方案
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

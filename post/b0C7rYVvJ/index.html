@@ -1,0 +1,227 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Windows下VSCode使用clangd插件获得智能提示 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Windows下VSCode使用clangd插件获得智能提示
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-10-22 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/LfhFVuP3_/" class="post-tags">
+                            # 计科基础
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <blockquote>
+<p>本篇博客基于<a href="https://kafuu.cc/post/jk0VwAoB4/">Windows下使用VSCode调试C/C++</a></p>
+</blockquote>
+<h2 id="一-关于为什么选择clangd而不是微软的cc扩展">一、关于为什么选择clangd而不是微软的C/C++扩展</h2>
+<blockquote>
+<p>clangd相较于C/C++扩展占用资源更少，拥有更高效的代码补全、代码跳转、更直观的补全和提示。</p>
+</blockquote>
+<h2 id="二-安装clangd拓展">二、安装clangd拓展</h2>
+<h4 id="打开vscode在侧边栏选择扩展搜索clangd并安装">打开VSCode，在侧边栏选择扩展，搜索clangd并安装</h4>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1666427216388.png" alt="" loading="lazy"></figure>
+<h2 id="三-配置clangd拓展">三、配置clangd拓展</h2>
+<ol>
+<li>
+<p>打开用户配置：在VSCode按下快捷键CTRL + SHIFT + P，输入'&gt;open user settings json'<br>
+<img src="https://kafuuneko.me/post-images/1667222850778.png" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>将以下内容拷贝进json</p>
+</li>
+</ol>
+<blockquote>
+<p>注意事项：在拷贝之前请先确认json中是否已经存在clangd.path和clangd.arguments项目，若已存在则直接在已经存在的项上修改<br>
+关于更多的clangd.arguments参数请参考<a href="https://clang.llvm.org/docs/">clangd文档</a></p>
+</blockquote>
+<pre><code>//clangd.path项示例：&quot;clangd.path&quot;: &quot;C:\\mingw64\\bin\\clangd.exe&quot;
+&quot;clangd.path&quot;: &quot;在上一个教程中的clangd的安装路径\\bin\\clangd.exe&quot;,
+&quot;clangd.arguments&quot;: [
+    &quot;--log=verbose&quot;,
+    &quot;--pretty&quot;,
+    &quot;--all-scopes-completion&quot;,
+    &quot;--completion-style=bundled&quot;,
+    &quot;--cross-file-rename&quot;,
+    &quot;--header-insertion=iwyu&quot;,
+    &quot;--header-insertion-decorators&quot;,
+    &quot;--background-index&quot;,
+    &quot;--clang-tidy&quot;,
+    &quot;--clang-tidy-checks=cppcoreguidelines-*,performance-*,bugprone-*,portability-*,modernize-*,google-*&quot;,
+    &quot;-j=2&quot;,
+    &quot;--pch-storage=disk&quot;,
+    &quot;--function-arg-placeholders=false&quot;,
+    &quot;--compile-commands-dir=build&quot;
+  ],
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://kafuuneko.me/post-images/1667223108343.png" alt="" loading="lazy"></figure>
+<ol start="3">
+<li>按下ctrl + s保存修改，并重启VSCode，至此配置完成</li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/jk0VwAoB4/" class="post-title gt-a-link">
+                    Windows下使用VSCode调试C/C++
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

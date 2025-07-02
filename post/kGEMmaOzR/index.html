@@ -1,0 +1,344 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>KMP算法 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    KMP算法
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-01-09 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/We2T_wpAt/" class="post-tags">
+                            # C++
+                        </a>
+                    
+                        <a href="https://kafuuneko.me/tag/MCT7FIul8/" class="post-tags">
+                            # 算法
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>Knuth-Morris-Pratt算法（简称KMP），是一种高效的字符串匹配算法</p>
+<p>相较于暴力匹配O(mn)的时间复杂度，KMP的算法时间复杂度为O(m+n)，性能上有极大的提升，KMP算法极大的减少了不必要的回溯过程。</p>
+<p>假定搜寻的文本串下标索引是i，模式串下标索引是j，KMP算法在匹配过程中，文本串下标i会一直递增，直到结束，不会回退。</p>
+<p>一.NEXT数组应用</p>
+<p>NEXT数组是KMP算法的核心，它指向当文本与模式串失配时模式串将要回退到的位置。</p>
+<p>假定模式字符串为 aabaab，那么这个模式串的NEXT是(暂且不管怎么获得的){-1,0,1,0,1,2}</p>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1617950793113.png" alt="" loading="lazy"></figure>
+<p>当模式串在第0位发生失配，文本指针i向后移动一位</p>
+<p>当模式串在第1位发生失配，模式串指针回退到第0位</p>
+<p>当模式串在第2位发生失配，模式串指针回退到第1位</p>
+<p>当模式串在第3位发生失配，模式串指针回退到第0位</p>
+<p>当模式串在第4位发生失配，模式串指针回退到第1位</p>
+<p>当模式串在第5位发生失配，模式串指针回退到第2位</p>
+<p>例：寻找字符串‘aababaabaaba’中’aabaab’首次出现的起始位置，那么匹配过程是这样的：</p>
+<figure data-type="image" tabindex="2"><img src="https://kafuuneko.me/post-images/1617950810518.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://kafuuneko.me/post-images/1617950817901.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://kafuuneko.me/post-images/1617950824751.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://kafuuneko.me/post-images/1617950831748.png" alt="" loading="lazy"></figure>
+<p>当模式串在第4位发生失配，模式串指针回退到第1位</p>
+<figure data-type="image" tabindex="6"><img src="https://kafuuneko.me/post-images/1617950850660.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="https://kafuuneko.me/post-images/1617950856418.png" alt="" loading="lazy"></figure>
+<p>当模式串在第1位发生失配，模式串指针回退到第0位</p>
+<figure data-type="image" tabindex="8"><img src="https://kafuuneko.me/post-images/1617950868835.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="https://kafuuneko.me/post-images/1617950874761.png" alt="" loading="lazy"></figure>
+<p>当模式串在第0位发生失配，文本指针i向后移动一位</p>
+<figure data-type="image" tabindex="10"><img src="https://kafuuneko.me/post-images/1617950911893.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="11"><img src="https://kafuuneko.me/post-images/1617950914851.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://kafuuneko.me/post-images/1617950917571.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="13"><img src="https://kafuuneko.me/post-images/1617950920205.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="14"><img src="https://kafuuneko.me/post-images/1617950922749.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="15"><img src="https://kafuuneko.me/post-images/1617950925266.png" alt="" loading="lazy"></figure>
+<p>匹配完成，获取’aabaab’首次出现的起始位置为5</p>
+<figure data-type="image" tabindex="16"><img src="https://kafuuneko.me/post-images/1617950945171.gif" alt="" loading="lazy"></figure>
+<p>二.制取NEXT数组</p>
+<p>重新观察一下模式串’aabaab’的NEXT数组<br>
+<img src="https://kafuuneko.me/post-images/1617950980020.png" alt="" loading="lazy"></p>
+<p>当j=5的位置发生失配时，next数组指示模式串指针j回退到2位置</p>
+<p>观察j=5位置，可以发现</p>
+<p>substr[j-1] = substr[next[j-1]]  =&gt; substr[4] = substr[next[4]] =&gt; substr[4] = substr[1]</p>
+<p>substr[j-2] = substr[next[j-2]] =&gt; substr[3] = substr[next[3]] =&gt; substr[3] = substr[0]</p>
+<p>也就是说 j = 5的前两个元素与next[5]所指向的2的前两个元素相等</p>
+<p>正因为这样，在j=5位置发生失配时，j指针才能直接回退到2</p>
+<p>例如用这个模式串去搜索aabaacaabaab</p>
+<figure data-type="image" tabindex="17"><img src="https://kafuuneko.me/post-images/1617950997110.png" alt="" loading="lazy"></figure>
+<p>在j=5的位置发生失配，j指针回退到2</p>
+<figure data-type="image" tabindex="18"><img src="https://kafuuneko.me/post-images/1617951010547.png" alt="" loading="lazy"></figure>
+<p>回退后我们可以保证模式串j=0,j=1位置的字符必定与文本i=3,i=4位置的字符相等，所以只需判断移动后模式串j位置的字符与文本i位置的字符是否相等即可</p>
+<p>我们取得‘aabaab’的所有前缀，无视每个前缀的最后一个元素，每个前缀除去最后一个元素，后缀与前缀的重叠次数就是next的值，第一个next值固定为-1，第二个next值固定为0</p>
+<p>S                   NEXT</p>
+<p>a                   -1（固定）</p>
+<p>aa                  0（固定）</p>
+<p>aab                1（aa的前后缀有 a、a）（相同的有一个）</p>
+<p>aaba              0（aab的前后缀有a、aa、b、ab）（没有相同的）</p>
+<p>aabaa            1（aaba的前后缀有a、aa、aab、a、ba、aba）（相同的有一个）</p>
+<p>aabaab          2（aabaa的前后缀有a、aa、aab、aaba、a、aa、baa、abaa）（相同的有两个）</p>
+<p>这样，我们就求得了NEXT数组={-1, 0, 1, 0, 1, 2}</p>
+<p>再次观察</p>
+<figure data-type="image" tabindex="19"><img src="https://kafuuneko.me/post-images/1617951025435.png" alt="" loading="lazy"></figure>
+<p>可知，如果我们想知道next[j+1]的值，只需判断T[j]是否等于T[ next[j] ]</p>
+<p>1.我们可以定义一个临时变量：k = next[j]</p>
+<p>2.如果k = -1，那么next[j + 1] = 0，否则继续步骤3</p>
+<p>3.如果T[j] == T[k]，那么next[j+1] = k + 1，否则继续步骤4</p>
+<p>4.如果T[j] != T[k]，那么k=next[k]，重复判断步骤2</p>
+<p>例：J表示模式串索引，T表示模式串数组，N表示模式串NEXT数组</p>
+<p>一、j = 2, N[j]=？</p>
+<figure data-type="image" tabindex="20"><img src="https://kafuuneko.me/post-images/1617951038829.png" alt="" loading="lazy"></figure>
+<p>假定 k = N[j – 1] = N[1] = 0</p>
+<p>判断 T[j – 1]  是否等于 T[k]：T[j-1] = T[1] 是否等于 T[k] = T[0]</p>
+<p>T[1] = T[0]  =&gt; ‘a’ 等于 ‘a’</p>
+<p>因为T[1] = T[0]，所以N[j] = k + 1 =&gt; N[2] = 1</p>
+<figure data-type="image" tabindex="21"><img src="https://kafuuneko.me/post-images/1617951050468.png" alt="" loading="lazy"></figure>
+<p>二、j = 3, N[j]=？</p>
+<p>假定 k = N[j – 1] = N[2] = 1</p>
+<p>判断 T[j – 1]  是否等于 T[k]：T[j-1] = T[2] 是否等于 T[k] = T[1]</p>
+<p>T[2] = T[1]  =&gt; ‘b’ 不等于 ‘a’</p>
+<p>所以k = N[k] = N[1] = 0</p>
+<p>再次判断 T[j – 1]  是否等于 T[k]，T[2] = T[0] =&gt; ‘b’ 不等于 ‘a’</p>
+<p>所以k = N[k] = N[0] = -1</p>
+<p>因为k = -1，所以N[3] = 0</p>
+<figure data-type="image" tabindex="22"><img src="https://kafuuneko.me/post-images/1617951065316.png" alt="" loading="lazy"></figure>
+<p>制取Next数组代码：</p>
+<pre><code>size_t npos = static_cast&lt;size_t&gt;(-1);
+
+sizr_t* KMP_MakeNext(const char* substr, size_t len)
+{
+    size_t* next = new size_t[len];//next数组是new的，没使用智能指针，所以用完注意释放
+    next[0] = npos;
+
+    int j = 0;
+    int k = npos;
+
+    while(j &lt; len - 1)
+    {
+
+        if(k == npos || substr[j] == substr[k])
+        {
+            ++j;
+
+            if(k == npos) k = 0;
+            else ++k;
+
+            next[j] = k;
+
+        }
+        else
+        {
+            k = next[k];
+        }
+
+    }
+
+    return next;
+}
+</code></pre>
+<p>四.字符串匹配</p>
+<p>既然已经获得了Next数组，那么字符串匹配就是一件小事了。</p>
+<p>以下便是使用NEXT进行字符串匹配的代码</p>
+<pre><code>size_t KMP_Find_Count(const char* findstr, const char* substr)
+{
+    size_t find_len = strlen(findstr), subs_len = strlen(substr);
+
+    if(subs_len == 0 || find_len &lt; subs_len) return 0;
+
+    size_t* next = KMP_MakeNext(substr, subs_len, false);
+
+    size_t count = 0;
+
+    size_t j = 0, k = 0;
+    while( j &lt; find_len )
+    {
+        if(k == npos || findstr[j] == substr[k])
+        {
+            //指示后移，或匹配成功
+            ++j;
+            if(k == npos)
+            {
+                k = 0;
+            }
+                else
+            {
+                ++k;
+            }
+
+            if(k == subs_len)
+            {
+                //子串匹配成功，计数+1，并回溯到匹配成功的位置，继续匹配
+                ++count;
+                k = next[k - 1];
+                --j;
+            }
+        }
+        else
+        {
+            k = next[k];
+        }
+    }
+    delete[] next;
+    return count;
+}
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/JHP7BjZhA/" class="post-title gt-a-link">
+                    PCQQ8.6协议分析
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

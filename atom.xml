@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://kafuuneko.me</id>
+    <title>Kafuu</title>
+    <updated>2025-07-02T08:10:25.101Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://kafuuneko.me"/>
+    <link rel="self" href="https://kafuuneko.me/atom.xml"/>
+    <subtitle>&lt;body&gt;&lt;script language=&quot;javaScript&quot;&gt;
+now = new Date(),hour = now.getHours()
+if(hour &lt; 6){document.write(&quot;凌晨好！&quot;)}
+else if (hour &lt; 9){document.write(&quot;早上好！&quot;)}
+else if (hour &lt; 12){document.write(&quot;上午好！&quot;)}
+else if (hour &lt; 14){document.write(&quot;中午好！&quot;)}
+else if (hour &lt; 17){document.write(&quot;下午好！&quot;)}
+else if (hour &lt; 19){document.write(&quot;傍晚好！&quot;)}
+else {document.write(&quot;晚上好！&quot;)}
+document.write(&quot;欢迎来到我的博客～～&quot;)
+&lt;/script&gt;&lt;/body&gt;</subtitle>
+    <logo>https://kafuuneko.me/images/avatar.png</logo>
+    <icon>https://kafuuneko.me/favicon.ico</icon>
+    <rights>All rights reserved 2025, Kafuu</rights>
+    <entry>
+        <title type="html"><![CDATA[Windows下VSCode使用clangd插件获得智能提示]]></title>
+        <id>https://kafuuneko.me/post/b0C7rYVvJ/</id>
+        <link href="https://kafuuneko.me/post/b0C7rYVvJ/">
+        </link>
+        <updated>2022-10-22T08:18:28.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>本篇博客基于<a href="https://kafuu.cc/post/jk0VwAoB4/">Windows下使用VSCode调试C/C++</a></p>
+</blockquote>
+<h2 id="一-关于为什么选择clangd而不是微软的cc扩展">一、关于为什么选择clangd而不是微软的C/C++扩展</h2>
+<blockquote>
+<p>clangd相较于C/C++扩展占用资源更少，拥有更高效的代码补全、代码跳转、更直观的补全和提示。</p>
+</blockquote>
+<h2 id="二-安装clangd拓展">二、安装clangd拓展</h2>
+<h4 id="打开vscode在侧边栏选择扩展搜索clangd并安装">打开VSCode，在侧边栏选择扩展，搜索clangd并安装</h4>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1666427216388.png" alt="" loading="lazy"></figure>
+<h2 id="三-配置clangd拓展">三、配置clangd拓展</h2>
+<ol>
+<li>
+<p>打开用户配置：在VSCode按下快捷键CTRL + SHIFT + P，输入'&gt;open user settings json'<br>
+<img src="https://kafuuneko.me/post-images/1667222850778.png" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>将以下内容拷贝进json</p>
+</li>
+</ol>
+<blockquote>
+<p>注意事项：在拷贝之前请先确认json中是否已经存在clangd.path和clangd.arguments项目，若已存在则直接在已经存在的项上修改<br>
+关于更多的clangd.arguments参数请参考<a href="https://clang.llvm.org/docs/">clangd文档</a></p>
+</blockquote>
+<pre><code>//clangd.path项示例：&quot;clangd.path&quot;: &quot;C:\\mingw64\\bin\\clangd.exe&quot;
+&quot;clangd.path&quot;: &quot;在上一个教程中的clangd的安装路径\\bin\\clangd.exe&quot;,
+&quot;clangd.arguments&quot;: [
+    &quot;--log=verbose&quot;,
+    &quot;--pretty&quot;,
+    &quot;--all-scopes-completion&quot;,
+    &quot;--completion-style=bundled&quot;,
+    &quot;--cross-file-rename&quot;,
+    &quot;--header-insertion=iwyu&quot;,
+    &quot;--header-insertion-decorators&quot;,
+    &quot;--background-index&quot;,
+    &quot;--clang-tidy&quot;,
+    &quot;--clang-tidy-checks=cppcoreguidelines-*,performance-*,bugprone-*,portability-*,modernize-*,google-*&quot;,
+    &quot;-j=2&quot;,
+    &quot;--pch-storage=disk&quot;,
+    &quot;--function-arg-placeholders=false&quot;,
+    &quot;--compile-commands-dir=build&quot;
+  ],
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://kafuuneko.me/post-images/1667223108343.png" alt="" loading="lazy"></figure>
+<ol start="3">
+<li>按下ctrl + s保存修改，并重启VSCode，至此配置完成</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Windows下使用VSCode调试C/C++]]></title>
+        <id>https://kafuuneko.me/post/jk0VwAoB4/</id>
+        <link href="https://kafuuneko.me/post/jk0VwAoB4/">
+        </link>
+        <updated>2022-10-22T07:09:35.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>本教程面向C/C++初学者，提供VSCode最简便的C/C++学习环境，因此只安装必要的编译器以及ide确保可运行代码查看效果，关于智能提示或有项目需求的请自行查阅clangd、cmake教程。</p>
+</blockquote>
+<h2 id="一-请抛弃贵校古老且难用的vc60拥抱更现代化的ide">一. 请抛弃贵校古老且难用的VC6.0拥抱更现代化的ide</h2>
+<p>VSCode官网：https://code.visualstudio.com/<br>
+进入后VSCode官网点击Download按钮下载VSCode安装包并安装<br>
+注意事项：安装路径最好不要有中文或其它非ASCII字符<br>
+<img src="https://kafuuneko.me/post-images/1666422759685.png" alt="" loading="lazy"><br>
+<img src="https://kafuuneko.me/post-images/1666422771250.png" alt="" loading="lazy"><br>
+<img src="https://kafuuneko.me/post-images/1666422775555.png" alt="" loading="lazy"></p>
+<h2 id="二-配置llvmclang编译环境">二. 配置LLVM/Clang编译环境</h2>
+<blockquote>
+<p>Clang是基于LLVM的C/C++/Objective-C编译器</p>
+</blockquote>
+<p>32位版：<a href="https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-ucrt-r2/winlibs-i686-posix-dwarf-gcc-12.2.0-llvm-14.0.6-mingw-w64ucrt-10.0.0-r2.7z">Github</a><br>
+64位版：<a href="https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-ucrt-r2/winlibs-x86_64-posix-seh-gcc-12.2.0-llvm-14.0.6-mingw-w64ucrt-10.0.0-r2.7z">Github</a></p>
+<p>点击上方超链接即可下载一套完整的编译环境(GCC 12.2.0+LLVM/Clang/LLD/LLDB 14.0.6+MinGW-w64 10.0.0)</p>
+<p>下载完成后请解压压缩包，并在解压路径找到mingw64文件夹，将其拷贝到C盘根目录下（或者其它路径无中文名的位置）</p>
+<h4 id="按下快捷键windows-e打开文件浏览器右击此电脑并选择属性">按下快捷键Windows + E打开文件浏览器，右击‘此电脑’并选择属性</h4>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1666422813808.png" alt="" loading="lazy"></figure>
+<h4 id="进入高级系统设置">进入‘高级系统设置</h4>
+<figure data-type="image" tabindex="2"><img src="https://kafuuneko.me/post-images/1666422819060.png" alt="" loading="lazy"></figure>
+<h4 id="在高级选项卡选择环境变量">在‘高级’选项卡选择‘环境变量’</h4>
+<figure data-type="image" tabindex="3"><img src="https://kafuuneko.me/post-images/1666422831756.png" alt="" loading="lazy"></figure>
+<h4 id="在系统变量找到path并双击进入环境变量编辑页面">在系统变量找到‘Path’并双击进入环境变量编辑页面</h4>
+<figure data-type="image" tabindex="4"><img src="https://kafuuneko.me/post-images/1666422896666.png" alt="" loading="lazy"></figure>
+<h4 id="添加您mingw64中的bin路径">添加您mingw64中的bin路径</h4>
+<blockquote>
+<p>如果您的mingw64存储在C盘根目录下，则您要添加的路径为：C:\mingw64\bin</p>
+</blockquote>
+<figure data-type="image" tabindex="5"><img src="https://kafuuneko.me/post-images/1666422840754.png" alt="" loading="lazy"></figure>
+<h4 id="完成以上步骤后确定即完成编译环境配置">完成以上步骤后确定即完成编译环境配置</h4>
+<h2 id="三-vscode配置">三. VSCode配置</h2>
+<h4 id="运行vscode并在拓展选项卡搜索code-runner并安装">运行VSCode，并在拓展选项卡搜索Code Runner并安装</h4>
+<figure data-type="image" tabindex="6"><img src="https://kafuuneko.me/post-images/1666423517889.png" alt="" loading="lazy"></figure>
+<h4 id="安装完成后点击管理按钮进入拓展设置">安装完成后点击管理按钮进入拓展设置</h4>
+<figure data-type="image" tabindex="7"><img src="https://kafuuneko.me/post-images/1666423660383.png" alt="" loading="lazy"></figure>
+<h4 id="找到code-runner-run-in-terminal选项并勾选">找到'Code-runner: Run In Terminal'选项并勾选</h4>
+<figure data-type="image" tabindex="8"><img src="https://kafuuneko.me/post-images/1666423745838.png" alt="" loading="lazy"></figure>
+<h4 id="完成以上操作后关闭设置并使用快捷键-ctrln-创建一个新文件键入测试代码后使用快捷键ctrl-s-保存到任意目录注意选择保存类型为c或c完成保存操作后在代码编辑页面内右击鼠标选择run-code或者使用快捷键ctrl-alt-n运行代码">完成以上操作后关闭设置，并使用快捷键 Ctrl+N 创建一个新文件，键入测试代码后使用快捷键Ctrl + S 保存到任意目录（注意选择保存类型为c或c++），完成保存操作后在代码编辑页面内右击鼠标选择Run Code（或者使用快捷键Ctrl + Alt + N）运行代码。</h4>
+<figure data-type="image" tabindex="9"><img src="https://kafuuneko.me/post-images/1666424102866.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BVD for Android - Bilibili视频下载器]]></title>
+        <id>https://kafuuneko.me/post/U47kbdCG5/</id>
+        <link href="https://kafuuneko.me/post/U47kbdCG5/">
+        </link>
+        <updated>2021-11-14T02:47:51.000Z</updated>
+        <content type="html"><![CDATA[<p>支持功能：</p>
+<ol>
+<li>支持下载BV、AV、EP、SS</li>
+<li>转换下载视频的封装格式为mp4或flv</li>
+<li>提取视频音频文件</li>
+</ol>
+<p>注意事项：</p>
+<ol>
+<li>下载720p以上清晰度的视频需要登录Bilibili账户</li>
+<li>下载4k或需要大会员的视频需要登录的Bilibili账户开通大会员</li>
+<li>请勿未经视频上传者授权擅自转载视频</li>
+<li>部分视频下载需视频上传者授权</li>
+</ol>
+<p>本软件基于GPL3.0开源协议开源：<a href="https://github.com/KafuuNeko/BiliDownload">Github</a></p>
+<p>下载地址：<a href="https://github.com/KafuuNeko/BiliDownload/releases">Github releases</a></p>
+<p>软件截图：</p>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1636858353503.JPG" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://kafuuneko.me/post-images/1636858359195.JPG" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bilibili BV-AV号转换 Java版]]></title>
+        <id>https://kafuuneko.me/post/u72hUfUFP/</id>
+        <link href="https://kafuuneko.me/post/u72hUfUFP/">
+        </link>
+        <updated>2021-10-27T14:17:00.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Bilibili BV-AV转换工具
+ *
+ * @author kafuu(kafuuneko@gmail.com)
+ *
+ * @version 1.0.0
+ * */
+public class BvConvert {
+
+    final static String mBvCode;
+    final static Map&lt;Character, Integer&gt; mBvIntegerMap;
+    static {
+        mBvCode = &quot;fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF&quot;;
+        mBvIntegerMap = new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; mBvCode.length(); ++i) {
+            mBvIntegerMap.put(mBvCode.charAt(i), i);
+        }
+    }
+
+    final static BigInteger mBvBase = BigInteger.valueOf(58);
+    final static BigInteger mBvXor = BigInteger.valueOf(177451812L);
+    final static BigInteger mBvOffset = BigInteger.valueOf(8728348608L);
+
+    final static int[] mBvBitMap = new int[] {4, 2, 6, 1, 8, 9};
+
+    /**
+     * bv转为av
+     * 
+     * @param bv Bv号，固定长度为12位(例如：BV1A4411N7Kb)
+     * 
+     * @return 此Bv所对应的Av号，如果Bv号长度不等于12将返回null
+     * 
+     * */
+    public static String bv2av(String bv) {
+        if (bv.length() != 12) {
+            return null;
+        }
+
+        BigInteger av = BigInteger.valueOf(0);
+        for (int index : mBvBitMap) {
+            BigInteger inc = BigInteger.valueOf(mBvIntegerMap.get(bv.charAt(index + 2)));
+            av = av.multiply(mBvBase).add(inc);
+        }
+        return av.subtract(mBvOffset).xor(mBvXor).toString();
+    }
+
+    /**
+     * av转bv
+     * */
+    public static String av2bv(String av) {
+
+        char[] bv = &quot;BV1xx4x1x7xx&quot;.toCharArray();
+
+        BigInteger x = new BigInteger(av);
+        x = x.xor(mBvXor).add(mBvOffset);
+
+        for (int i = mBvBitMap.length - 1; i &gt;=0 ; --i) {
+            bv[mBvBitMap[i] + 2] = mBvCode.charAt(x.mod(mBvBase).intValue());
+            x = x.divide(mBvBase);
+        }
+
+        return new String(bv);
+    }
+}
+
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[记Windows下CLion启动错误address already in user: bind解决方案]]></title>
+        <id>https://kafuuneko.me/post/ZkVUQJ-ZX/</id>
+        <link href="https://kafuuneko.me/post/ZkVUQJ-ZX/">
+        </link>
+        <updated>2021-10-24T12:58:41.000Z</updated>
+        <content type="html"><![CDATA[<p>解决方案：<br>
+重置Winsock或重启Winnat</p>
+<p>重置：<br>
+netsh winsock reset</p>
+<p>重启：<br>
+net stop winnat<br>
+net start winnat</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[C++ argument-dependent lookup 实参依赖查找]]></title>
+        <id>https://kafuuneko.me/post/QLZW03Oxn/</id>
+        <link href="https://kafuuneko.me/post/QLZW03Oxn/">
+        </link>
+        <updated>2021-10-19T05:04:06.000Z</updated>
+        <content type="html"><![CDATA[<p>C++实参依赖查找英文缩写为ADL，在查找无限定函数（包括对重载运算符的隐式函数调用）时，通常无限定名字查找所考虑的作用域和命名空间之外，还在其各个实参的命名空间中查找这些函数，例如:</p>
+<pre><code class="language-cpp">namespace ns1
+{
+    template&lt;class T&gt;
+    void foo(T)
+    {
+        std::cout &lt;&lt; &quot;ns1::foo&quot; &lt;&lt; std::endl;
+    }
+    
+    struct X {};
+}
+
+ns1::X x;
+foo(x); //全局命名空间并没有定义foo，但ADL会继续在实参的命名空间中查找
+        //因为这个实参的类型是ns1::X，所以会继续在ns1命名空间中查找foo
+</code></pre>
+<p>实参依赖查找使得使用定义于不同命名空间的运算符成为可能，例如</p>
+<pre><code class="language-cpp">namespace ns1
+{
+    struct X { int32_t value; };
+    
+    const X operator+(const X &amp;lhs, const X &amp;rhs)
+    {
+        return X { lhs.value + rhs.value };
+    }
+}
+
+ns1::X x1{10}, x2{20};
+auto x3 = x1 + x2; //等价于 x3 = operator+(x1, x2);
+                   //全局命名空间中没有operator+(const X&amp;, const X&amp;)
+                   //但因为实参属于ns1命名空间，所以ADL会检验ns1命名空间，并找到operator+(const X&amp;, const
+</code></pre>
+<p>ADL 是在泛型代码中为交换两个对象而建立的手法能成立的原因：</p>
+<pre><code class="language-cpp">using std::swap;
+swap(obj1, obj2);
+</code></pre>
+<pre><code class="language-cpp">namespace ns1
+{
+	struct Object
+	{
+		...
+		void swap(Object &amp;obj) noexcept;
+		...
+	};
+
+	void swap(Object &amp;lhs, Object &amp;rhs) noexcept
+	{
+		lhs.swap(rhs);
+	}
+}
+
+template&lt;class T&gt;
+void foo(T &amp;obj1, T &amp;obj2)
+{
+	using std::swap;
+	swap(obj1, obj2); //无限定函数（未使用名字空间修饰）
+	                  //根据ADL，此swap可以在T所属的命名空间中匹配函数
+	                  //若无匹配的函数，将调用标准库版swap(std::swap)
+}
+
+int32_t a = 1, b = 2;
+Object obj1, obj2;
+
+foo(a, b); //调用的是std::swap
+foo(obj1, obj2); //调用的是ns1::swap(Object &amp;lhs, Object &amp;rhs)
+</code></pre>
+<p>参考：</p>
+<p><a href="https://zh.cppreference.com/w/cpp/language/adl">实参依赖查找</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Argument-dependent_name_lookup">Argument-dependent name lookup - Wikipedia</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Effective 智能指针]]></title>
+        <id>https://kafuuneko.me/post/CN9VKjnkc/</id>
+        <link href="https://kafuuneko.me/post/CN9VKjnkc/">
+        </link>
+        <updated>2021-09-21T05:23:36.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>
+<p>条款18：使用std::unique_ptr管理具备专属所有权的资源</p>
+<ul>
+<li>
+<p>在默认情况下std::unique_ptr和裸指针有着相同的尺寸，对于大多数操作（包括提领），它们都是精确地执行裸相同地指令</p>
+</li>
+<li>
+<p>自定义析构器后，若析构器是函数指针，那么std::unique_ptr的尺寸一般会增加一到两个字长。若析构器是函数对象，则带来的尺寸变化取决于该函数对象中存储裸多少状态。这意味着当一个自定义析构器既可以用函数，又可以用无捕获的lambda表达式来实现时，lambda表达式是更好的选择：</p>
+<pre><code class="language-cpp">//使用无状态lambda表达式作为自定义析构器
+auto delInvmt1 = [](Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+}
+//返回值尺寸于Investment*相同
+template&lt;typename... Ts&gt;
+std::unique_ptr&lt;Investment, decltype(delInvmt1)&gt; makeInvestment(Ts&amp;&amp;... args);
+
+//使用函数作为自定义析构器
+void delInvmt1(Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+}
+//返回值尺寸等于Investment*的尺寸加上至少函数指针的尺寸
+template&lt;typename... Ts&gt;
+std::unique_ptr&lt;Investment, void(*)(Investment*)&gt; makeInvestment(Ts&amp;&amp;... args);
+
+</code></pre>
+</li>
+<li>
+<p>std::unique_ptr的API被设计成与使用形式相匹配。比如单个对象形式不提供索引运算符(operator[])，儿数组形式则不提供提领运算符(operator*和operator→)</p>
+</li>
+<li>
+<p>std::unique_ptr可以方便高效地转换为std::shared_ptr</p>
+<pre><code class="language-cpp">template&lt;typename... Ts&gt;
+std::unique_ptr&lt;Investment, decltype(delInvmt1)&gt; makeInvestment(Ts&amp;&amp;... args) 
+{ ... }
+
+std::shared_ptr&lt;Investment&gt; sp = makeInvestment( arguments );
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款19：使用std::shared_ptr管理具备共享所有权的资源</p>
+<ul>
+<li>
+<p>std::shared_ptr可以通过访问某资源的引用计数来确定是否自己是最后一个指涉到该资源的</p>
+</li>
+<li>
+<p>这种引用计数的方法会带来一些性能影响</p>
+<ul>
+<li>std::shared_ptr的尺寸是裸指针的两倍。因为它们内部既包含一个指涉到该资源的裸指针，也包含一个指涉到该资源的引用计数的裸指针</li>
+<li>引用计数的内存必须动态分配。</li>
+<li>引用计数的递增和递减必须是原子操作。</li>
+</ul>
+</li>
+<li>
+<p>对于std::shared_ptr，析构器并不是型别的一部分</p>
+<pre><code class="language-cpp">auto loggingDel = [](Widget *pw)
+{ ... }
+
+//在unique_ptr中，析构器是其型别的一部分
+std::unique_ptr&lt;Widget, decltype(loggingDel)&gt; upw(new Widget, loggingDel);
+//但对于std::shared_ptr来说，析构器并不是它型别的一部分
+std::shared_ptr&lt;Widget&gt; spw(new Widget, loggingDel);
+
+//因此拥有不同析构器的unique_ptr并不是同一类型，而拥有不同析构器的shared_ptr可以是同一种类型
+</code></pre>
+</li>
+<li>
+<p>自定义析构器不会改变std::shared_ptr的尺寸。无论析构器是什么型别，std::shared_ptr对象的尺寸都相当于裸指针的两倍</p>
+</li>
+<li>
+<p>每一个std::shared_ptr管理的对象都有一个控制块。除了包含引用计数之外，如果该自定义析构器被指定的话，该控制块还包含自定义析构器的一个复制。如果指了一个自定义内存分配器，控制块也会包含一份它的复制。控制块还可能包含其他附加数据，包括如条款21提到的一个被称之为弱计数的次级引用计数，但我们在本条款中将忽略此类数据</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1632202168990.jpg" alt="" loading="lazy"></figure>
+<pre><code>  - 一个对象的控制块由创建首个指涉到该对象的std::shared_ptr的函数来确定。至少应该是这样运作。毕竟，正在创建指涉到某个对象的std::shared_ptr的函数无从得知是否有其他的std::shared_ptr已经指涉到该对象的，因此，控制块的创建遵循来以下规则
+      - std::make_shared总是创建一个控制块，该控制块会包含指涉到T Object对象的指针(参考上图)
+      - 从具备专属所有权的指针（即std::unique_ptr或std::auto_ptr指针）除法构造一个std::shared_ptr时，会创建一个控制块。因为专属所有权指针不存在控制块（作为构造过程的一部分，std::shared_ptr被指定来其所指涉到的对象所有权，因此那个专属所有权智能指针会被置空）
+      - 当std::shared_ptr构造函数使用裸指针作为实参来调用时，它会创建一个控制块。如果想从一个已经拥有控制块的对象出发来创建一个std::shared_ptr，你大概会传递一个std::shared_ptr或std::weak_ptr而非裸指针作为构造函数实参，使用这两智能指针作为实参，则不会创建新的控制块，因为它们可以依赖传入的智能指针以指涉到任意所需的控制块
+
+  - 这些规则会导致一个后果：从同一个裸指针出发来构造不止一个std：：shared_ptr的话会产生未定义行为。因为这么一来，被指涉到的对象将会有多重的控制块。多重控制块意味着多重引用计数，而多重引用计数意味着该对象将被析构多次（每个引用计数会导致一次析构）。这意味着，如下所示的代码会是行不通的：
+
+      ```cpp
+
+      auto pw = new Widget;
+
+      std::shared_ptr&lt;Widget&gt; spw1(pw, loggingDel);//为*pw创建来一个控制块
+      std::shared_ptr&lt;Widget&gt; spw2(pw, loggingDel);//为*pw创建来第二个控制块
+
+      //double free
+      ```
+
+      - 要避免这些问题，首先，尽可能避免将裸指针传递给一个std::shared_ptr的构造函数。常用的替代手法是使用std::make_shared。然而在上述例子中，由于使用裸自定义析构器，这么一来就无法使用std::shared_make了。其次，如果必须将一个裸指针传递给std::shared_ptr，就直接传递new运算符的结果，而非传递一个裸指针变量
+
+      ```cpp
+      std::shared_ptr&lt;Widget&gt;(new Widget, loggingDel);//直接传递new表达式
+      ```
+
+      - 使用裸指针作为std::shared_ptr构造函数实参时，会有一种令人吃惊的方式导致涉及this指针的多重控制块。
+
+          ```cpp
+          //假设我们的程序使用std::shared_ptr来托管Widget对象，并且有个数据结构用来追踪被处理的Widget
+          std::vector&lt;std::shared_ptr&lt;Widget&gt;&gt; processedWidgets;
+          //假设Widget有个成员函数来做这种处理
+          class Widget {
+          public:
+          	...
+          	void process();
+          	...
+          };
+          //对Widget::process而言，有一种看似合理的方法来完成跟踪操作
+          void Widget::process()
+          {
+          	processedWidgets.emplace_back(this); //错误的做法！将处理完的Widget放入vector
+          }
+          //这代码能通过编译，但它把一个裸指针（this）传入了一个std::shared_ptr容器
+          //由此构造的std::shared_ptr将其所指涉的Widget型别对象(*this)创建一个新的控制块
+          //如果已指涉到该Widget型别的对象的成员函数外部再套层std::shared_ptr
+          auto sp = std::shared_ptr&lt;Widget&gt;();
+          sp-&gt;process(); //未定义行为，目前sp指涉到的对象有两个控制块
+          ```
+
+      - 针对上面的问题，我们可以使用std::enable_shared_from_this安全的由this指针创建一个std::shared_ptr
+
+          ```cpp
+          class Widget: public std::enable_shared_from_this&lt;Widget&gt; {
+          public:
+          	...
+          	void process();
+          	...
+          };
+          //安全的实现方法
+          void Widget::process()
+          {
+          	processedWidgets.emplace_back(shared_from_this());
+          }
+          auto sp = std::shared_ptr&lt;Widget&gt;();
+          sp-&gt;process();//没问题
+          ```
+
+      - 为避免用户在std::shared_ptr指涉到该对象前就调用了引发shared_from_this的成员函数，继承自std::enable_shared_from_this的类通常会将其构造函数声明为private访问层级，并且只允许用户通过调用返回std::shared_ptr的工厂函数来创建对象。例如，Widget看起了可能会长这样
+
+          ```cpp
+          class Widget: public std::enable_shared_from_this&lt;Widget&gt; {
+          public:
+          	template&lt;typename... Ts&gt;
+          	static std::shared_ptr&lt;Widget&gt; create(Ts&amp;&amp;... params);
+          	...
+          private:
+          	Widget() = default;
+          };
+          ```
+
+  - 在典型情况下，在使用了默认构造器和默认内存分配器，并且std::shared_ptr是由std::make_shared创建的前提下，控制块尺寸只有三个字长，并且分配操作实质上没有任何成本（这些成本都被并入至所指涉的地哦下的内存分配中去了）
+
+  - std::shared_ptr的API仅被设计用来处理指涉到单个对象的指针。并没有所谓的std::shared_ptr&lt;T[]&gt;。声明一个智能指针指涉到一个非智能的数组通常标志着设计的拙劣，一方面，std::shared_ptr并未提供operator[]，这么一来，要取得数组的下标，就要基于指针算术的笨拙表达式。另一方面，std::shared_ptr支持派生类到基类的指针型别转换，这对当个对象而言是有意义的，但当应用到数组时，它就会在型别系统上开天窗（也正因如此，std::shared_ptr&lt;T[]&gt;的API禁止此型别的转换）
+</code></pre>
+</li>
+<li>
+<p>条款20：对于类似std::shared_ptr但有可能空悬但指针使用std::weak_ptr</p>
+<ul>
+<li>
+<p>std::weak_ptr像std::shared_ptr那样运作，但又不影响其指涉对象但引用计数</p>
+</li>
+<li>
+<p>std::weak_ptr不能提领，也不能检查是否为空。这是因为std::weak_ptr并不是一种独立但智能指针，而是std::shared_ptr的一种扩充，一般都是通过std::shared_ptr来创建的。</p>
+<pre><code class="language-cpp">auto spw = std::make_shared&lt;Widget&gt;(); 
+std::weak_ptr&lt;Widget&gt; wpw(spw); //wpw和spw指涉到同一个Widget，引用计数保持为1
+spw = nullptr; //引用计数变成0，Widget对象被析构。wpw空悬。
+
+//std::weak_ptr的空悬，也被称之为失效(expired)。可以直接测试：
+if(wpw.expired()) ... //若wpw不再指涉到任何对象
+</code></pre>
+</li>
+<li>
+<p>但通常你想要但效果是：校验一个std::weak_ptr是否已经失效，如果尚未失效，就访问它所指涉到到对象。这个想起来容易，做起来难。由于std::weak_ptr缺乏提领操作，撰写不出这样到代码。即便这样的代码能够撰写出来，将校验和提领分离也会带来竞险：在expired的调用和提领操作之前，另一个线程可能重新赋值或析构最后一个指涉到该对象到std::shared_ptr，而这会导致该对象被析构。在此情况下，提领会引发未定义行为。</p>
+<pre><code class="language-cpp">//综上，我们需要一个原子操作来完成std::weak_ptr是否失效但校验
+//以及在未失效但条件下提供所指涉到到对象到访问
+//这个操作可以由std::weak_ptr创建std::shared_ptr来实现
+std::shared_ptr&lt;Widget&gt; spw1 = wpw.lock(); //若wpw失效，则spw1为空
+auto spw2 = wpw.lock(); //同上，但使用auto
+//另一种形式是用std::weak_ptr作为实参来构造std::shared_ptr。若失效，则抛出异常
+std::shared_ptr&lt;Widget&gt; spw3(wpw); //若wpw失效，抛出std::bad_weak_ptr型别但异常
+</code></pre>
+</li>
+<li>
+<p>std::weak_ptr可能到用武之地包括缓存、观察者列表，以及避免std::shared_ptr指针环路</p>
+</li>
+</ul>
+</li>
+<li>
+<p>条款21：优先选用std::make_unique和std::make_shared，而非直接使用new</p>
+<ul>
+<li>
+<p>std::make_shared是C++11的一部分，但std::make_unique不是。若要在C++11中使用std::make_unique，则需要自行编写：</p>
+<pre><code class="language-cpp">template&lt;typename T, typename... Ts&gt;
+std::unique_ptr&lt;T&gt; make_unique(Ts&amp;...params)
+{
+	return std::unique_ptr&lt;T&gt;(new T(std::forward&lt;Ts&gt;(params)...));
+}
+//不要把你的版本放入std名字空间，因为当升级到C++14标准库实现时，你不会想让它和供应商提供的版本产生冲突
+</code></pre>
+</li>
+<li>
+<p>std::make_unique和std::make_shared是三个make系列函数中的两个。make系列函数会把一个任意实参集合完美转发给动态分配内存对象的构造函数，并返回一个指涉到该对象到智能指针。make系列函数到第三个是std::allocate_shared。它到行为和std::make_shared一样，只不过它的第一个实参是个用以动态分配内存的分配器对象</p>
+</li>
+<li>
+<p>软件工程一个重要的原则：代码冗余应当避免。源代码中的重复会增加编译遍数，导致臃肿的目标代码，并且通常会产生更难上手的代码存根（code base）。它会演化成不一致的代码，而代码存梗终端不一致经常性导致代码缺陷。</p>
+<pre><code class="language-cpp">auto upw1(std::make_unique&lt;Widget&gt;()); //使用make系列函数
+std::unique_ptr&lt;Widget&gt; upw2(new Widget); //不使用make系列函数 Widget被重复写了两遍
+
+auto upw1(std::make_shared&lt;Widget&gt;()); //使用make系列函数
+std::make_shared&lt;Widget&gt; upw2(new Widget); //不使用make系列函数 Widget被重复写了两遍
+</code></pre>
+</li>
+<li>
+<p>使用make系列函数第二个原因与异常安全有关</p>
+<ul>
+<li>
+<p>假设我们有一个函数依据某个优先级来处理一个Widget对象</p>
+<pre><code class="language-cpp">void processWidget(std::shared_ptr&lt;Widget&gt; spw, int priority);
+</code></pre>
+</li>
+<li>
+<p>现在假设有一个函数用来计算相对优先级</p>
+<pre><code class="language-cpp">int computePriority();
+</code></pre>
+</li>
+<li>
+<p>我们在processWidget的调用中用到了该函数，并且这调用中，processWidget使用了new运算符，而非std::make_shared</p>
+<pre><code class="language-cpp">processWidget(
+	std::shared_ptr&lt;Widget&gt;(new Widget), 
+	computePriority() //潜在到资源泄漏
+);
+</code></pre>
+</li>
+<li>
+<p>在processWidget到调用过程中，下列事件必须在processWidget开始执行前发生：</p>
+<ol>
+<li>表达式“new Widget”必须先完成评估求值，即，一个Widget对象必须在堆上创建</li>
+<li>由new产生到裸指针到托管对象std::shared_ptr<Widget>的构造函数必须执行</li>
+<li>computePriority必须运行</li>
+</ol>
+</li>
+<li>
+<p>编译器不必按照上述顺序来生成代码。“new Widget”必须在std::shared_ptr的构造函数得到调用前执行完毕，因为new表达式的结果将用做构造函数的实参之一。但是computePriority却可以在上述两个调用之前、之后，甚至，在极端情况下，会在上述两个调用之间执行。也就是说，编译器可能会放出这样的代码，以按如下时许执行操作</p>
+<ol>
+<li>实施“new Widget”</li>
+<li>执行computePriority</li>
+<li>运行std::shared_ptr构造函数</li>
+</ol>
+</li>
+<li>
+<p>如果生成来这样的代码，并且运行前computePriority产生来异常，那么由第一步动态分配的Widget会被泄漏，因为它将永远不会被存储在第三步才接管的std::shared_ptr中去。使用std::make_shared就可以避免这个问题（对于其它两个make同样适用）。</p>
+<pre><code class="language-cpp">processWidget(std::make_shared&lt;Widget&gt;(), computePriority());
+//std::make_shared和computePriority中肯定会有一个首先被调用
+//如果std::make_shared被首先调用，那么指涉到动态分配到Widget到裸指针会在computePriority被调用前就被安全存储在返回到std::shared_ptr对象中
+//如果是computePriority被首先调用，那么Widget还未被动态分配，所以即便出现异常也不会造成内存泄漏
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>std::make_shared与直接使用new表达式传递给构造函数相比，是性能的提升。使用std::make_shared会让编译器有机会利用更简洁的数据结构产生更小更快的代码（同样适用于std::allocated_shared）</p>
+<pre><code class="language-cpp">std::shared_ptr&lt;Widget&gt; spw(new Widget);
+//上面这段代码会引发两次内存分配，一次是分配Widget，另一个是分配控制块
+
+auto spw = std::make_shared&lt;Widget&gt;();
+//而这段代码只会分配一次内存，std::make_shared会分配单块内存
+//既保存来Widget对象又保存来与之相关联的控制块
+
+//处理内存分配，在释放时使用make_shared构造的shared_ptr也只需要执行一次delete
+</code></pre>
+</li>
+<li>
+<p>无法使用或者不推荐使用make系列函数的场景</p>
+<ol>
+<li>
+<p>需要使用自定义析构器</p>
+</li>
+<li>
+<p>使用大括号初始化物来创建指涉到对象到指针</p>
+<pre><code class="language-cpp">auto upv = std::make_unique&lt;std::vector&lt;int&gt;&gt;(10, 20);
+//这会创建出一个包含10个元素、每个元素值都是20的std::vector
+//因为make系列函数里，对形参进行完美转发对代码使用对是圆括号而非大括号
+
+//如果想使用make系列函数来完美转发大括号初始化物对话，在条款30也给出来一个变通对方案
+auto initList = {10, 20};
+auto upv = std::make_unique&lt;std::vector&lt;int&gt;&gt;(initList);
+</code></pre>
+</li>
+<li>
+<p>std::shared_ptr不使用于自定义了自身版本对operator new和operatpr delete的对象</p>
+<ul>
+<li>通常情况下，类自定义这两种函数被设计成仅用来分配和释法该类精确尺寸的内存块。例如，Widget类的operator new和operator delete被设计用做处理尺寸恰好是sizeof(Widget)的内存块。<strong>而std::allocate_shared所要求的内存数量并不等于动态分配的内存尺寸，而是该尺寸的基础加上控制块的尺寸。</strong></li>
+</ul>
+</li>
+<li>
+<p>尺寸较大的对象，并且有std::weak_ptr指涉到该对象</p>
+<ul>
+<li>由于std::make_shared将控制块和它托管到对象放在同一块内存上分配。当对象的引用计数变为0时，对象被析构。然而，托管对象所占用的内存直到与其关联的控制块也被析构时才会释法，因为同一动态分配的内存块同时包含来两者。</li>
+<li>如前所述，控制块中还有个弱引用计数。std::weak_ptr通过检查控制块里的引用计数（而非弱计数）来校验自己是否失效。假如引用计数为0，则std::weak_ptr则失效</li>
+<li>由于std::weak_ptr会指涉到某个控制块（即，弱计数大于0），该控制块肯定会持续存在。而由于控制块到存在，包含它到内存肯定会持续存在。这么一来，通过对应于std::shared_ptr的make系列函数所分配的内存在最后一个std::shared_ptr和最后一个指涉到它到std::weak_ptr都被析构前，无法得到释放</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>对于不适合使用make系列函数到情况，为了避免异常安全问题，就要确保你直接使用new表达式到时候，立即将表达式到结果传递给智能指针构造函数</p>
+<pre><code class="language-cpp">std::shared_ptr&lt;Widget&gt; spw(new Widget, cusDel);
+processWidget(spw, computePriority());//正确，但并非最优优化
+
+//由于processWidget里的shared_ptr参数是按值传递的，而spw是个左值
+//所以在调用processWidget时会产生一次复制构造
+//而复制一个std::shared_ptr要求对其引用计数进行一次原子递增操作（这会造成性能损失）
+//因此我们需要将它进行移动
+processWidget(std::move(spw), computePriority()); //性能最优解
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>条款22：使用Pimpl习惯用法时，将特殊成员函数的定义放到实现文件中</p>
+<ul>
+<li>
+<p>Pimpl习惯用法（“pointer to implementation”，即指涉到实现到指针），就是把某类的数据成员用一个指涉到某实现类（或结构体）的指针替代，然后把原来在主类中的数据成员放置到实现类中，并通过指针间接访问这些数据成员</p>
+<pre><code class="language-cpp">//widget.h
+class Widget {
+public:
+	Widget();
+
+private:
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3; //某种用户自定义类型
+};
+</code></pre>
+<ul>
+<li>因为Widget到数据成员属于std::string、std::vector和Gadget等多种型别，这些型别所对应到头文件必须存在，Widget才能通过编译，这就说明Widget的客户必须#include <string>、<vector>，以及gadget.h。<strong>这些头文件增加类Widget的客户的编译时间</strong>，此外，它们也使得这些客户依赖于这些头文件内容。<strong>假如某个头文件的内容发生类改变，则Widget客户必须重新编译</strong>。</li>
+<li>以下是C++98中的Pimpl习惯用法，使用了裸指针、裸new运算符和裸delete运算符，在C++11以及以上版本中这违背了“优先选用智能指针”的条款</li>
+</ul>
+<pre><code class="language-cpp">//widget.h
+class Widget {
+public: 
+	Widget();
+	~Widget();
+
+private:
+	struct Impl;
+	Impl *pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(new Impl) {}
+
+Widget::~Widget()
+{ delete pImpl; }
+</code></pre>
+<ul>
+<li>因此，在C++11及其以上版本中，我们需要使用std::unique_ptr替代裸指针</li>
+</ul>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+</code></pre>
+<ul>
+<li>Widget的析构函数不复存在了。因为我们无需再为其撰写代码，当unique_ptr被析构时，它会自动析构它所指涉到到对象，但遗憾的是，这段代码甚至最平凡的客户代码都不能通过编译</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;widget.h&gt;
+Widget w; //错误！无法通过编译
+</code></pre>
+<ul>
+<li>因为我们使用了unique_ptr，而在主类中，我们未声明析构函数。所以编译器为我们自动生成了一个析构函数。在这个析构函数中使用了std::unique_ptr的默认析构器。默认析构器是在std::unique_ptr内部使用了delete运算符来针对裸指针实施析构函数。然而，在实施delete运算符之前，典型的实现会使用C++11中的static_assert去确保裸指针未指涉到非完整型别。这么一来，当编译器为Widget w的析构函数产生代码时，通常就会遇到一个失败的static_assert，从而导致了错误信息的产生。这个此外信息和w被析构的位置有关，因为Widget的析构函数于其编译器产生的特种成员函数一样，基本上隐式inline的。</li>
+</ul>
+<pre><code class="language-cpp">//unique_ptr默认析构器实现
+template &lt;class _Tp&gt;
+struct default_delete&lt;_Tp[]&gt; {
+private:
+	...
+  template &lt;class _Up&gt;
+  typename _EnableIfConvertible&lt;_Up&gt;::type
+  operator()(_Up* __ptr) const _NOEXCEPT {
+    static_assert(sizeof(_Tp) &gt; 0, &quot;default_delete can not delete incomplete type&quot;);
+    static_assert(!is_void&lt;_Tp&gt;::value, &quot;default_delete can not delete void type&quot;);
+    delete[] __ptr;
+  }
+};
+</code></pre>
+<ul>
+<li>为解决这一问题，只需要保证生成析构std::unique_ptr<a href="Widget::Impl">Widget::Impl</a>代码处的Widget::Impl是个完整的型别即可。只要型别的定义可以被看到，它就是完整的。而Widget::Impl的定义位于widget.cpp中。因此，成功编译的关键在于让编译器看到Widget的析构函数的函数体的位置在widget.cpp内部的Widget::Impl定义之后</li>
+</ul>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+	~Widget();
+
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+Widget::~Widget() {}
+//或
+Widget::~Widget() = default;
+</code></pre>
+<ul>
+<li>
+<p>当在Widget中声明了析构函数，那么编译器将不会自动产生移动操作，即使默认生成的移动操作的行为完全正确，假如你需要支持移动操作，就必须自己声明该函数。既然编译器产生的版本是正确的，你很有可能尝试如下实现：</p>
+<pre><code class="language-cpp">//widget.h
+class Widget {
+public:
+	...
+	Widget(Widget&amp;&amp; rhs) = default;
+	Widget&amp; operator=(Widget&amp;&amp; rhs) = default;
+	...
+};
+</code></pre>
+</li>
+<li>
+<p>这种手法会导致和类中没有声明析构函数一样的问题，产生该问题的基本原因也相同。编译器生成的移动赋值操作需要在重新赋值前析构pImpl指涉到到对象，但在Widget但头文件里pImpl指涉到的是非完整型别。move构造函数处问题的原因有所不同，这里的问题在于，编译器会在move构造函数内抛出异常的事件中生成析构pImpl的代码，而对于pImpl析构要求Impl具备完整型别</p>
+</li>
+<li>
+<p>由于产生的原因一如此前，修复手法也如法炮制，把移动操作的定义移入实现文件内：</p>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+	~Widget();
+	Widget(Widget&amp;&amp; rhs);
+	Widget&amp; operator=(Widget&amp;&amp; rhs);
+
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+Widget::~Widget() = default;
+Widget::Widget(Widget&amp;&amp; rhs) = default;
+Widget::Widget&amp; operator=(Widget&amp;&amp; rhs) = default;
+</code></pre>
+</li>
+<li>
+<p>编译器不会为像std::unique_ptr那样的只移型别生成复制操作，如果Widget需要支持复制操作，则需要自己撰写：</p>
+<pre><code class="language-cpp">//widget.h
+#include &lt;memory&gt;
+
+class Widget {
+public: 
+	Widget();
+	~Widget();
+	Widget(Widget&amp;&amp; rhs);
+	Widget&amp; operator=(Widget&amp;&amp; rhs);
+
+	Widget(const Widget &amp;rhs);
+	Widget&amp; operator=(const Widget &amp;rhs);
+
+private:
+	struct Impl;
+	std::unique_ptr&lt;Impl&gt; pImpl;
+};
+
+//widget.cpp
+#include &quot;widget.h&quot;
+#include &quot;gadget.h&quot;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Widget::Impl {
+	std::string name;
+	std::vector&lt;double&gt; data;
+	Gadget g1, g2, g3;
+};
+
+Widget::Widget()
+	: pImpl(std::make_unique&lt;Impl&gt;()) {}
+
+Widget::~Widget() = default;
+Widget::Widget(Widget&amp;&amp; rhs) = default;
+Widget::Widget&amp; operator=(Widget&amp;&amp; rhs) = default;
+
+Widget::Widget(const Widget &amp;rhs)
+    : pImpl(std::make_unique&lt;Impl&gt;(*(rhs.pImpl)))
+{
+    
+}
+Widget&amp; Widget::operator=(const Widget &amp;rhs)
+{
+    pImpl = std::make_unique&lt;Impl&gt;(*(rhs.pImpl));
+    return *this;
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>上述建议仅适用于std::unique_ptr，并不适用std::shared_ptr。因为对于std::shared_ptr而言，析构器型别是智能指针的一部分，这使得编译器会产生更小尺寸的运行期代码。如此高效带来的后果是，欲使用编译器生成特种函数（例如，析构函数或移动函数），就要求其指涉到到型别必须是完整型别。而对于std::shared_ptr而言，析构器型别并非智能指针到一部分，这就需要更大尺寸到运行期数据结构以及更慢一些的目标代码，但在使用编译器生成但特种函数时，其指涉到到型别却并不要求是完整型别</p>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Unity Hub安装编辑器validation failed(验证失败)错误解决方案]]></title>
+        <id>https://kafuuneko.me/post/vsgUEzDTX/</id>
+        <link href="https://kafuuneko.me/post/vsgUEzDTX/">
+        </link>
+        <updated>2021-08-20T10:49:25.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>等待下载完成，出现“validation failed”时，不要关闭Unity Hub</li>
+<li>手动创建文件夹：C:\Program Files\Unity\Hub\Editor</li>
+<li>回到Unity Hub，点击刷新</li>
+</ol>
+<p>https://forum.unity.com/threads/install-failed-validation-failed.1147151/</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[适用于树莓派4b的Java16]]></title>
+        <id>https://kafuuneko.me/post/INOc7XxL0/</id>
+        <link href="https://kafuuneko.me/post/INOc7XxL0/">
+        </link>
+        <updated>2021-06-20T02:51:57.000Z</updated>
+        <content type="html"><![CDATA[<p><a href="https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz">Download</a></p>
+<p>Or:</p>
+<p>wget https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk16u-2021-05-08-12-45/OpenJDK16U-jdk_arm_linux_hotspot_2021-05-08-12-45.tar.gz</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[C++ 奇异递归模板模式(Curiously recurring template pattern)]]></title>
+        <id>https://kafuuneko.me/post/KqvHFouCX/</id>
+        <link href="https://kafuuneko.me/post/KqvHFouCX/">
+        </link>
+        <updated>2021-04-13T06:54:51.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>
+<p>什么是CRTP？</p>
+<ul>
+<li>
+<p>CRTP的性质</p>
+<ol>
+<li>从模板类继承</li>
+<li>将派生类本身用做基础类的模板参数</li>
+</ol>
+</li>
+<li>
+<p>例如：</p>
+<pre><code class="language-cpp">template &lt;typename T&gt;
+class Base
+{
+    ...
+};
+
+class Derived : public Base&lt;Derived&gt;
+{
+    ...
+};
+</code></pre>
+<p>这样做的目的是使用基础类中的派生类，相较于虚函数实现的多态，CRTP节约了动态绑定虚函数查询的开支</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+class Base {
+public:
+	void call() {
+		static_cast&lt;T*&gt;(this)-&gt;foo();
+	}
+};
+
+class Derived : public Base&lt;Derived&gt; {
+public:
+	void foo() {
+		std::cout &lt;&lt; &quot;Derived class member was invoked&quot; &lt;&lt; std::endl;
+	}
+};
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>CRTP的使用陷阱</p>
+<ul>
+<li>如果两个类同时继承自同一个CRTP就矿难导致CRTP尝试使用错误的类，造成未定义的行为</li>
+</ul>
+<pre><code class="language-cpp">class Derived1 : public Base&lt;Derived1&gt;
+{
+    ...
+};
+
+class Derived2 : public Base&lt;Derived1&gt; // Base&lt;Derived1&gt; 出现问题
+{
+    ...
+};
+</code></pre>
+<ul>
+<li>可以将基础类的构造函数的访问权限设置为私有的，并将模板类设置为友元即可解决</li>
+</ul>
+<pre><code class="language-cpp">template&lt;class T&gt;
+class Base {
+public:
+	// ...
+private:
+	Base() {}
+	friend T;
+};
+
+class Derived1 : public Base&lt;Derived1&gt;
+{
+    ...
+};
+
+class Derived2 : public Base&lt;Derived1&gt; // 此时编译将无法通过
+{
+    ...
+};
+
+//因为派生类的构造器必须调用基类的构造函数，但由于基类中的构造函数是私有的，因此除了友元以外都无法访问它
+//而基类唯一的友元类是模板类，因此，如果派生类与模板类不同，则代码将无法通过编译
+</code></pre>
+<ul>
+<li>CRTP的另一个陷阱就算派生类中的方法会以隐藏相同名称的基类方法。因此，不要在基类和派生类中具有相同的名称</li>
+</ul>
+</li>
+<li>
+<p>CRTP的部分用途</p>
+<ol>
+<li>
+<p>对不同的派生类进行单独的计数</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+struct Counter {
+	static uint32_t count;
+
+	Counter(){
+		++count;
+	}
+
+	~Counter() {
+		--count;
+	}
+};
+
+template&lt;class T&gt; uint32_t Counter&lt;T&gt;::count{ 0 };
+
+class A : public Counter&lt;A&gt; { };
+
+class B : public Counter&lt;B&gt; { };
+
+int main()
+{
+	A a1{}, a2{};
+	B b1{};
+
+	std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; A::count &lt;&lt; &quot;个A对象&quot; &lt;&lt; std::endl;
+	std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; B::count &lt;&lt; &quot;个B对象&quot; &lt;&lt; std::endl;
+
+	return 0;
+}
+
+//print
+//存在2个A对象
+//存在1个B对象
+</code></pre>
+</li>
+<li>
+<p>静态多态</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+struct Counter {
+	static uint32_t count;
+
+	Counter(){
+		++count;
+	}
+
+	~Counter() {
+		--count;
+	}
+
+	void print() {
+		static_cast&lt;T*&gt;(this)-&gt;sub_print();
+	}
+};
+
+template&lt;class T&gt; uint32_t Counter&lt;T&gt;::count{ 0 };
+
+struct A : public Counter&lt;A&gt; {
+	void sub_print() {
+		std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; count &lt;&lt; &quot;个A对象&quot; &lt;&lt; std::endl;
+	}
+};
+
+struct B : public Counter&lt;B&gt; {
+	void sub_print() {
+		std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; count &lt;&lt; &quot;个B对象&quot; &lt;&lt; std::endl;
+	}
+};
+
+template&lt;class T&gt;
+void print_counter(Counter&lt;T&gt; &amp; c)
+{
+	c.print();
+}
+
+int main()
+{
+	A a1{}, a2{};
+	B b1{};
+
+	print_counter(a1);
+	print_counter(b1);
+
+	return 0;
+}
+</code></pre>
+</li>
+<li>
+<p>复用功能</p>
+<ul>
+<li>有些类提供了通用功能，可能被许多类重复使用</li>
+</ul>
+<pre><code class="language-cpp">//假设有两个类，分别为长方形和正方形，它们都有一个计算面积的成员函数
+class rectangle {
+public:
+	rectangle() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+
+	double calc_area() {
+		return get_heigh() * get_width();
+	}
+...
+};
+
+class square {
+public:
+	square() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+
+	double calc_area() {
+		return get_heigh() * get_width();
+	}
+...
+};
+
+//其中计算面积的成员函数是通用的
+//将通用的成员函数在基类中实现，并在使用到此成员函数的类中继承此基类
+template&lt;class T&gt;
+class rect {
+public:
+	double calc_area() {
+		T &amp;derived = static_cast&lt;T&amp;&gt;(*this);
+		return derived.get_heigh() * derived.get_width();
+	}
+private:
+	friend T;
+	rect() { }
+};
+
+class rectangle : public rect&lt;rectangle&gt; {
+public:
+	rectangle() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+...
+};
+
+class square : public rect&lt;square&gt; {
+public:
+	square() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+...
+};
+</code></pre>
+</li>
+<li>
+<p>多态链</p>
+<pre><code class="language-cpp">
+//例如有一个ButtonDialog 继承自Dialog类
+//ButtonDialog支持设置对话框按钮类型(set_button_type)
+class Dialog {
+
+	template&lt;class T&gt;
+	Dialog&amp; show(const T &amp;message) {
+		...
+		return *this;
+	}
+
+	template&lt;class T&gt;
+	Dialog&amp; set_title(const T &amp;title) {
+		...
+		return *this;
+	}
+
+};
+
+class ButtonDialog : Dialog {
+	
+	ButtonDialog&amp; set_button_type(ButtonType type) {
+		...
+		return *this;
+	}
+
+};
+
+//考虑下面的代码
+ButtonDialog().set_title(&quot;Hi&quot;).set_button_type(ButtonType.cancel).show();
+//首先ButtonDialog().set_title(&quot;Hi&quot;)调用的是基类中的set_title，它返回了一个Dialog 引用
+//接着调用set_button_type，但Dialog中无法找到这个成员函数，故调用失败
+
+//所以可以利用CRTP，改成下面这样
+template&lt;class DerivedT&gt;
+class Dialog {
+
+	template&lt;class T&gt;
+	DerivedT&amp; show(const T &amp;message) {
+		...
+		return *this;
+	}
+
+	template&lt;class T&gt;
+	DerivedT&amp; set_title(const T &amp;title) {
+		...
+		return *this;
+	}
+
+};
+
+class ButtonDialog : Dialog&lt;ButtonDialog&gt; {
+	
+	ButtonDialog&amp; set_button_type(ButtonType type) {
+		...
+		return *this;
+	}
+
+};
+
+//没问题
+ButtonDialog().set_title(&quot;Hi&quot;).set_button_type(ButtonType.cancel).show();
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>参考资料</p>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern</a></li>
+<li><a href="https://www.fluentcpp.com/2017/05/12/curiously-recurring-template-pattern/">https://www.fluentcpp.com/2017/05/12/curiously-recurring-template-pattern/</a></li>
+</ol>
+</li>
+</ul>
+]]></content>
+    </entry>
+</feed>

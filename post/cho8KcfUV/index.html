@@ -1,0 +1,670 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>左倾红黑树实现及注释 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    左倾红黑树实现及注释
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-27 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/MCT7FIul8/" class="post-tags">
+                            # 算法
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>左倾红黑树插入结果可视化：</p>
+<p>插入顺序:6 7 1 5 3 4 2</p>
+<p>put:6</p>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1617953251791.png" alt="" loading="lazy"></figure>
+<p>put:7<br>
+<img src="https://kafuuneko.me/post-images/1617953261564.png" alt="" loading="lazy"></p>
+<p>put:1<br>
+<img src="https://kafuuneko.me/post-images/1617953275085.png" alt="" loading="lazy"></p>
+<p>put:5<br>
+<img src="https://kafuuneko.me/post-images/1617953290276.png" alt="" loading="lazy"></p>
+<p>put:3<br>
+<img src="https://kafuuneko.me/post-images/1617953300399.png" alt="" loading="lazy"></p>
+<p>put:4<br>
+<img src="https://kafuuneko.me/post-images/1617953311030.png" alt="" loading="lazy"></p>
+<p>put:2<br>
+<img src="https://kafuuneko.me/post-images/1617953322311.png" alt="" loading="lazy"></p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+
+template&lt;class _Key, class _Value&gt;
+class LLRBT
+{
+	enum color_t { BLACK, RED };
+	
+	struct Node 
+	{
+		_Key		key;	
+		_Value 		value;
+		
+		size_t 		count; //此节点所有孩子节点数+1 
+		color_t		color; //指向本节点的链接颜色 
+		
+		struct Node *left, 
+					*right;
+		
+		Node(	const _Key &amp; 	pKey, 
+				const _Value &amp; 	pValue, 
+				color_t 		pColor	= RED,	
+				size_t 			pCount	= 1,		
+				struct Node *	pLeft	= nullptr, 	 
+				struct Node *	pRight	= nullptr)
+				
+			: key(pKey), value(pValue), count(pCount), color(pColor), left(pLeft), right(pRight) {	}
+					
+	};
+	
+	
+	//定义根节点 
+	Node * root_ = nullptr; 
+
+	void clear(Node * node)
+	{
+		if(node == nullptr) return;
+
+		clear(node-&gt;left);
+		clear(node-&gt;right);
+		
+		delete node;
+	}
+	
+	//判断一个节点是否为红节点(即链接到此节点的链接颜色为红色) 
+	bool is_red(Node * node) const
+	{
+		return (node) ? (node-&gt;color == RED) : false;
+	}
+	
+	//取节点的所有孩子节点及其自身的节点数 
+	size_t size(Node * node) const
+	{
+		return (node) ? (node-&gt;count) : 0;
+	}
+	
+	//判断红黑树中是否存在指定的节点
+	bool contains(Node * node, const _Key &amp; key)
+	{
+		while(node)
+		{
+			if		(key &lt; node-&gt;key) 	node = node-&gt;left;
+			else if	(node-&gt;key &lt; key)	node = node-&gt;right;
+			else						return true;
+		}
+		return false;
+	}
+
+	//取最小节点 
+	Node * min(Node * node)
+	{
+		while(node &amp;&amp; node-&gt;left) node = node-&gt;left;
+		return node;
+	}
+	
+	
+	//左旋转节点的右链接 
+	Node * rotate_left(Node * node)
+	{
+		Node * p 	= node-&gt;right;
+		
+		node-&gt;right = p-&gt;left;
+		p	-&gt;left 	= node;
+		
+		p	-&gt;color	= node-&gt;color; 
+		node-&gt;color = RED;
+		
+		//更新节点数量统计 
+		p	-&gt;count	= node-&gt;count;
+		node-&gt;count	= size(node-&gt;left) + size(node-&gt;right) + 1;
+		
+		return p;
+	}
+	
+	//右旋转节点的左链接 
+	Node * rotate_right(Node * node)
+	{
+		Node * p	= node-&gt;left;
+		
+		node-&gt;left	= p-&gt;right;
+		p	-&gt;right	= node;
+		
+		p	-&gt;color = node-&gt;color;
+		node-&gt;color	= RED;
+		
+		//更新节点数量统计 
+		p	-&gt;count	= node-&gt;count;
+		node-&gt;count = size(node-&gt;left) + size(node-&gt;right) + 1;
+		
+		return p;
+	}
+	
+	//节点颜色转换(分解4-节点或向父节点'借'节点操作) 
+	void flip_colors(Node * node)
+	{
+		node-&gt;color			= (node-&gt;color == RED) 			? BLACK : RED;
+		node-&gt;left-&gt;color	= (node-&gt;left-&gt;color == RED) 	? BLACK : RED;
+		node-&gt;right-&gt;color	= (node-&gt;right-&gt;color == RED) 	? BLACK : RED;
+	}
+	
+	//插入新的节点 
+	Node * put(Node * parent, const _Key &amp; key, const _Value &amp; value)
+	{
+		if(!parent) return new Node(key, value, RED);
+		
+		if		(key &lt; parent-&gt;key) parent-&gt;left  = put(parent-&gt;left, key, value);
+		else if	(parent-&gt;key &lt; key) parent-&gt;right = put(parent-&gt;right, key, value);
+		else						parent-&gt;value = value;
+		
+		/*左节点连接是黑色，右节点连接是红色，则左转节点
+		左倾红黑树不允许红色链接出现在右边，若有红色链接出现在右边就进行左旋转操作 
+		
+		('..'代表红色节点，'.'代表黑色节点)
+		    3				5
+		      ..	=&gt;	  ..
+		       ..		 ..
+		         5		3
+		*/ 
+		if(!is_red(parent-&gt;left) &amp;&amp; is_red(parent-&gt;right))		parent = rotate_left(parent);
+		
+		/*
+		节点连接连续红色，右转节点 
+		      5
+		     ..				3
+		    ..			   ...
+		   3		=&gt;	  .. ..
+		  ..			  1   5
+		 ..
+		 1
+		*/
+		if(is_red(parent-&gt;left) &amp;&amp; is_red(parent-&gt;left-&gt;left))	parent = rotate_right(parent);
+		
+		
+		/*
+		左右连接全为红色，则将左右连接设置为红色，其父节点设为红色 
+		   3			  3
+		  ...		=&gt;	 . .
+		 ..  ..         .   .
+		 1    5         1   5 
+		*/ 
+		if(is_red(parent-&gt;left) &amp;&amp; is_red(parent-&gt;right))		flip_colors(parent);
+		
+		//更新节点数量统计 
+		parent-&gt;count = size(parent-&gt;left) + size(parent-&gt;right) + 1;
+		
+		return parent;
+	}
+	
+	//恢复左倾红黑树的平衡性 
+	Node * balance(Node * node)
+	{
+		//'借孩子'操作可能导致红色节点出现在右边，这在左倾红黑树中是不可以出现的，需要左旋转进行修复 
+		if(is_red(node-&gt;right)) 							node = rotate_left(node);
+		//左节点连接是黑色，右节点连接是红色，则左转节点 
+		if(!is_red(node-&gt;left) &amp;&amp; is_red(node-&gt;right))		node = rotate_left(node);
+		//左节点连接连续红色，右转节点 
+		//is_red(node-&gt;left)若为红色节点则node-&gt;left必定存在
+		//所以此处is_red(node-&gt;left-&gt;left)是安全的
+		if(is_red(node-&gt;left) &amp;&amp; is_red(node-&gt;left-&gt;left))	node = rotate_right(node);
+		//左右连接全为红色，则将左右连接设置为红色，其父节点设为红色 
+		if(is_red(node-&gt;left) &amp;&amp; is_red(node-&gt;right))		flip_colors(node);
+		
+		node-&gt;count = size(node-&gt;left) + size(node-&gt;right) + 1;
+		
+		return node;
+	}
+
+	//借一个红色节点给左孩子 
+	Node * move_red_left(Node * node)
+	{
+		//首先向父节点借一个节点 
+		flip_colors(node);
+		
+		if(is_red(node-&gt;right-&gt;left))
+		{
+			//它的亲兄弟节点不是2-节点，从其亲兄弟借一个节点到左节点中
+			node-&gt;right = rotate_right(node-&gt;right);
+			node = rotate_left(node);
+		}
+		
+		return node;
+	}
+	
+	//移除最小的节点 
+	Node * remove_min(Node * node)
+	{
+		if(node-&gt;left == nullptr)
+		{
+			delete node;
+			return nullptr;
+		}
+		
+		/* 关于删除最小节点的规则
+		确保当前节点不是2-节点
+		1.如果当前节点的左节点不是2-节点，则继续
+		2.如果当前节点的左节点是-2节点，且它的亲兄弟节点不是2-节点，则从其亲兄弟借一个节点到左节点中
+		3.如果当前节点的左节点是-2，且它的亲兄弟也是2-节点，则将父节点中的最小键及其兄弟节点合并为一个4-节点 */
+		if(!is_red(node-&gt;left) &amp;&amp; !is_red(node-&gt;left-&gt;left))
+		{
+			//非2-节点，父亲或亲兄弟节点借一个节点给左节点，以确保左节点不是2-节点
+			node = move_red_left(node);
+		}
+
+		node-&gt;left = remove_min(node-&gt;left);
+		
+		//删除操作完成后需要由下至上分解所有4-节点
+		return balance(node);
+	} 
+	
+	//借一个节点给右孩子 
+	Node * move_red_right(Node * node)
+	{
+		//同move_red_left的注释
+		flip_colors(node);
+		
+		if(is_red(node-&gt;left-&gt;left))
+		{
+			node = rotate_right(node);
+		}
+		
+		return node;
+	}
+	
+	//移除最大的节点 
+	Node * remove_max(Node * node)
+	{
+		/* 此处相较于删除最小节点多了一个步骤
+		若左孩子为红节点则进行右旋操作，让右节点成为红节点以便接下来的删除操作 
+		根据左倾树的性质 若左孩子非红色节点，则必然存在有右子节点
+
+		假设此处不进行右旋，则下列例子的平衡将遭到破坏
+		    2
+		  ..	由于2节点的右孩子为空，所以2节点是最大节点，此时C1.0处的代码将直接
+		 ..		删除2节点，其左节点也被被抛弃
+		1
+
+		*/
+		if(is_red(node-&gt;left)) node = rotate_right(node);
+		
+		//C1.0
+		if(node-&gt;right == nullptr)
+		{
+			delete node;
+			return nullptr;
+		}
+		
+		if(!is_red(node-&gt;right) &amp;&amp; !is_red(node-&gt;right-&gt;left))
+		{
+			node = move_red_right(node);
+		}
+		
+		node-&gt;right = remove_max(node-&gt;right);
+		
+		//删除操作完成后需要由下至上进行恢复
+		return balance(node);
+	} 
+	
+	//将移除最小的节点和移除最大的节点实现结合在一起，即可实现删除任意节点 
+	Node * remove(Node * node, const _Key &amp; key)
+	{
+		if(key &lt; node-&gt;key)
+		{
+			//和删除最小节点时的操作类似，判断节点的左孩子是否为2-节点，若非2-节点则需要借一个红色节点给左孩子
+			if(!is_red(node-&gt;left) &amp;&amp; !is_red(node-&gt;left-&gt;left))
+			{
+				node = move_red_left(node);
+			}
+			node-&gt;left = remove(node-&gt;left, key);
+		}
+		else
+		{
+			if(is_red(node-&gt;left)) node = rotate_right(node);
+			
+			if(node-&gt;key == key &amp;&amp; (node-&gt;right == nullptr))
+			{
+				delete node;
+				return nullptr;
+			}
+			
+			//和删除最大节点的操作类似
+			if(!is_red(node-&gt;right) &amp;&amp; !is_red(node-&gt;right-&gt;left))
+			{
+				node = move_red_right(node);
+			}
+			
+			if(node-&gt;key == key)
+			{
+				//找到node的后继节点
+				Node * minNode = min(node-&gt;right);
+
+				//将后继节点的key-value移动给node
+				node-&gt;key 	= std::move(minNode-&gt;key);
+				node-&gt;value = std::move(minNode-&gt;value);
+				
+				//删除最小节点无需使用节点的key/value数据，只会不断向左直到最小的那个节点 				
+				node-&gt;right = remove_min(node-&gt;right);
+			}
+			else
+			{
+				node-&gt;right = remove(node-&gt;right, key);
+			}
+		}
+		
+		//删除操作完成后需要由下至上进行恢复
+		return balance(node);
+	}
+	
+	void print(Node * node) const
+	{
+		if(node == nullptr) return;
+		 
+		std::cout &lt;&lt; ((node-&gt;color == RED) ? 'R' : 'B') &lt;&lt; '(' &lt;&lt; (node-&gt;key) &lt;&lt; ')' &lt;&lt; ' '; 
+		print(node-&gt;left);
+		print(node-&gt;right);
+		
+		std::cout &lt;&lt; &quot;BACK &quot;; 
+	}
+	
+public:
+
+	LLRBT() = default;
+
+	LLRBT(const LLRBT &amp; rhs) = delete;
+	LLRBT(const LLRBT &amp;&amp; rhs) = delete;
+
+	LLRBT &amp; operator=(const LLRBT &amp; rhs) = delete;
+	LLRBT &amp; operator=(const LLRBT &amp;&amp; rhs) = delete;
+
+	~LLRBT()
+	{
+		clear(root_);
+	}
+
+	void clear()
+	{
+		clear(root_);
+		root_ = nullptr;
+	}
+
+	size_t size() const
+	{
+		return root_ ? size(root_) : 0;
+	}
+	
+	void put(const _Key &amp; key, const _Value &amp; value)
+	{
+		root_ = put(root_, key, value);
+		root_-&gt;color = BLACK; 
+	}
+	
+	_Value * get(const _Key &amp; key) const
+	{
+		for(Node * node = root_; node != nullptr; )
+		{
+			if		(node-&gt;key &lt; key)	node = node-&gt;right;
+			else if	(key &lt; node-&gt;key)	node = node-&gt;left;
+			else						return &amp;(node-&gt;value);
+		}
+		
+		return nullptr;
+	}
+	
+	void remove_min()
+	{
+		if(root_ == nullptr) return;
+		
+		if(!is_red(root_-&gt;left) &amp;&amp; !is_red(root_-&gt;right))
+		{
+			root_-&gt;color = RED;
+		}
+		
+		root_ = remove_min(root_);
+		
+		if(root_) root_-&gt;color = BLACK; 
+	}
+	
+	void remove_max()
+	{
+		if(root_ == nullptr) return;
+		
+		if(!is_red(root_-&gt;left) &amp;&amp; !is_red(root_-&gt;right))
+		{
+			root_-&gt;color = RED;
+		}
+		
+		root_ = remove_max(root_);
+		
+		if(root_) root_-&gt;color = BLACK; 
+	}
+	
+	
+	void remove(const _Key &amp; key)
+	{
+		//判断树中是否存在这个key
+		if(!contains(root_, key)) return;
+		
+		if(!is_red(root_-&gt;left) &amp;&amp; !is_red(root_-&gt;right))
+		{
+			root_-&gt;color = RED;
+		}
+		
+		root_ = remove(root_, key);
+		
+		if(root_) root_-&gt;color = BLACK; 
+	}
+	
+	void print() const
+	{
+		print(root_);
+		std::cout &lt;&lt; std::endl;
+	}
+};
+
+int main()
+{
+	
+	int testCount = 7;
+	int keys[] = {6, 7, 1, 5, 3, 4, 2};
+
+	LLRBT&lt;int, int&gt; st;
+	
+	for(int i = 0; i &lt; testCount; ++i)
+	{
+		std::cout &lt;&lt; &quot;put:&quot; &lt;&lt; keys[i] &lt;&lt; std::endl;
+		st.put(keys[i], keys[i]);
+		//st.print();
+	}
+
+	for(int j = 1; j &lt;= testCount; ++j)
+	{
+		st.remove(j);
+		
+		std::cout &lt;&lt; &quot;\nremove:&quot; &lt;&lt; j &lt;&lt; &quot;\nsize:&quot; &lt;&lt; st.size() &lt;&lt; std::endl;
+
+		for(int i = 1; i &lt;= testCount; ++i)
+		{
+			int * p = st.get(i);
+			std::cout &lt;&lt; (p ? *p : 0) &lt;&lt; ' ';
+		}
+			
+		std::cout &lt;&lt; std::endl;
+		st.print();
+		std::cout &lt;&lt; std::endl;
+	}
+	
+		
+	std::cout &lt;&lt; std::endl;
+
+	std::cin.get();
+	
+	return 0;
+}
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/kERjJhAnP/" class="post-title gt-a-link">
+                    Ciphertext
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

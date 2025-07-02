@@ -1,0 +1,210 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>关于CakeGame的一些使用技巧 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    关于CakeGame的一些使用技巧
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-04-07 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/AJWNIgzwq/" class="post-tags">
+                            # 分享
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>实际命中率 = 自身命中÷（自身命中+对手闪避)</p>
+<p>物品编辑右击物品可编辑物品介绍或删除物品</p>
+<p>在编辑任务完成物品条件，技能消耗物品时，勾选物品代表则消耗物品</p>
+<p>图片绘制文字大小适宜范围是12-24</p>
+<p>编辑&gt;条件删除&gt;不填写条件直接删除则为清空玩家数据</p>
+<p>关闭编辑器时如果出现解锁失败可直接强制关闭</p>
+<p>打开编辑器后如果出现无法使用插件的情况可在设置中关闭数据库保护</p>
+<p>职业属性可使用小数，计算使用四舍五入法</p>
+<p>编辑器内的属性会随着等级自动重新计算直接修改无效</p>
+<p>使用过一次技能书的技能才能在技能中显示</p>
+<p>修改地图位置前请先备份数据库，尤其是在有玩家进行游戏的情况下修改</p>
+<p>进入地图勾选上隐藏的地图后只能通过上下左右的通道进入无法直接传送</p>
+<p>在编辑技能消耗物品时同任务相同勾选后为消耗相应物品，反之则只需要持有</p>
+<p>地图中出现与消失为怪物出现时间，尽量不要用整数时间</p>
+<p>地图中的刷新时间为该怪物被屠杀灭绝后的刷新时间不是单只刷新时间</p>
+<p>地图中的进攻数量为几到几的随机数，如1-3为1到3只</p>
+<p>物品编辑中的提升类药剂时效写0为永久提升，且时效为秒制</p>
+<p>技能编辑中的冷却时间为秒制</p>
+<p>物品编辑中物品被锁定后会变为无法交易无法丢弃的重要物品</p>
+<p>特殊属性编辑，攻击中的吸血回复为百分比制，10%为造成10%的吸血</p>
+<p>特殊属性编辑，攻击中的魔法穿透、物理穿透为百分比制，40%为忽视对方40%的物防/法防</p>
+<p>特殊属性编辑，被攻击中的伤害免疫、伤害反弹均为百分比制，40%为免疫40%或反弹40%伤害，且反弹可以反弹两倍伤害，只需200</p>
+<p>特殊属性编辑，被攻击中的反制打断是打断敌人的进攻，打断提示可双击编辑</p>
+<p>特殊属性编辑，被攻击中的致命免疫为受到致死性伤害时免疫这次伤害，免疫提示可双击编辑</p>
+<p>职业编辑中的初始职业无法删除的情况下可以新建一个职业，然后打开游戏设置的转职设置修改默认职业后再删除</p>
+<p>游戏设置中的虚弱时间为分钟制，昵称长度为字节制一个字等于2个字节</p>
+<p>游戏设置中的PVP/PVE中可以打开浮动伤害并且修改暴击倍率</p>
+<p>游戏设置中的功能指令修改后需要重启酷Q或刷新游戏数据才能使用新的触发命令，关键词敏感关闭后可以减少正常聊天的影响</p>
+<p>技能名称以 ~. 开头可以让用户看不到这个技能，但不影响使用</p>
+<p>执行 DELETE FROM Global WHERE ID=’636C6F636B’ AND SECTION=’72616E6B696E672E6C6173742E74696D65′ 可以重置排行榜刷新时间</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/pel2mo5Kn/" class="post-title gt-a-link">
+                    Android SQLite编辑器
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

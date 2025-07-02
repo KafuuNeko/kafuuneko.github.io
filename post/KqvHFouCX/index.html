@@ -1,0 +1,503 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>C++ 奇异递归模板模式(Curiously recurring template pattern) | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    C++ 奇异递归模板模式(Curiously recurring template pattern)
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-04-13 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/We2T_wpAt/" class="post-tags">
+                            # C++
+                        </a>
+                    
+                        <a href="https://kafuuneko.me/tag/AJWNIgzwq/" class="post-tags">
+                            # 分享
+                        </a>
+                    
+                        <a href="https://kafuuneko.me/tag/iQ0aEGWPW/" class="post-tags">
+                            # 教程
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <ul>
+<li>
+<p>什么是CRTP？</p>
+<ul>
+<li>
+<p>CRTP的性质</p>
+<ol>
+<li>从模板类继承</li>
+<li>将派生类本身用做基础类的模板参数</li>
+</ol>
+</li>
+<li>
+<p>例如：</p>
+<pre><code class="language-cpp">template &lt;typename T&gt;
+class Base
+{
+    ...
+};
+
+class Derived : public Base&lt;Derived&gt;
+{
+    ...
+};
+</code></pre>
+<p>这样做的目的是使用基础类中的派生类，相较于虚函数实现的多态，CRTP节约了动态绑定虚函数查询的开支</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+class Base {
+public:
+	void call() {
+		static_cast&lt;T*&gt;(this)-&gt;foo();
+	}
+};
+
+class Derived : public Base&lt;Derived&gt; {
+public:
+	void foo() {
+		std::cout &lt;&lt; &quot;Derived class member was invoked&quot; &lt;&lt; std::endl;
+	}
+};
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>CRTP的使用陷阱</p>
+<ul>
+<li>如果两个类同时继承自同一个CRTP就矿难导致CRTP尝试使用错误的类，造成未定义的行为</li>
+</ul>
+<pre><code class="language-cpp">class Derived1 : public Base&lt;Derived1&gt;
+{
+    ...
+};
+
+class Derived2 : public Base&lt;Derived1&gt; // Base&lt;Derived1&gt; 出现问题
+{
+    ...
+};
+</code></pre>
+<ul>
+<li>可以将基础类的构造函数的访问权限设置为私有的，并将模板类设置为友元即可解决</li>
+</ul>
+<pre><code class="language-cpp">template&lt;class T&gt;
+class Base {
+public:
+	// ...
+private:
+	Base() {}
+	friend T;
+};
+
+class Derived1 : public Base&lt;Derived1&gt;
+{
+    ...
+};
+
+class Derived2 : public Base&lt;Derived1&gt; // 此时编译将无法通过
+{
+    ...
+};
+
+//因为派生类的构造器必须调用基类的构造函数，但由于基类中的构造函数是私有的，因此除了友元以外都无法访问它
+//而基类唯一的友元类是模板类，因此，如果派生类与模板类不同，则代码将无法通过编译
+</code></pre>
+<ul>
+<li>CRTP的另一个陷阱就算派生类中的方法会以隐藏相同名称的基类方法。因此，不要在基类和派生类中具有相同的名称</li>
+</ul>
+</li>
+<li>
+<p>CRTP的部分用途</p>
+<ol>
+<li>
+<p>对不同的派生类进行单独的计数</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+struct Counter {
+	static uint32_t count;
+
+	Counter(){
+		++count;
+	}
+
+	~Counter() {
+		--count;
+	}
+};
+
+template&lt;class T&gt; uint32_t Counter&lt;T&gt;::count{ 0 };
+
+class A : public Counter&lt;A&gt; { };
+
+class B : public Counter&lt;B&gt; { };
+
+int main()
+{
+	A a1{}, a2{};
+	B b1{};
+
+	std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; A::count &lt;&lt; &quot;个A对象&quot; &lt;&lt; std::endl;
+	std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; B::count &lt;&lt; &quot;个B对象&quot; &lt;&lt; std::endl;
+
+	return 0;
+}
+
+//print
+//存在2个A对象
+//存在1个B对象
+</code></pre>
+</li>
+<li>
+<p>静态多态</p>
+<pre><code class="language-cpp">template&lt;class T&gt;
+struct Counter {
+	static uint32_t count;
+
+	Counter(){
+		++count;
+	}
+
+	~Counter() {
+		--count;
+	}
+
+	void print() {
+		static_cast&lt;T*&gt;(this)-&gt;sub_print();
+	}
+};
+
+template&lt;class T&gt; uint32_t Counter&lt;T&gt;::count{ 0 };
+
+struct A : public Counter&lt;A&gt; {
+	void sub_print() {
+		std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; count &lt;&lt; &quot;个A对象&quot; &lt;&lt; std::endl;
+	}
+};
+
+struct B : public Counter&lt;B&gt; {
+	void sub_print() {
+		std::cout &lt;&lt; &quot;存在&quot; &lt;&lt; count &lt;&lt; &quot;个B对象&quot; &lt;&lt; std::endl;
+	}
+};
+
+template&lt;class T&gt;
+void print_counter(Counter&lt;T&gt; &amp; c)
+{
+	c.print();
+}
+
+int main()
+{
+	A a1{}, a2{};
+	B b1{};
+
+	print_counter(a1);
+	print_counter(b1);
+
+	return 0;
+}
+</code></pre>
+</li>
+<li>
+<p>复用功能</p>
+<ul>
+<li>有些类提供了通用功能，可能被许多类重复使用</li>
+</ul>
+<pre><code class="language-cpp">//假设有两个类，分别为长方形和正方形，它们都有一个计算面积的成员函数
+class rectangle {
+public:
+	rectangle() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+
+	double calc_area() {
+		return get_heigh() * get_width();
+	}
+...
+};
+
+class square {
+public:
+	square() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+
+	double calc_area() {
+		return get_heigh() * get_width();
+	}
+...
+};
+
+//其中计算面积的成员函数是通用的
+//将通用的成员函数在基类中实现，并在使用到此成员函数的类中继承此基类
+template&lt;class T&gt;
+class rect {
+public:
+	double calc_area() {
+		T &amp;derived = static_cast&lt;T&amp;&gt;(*this);
+		return derived.get_heigh() * derived.get_width();
+	}
+private:
+	friend T;
+	rect() { }
+};
+
+class rectangle : public rect&lt;rectangle&gt; {
+public:
+	rectangle() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+...
+};
+
+class square : public rect&lt;square&gt; {
+public:
+	square() { }
+	double get_heigh() { ... }
+	double get_width() { ... }
+...
+};
+</code></pre>
+</li>
+<li>
+<p>多态链</p>
+<pre><code class="language-cpp">
+//例如有一个ButtonDialog 继承自Dialog类
+//ButtonDialog支持设置对话框按钮类型(set_button_type)
+class Dialog {
+
+	template&lt;class T&gt;
+	Dialog&amp; show(const T &amp;message) {
+		...
+		return *this;
+	}
+
+	template&lt;class T&gt;
+	Dialog&amp; set_title(const T &amp;title) {
+		...
+		return *this;
+	}
+
+};
+
+class ButtonDialog : Dialog {
+	
+	ButtonDialog&amp; set_button_type(ButtonType type) {
+		...
+		return *this;
+	}
+
+};
+
+//考虑下面的代码
+ButtonDialog().set_title(&quot;Hi&quot;).set_button_type(ButtonType.cancel).show();
+//首先ButtonDialog().set_title(&quot;Hi&quot;)调用的是基类中的set_title，它返回了一个Dialog 引用
+//接着调用set_button_type，但Dialog中无法找到这个成员函数，故调用失败
+
+//所以可以利用CRTP，改成下面这样
+template&lt;class DerivedT&gt;
+class Dialog {
+
+	template&lt;class T&gt;
+	DerivedT&amp; show(const T &amp;message) {
+		...
+		return *this;
+	}
+
+	template&lt;class T&gt;
+	DerivedT&amp; set_title(const T &amp;title) {
+		...
+		return *this;
+	}
+
+};
+
+class ButtonDialog : Dialog&lt;ButtonDialog&gt; {
+	
+	ButtonDialog&amp; set_button_type(ButtonType type) {
+		...
+		return *this;
+	}
+
+};
+
+//没问题
+ButtonDialog().set_title(&quot;Hi&quot;).set_button_type(ButtonType.cancel).show();
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>参考资料</p>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern</a></li>
+<li><a href="https://www.fluentcpp.com/2017/05/12/curiously-recurring-template-pattern/">https://www.fluentcpp.com/2017/05/12/curiously-recurring-template-pattern/</a></li>
+</ol>
+</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/AuPMgwCJW/" class="post-title gt-a-link">
+                    Effective 转向现代C++
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

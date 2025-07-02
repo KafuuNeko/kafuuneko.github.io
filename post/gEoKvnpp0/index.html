@@ -1,0 +1,225 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>使用freessl.cn申请Let’s encrypt V2多域名通配符证书 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    使用freessl.cn申请Let’s encrypt V2多域名通配符证书
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-08-14 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/iQ0aEGWPW/" class="post-tags">
+                            # 教程
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>一.获取证书</p>
+<p>进入<a href="https://freessl.cn/">https://freessl.cn/</a>，选择Let’s encrypt<br>
+V2，并填写域名后点击创建免费的SSL证书<br>
+<img src="https://kafuuneko.me/post-images/1617951583087.png" alt="" loading="lazy"></p>
+<p>接着填写您的邮箱，选择证书类型为ECC，SCR生成选择浏览器生成，接着点击点击创建<br>
+<img src="https://kafuuneko.me/post-images/1617951588342.png" alt="" loading="lazy"></p>
+<p>接着根据提示，为您的域名添加两条TXT记录<br>
+<img src="https://kafuuneko.me/post-images/1617951593746.png" alt="" loading="lazy"></p>
+<p>添加完成后点击配置完成，检测一下，若检测通过（务必等检测通过后点击验证，有时候配置DNS后生效时间可能会有点长，请耐心等待），则点击验证，若通过则下载文件</p>
+<p>下载的压缩包内将包含两个文件：full_chain.pem以及private.key</p>
+<p>二.SSL配置</p>
+<p>请确保已经安装mod_ssl，如果未安装请先安装</p>
+<p>CentOS：yum install mod_ssl</p>
+<p>以文本打开full_chain.pem，会发现里面有两段串码，前一部分是证书，后一部分为证书链。将这个文件复制为2个文件，一个保留前一部分，做证书文件，另一个保留后一部分，做证书链文件。</p>
+<p>创建两个文件public.pem以及chain.pem，public.pem文件内容为full_chain.pem前一段码，chain.pem文件内容为full_chain.pem后一段码</p>
+<p>接着配置ssl.conf(/etc/httpd/conf.d)文件</p>
+<p># 添加 SSL 协议支持协议，去掉不安全的协议<br>
+SSLProtocol all -SSLv2 -SSLv3<br>
+# 修改加密套件如下<br>
+SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
+SSLHonorCipherOrder on<br>
+# 证书公钥配置（如果pem只有一个，那么public为第一段码）<br>
+SSLCertificateFile cert/public.pem<br>
+# 证书私钥配置<br>
+SSLCertificateKeyFile cert/private.key<br>
+# 证书链配置，如果该属性开头有<br>
+‘#’字符，请删除掉（如果pem只有一个，那么chain为第第二段码）<br>
+SSLCertificateChainFile cert/chain.pem</p>
+<p>示范：</p>
+<p>&lt;VirtualHost *:443&gt;<br>
+ServerName www.kafuu.cc:443<br>
+DocumentRoot &quot;/var/www/html/main/root&quot;<br>
+SSLEngine on<br>
+SSLProtocol all -SSLv2 -SSLv3<br>
+SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM<br>
+SSLHonorCipherOrder on<br>
+SSLCertificateFile /var/www/ssl/public.pem<br>
+SSLCertificateKeyFile /var/www/ssl/private.key<br>
+SSLCertificateChainFile /var/www/ssl/chain.pem<br>
+&lt;/VirtualHost&gt;</p>
+<p>三.防火墙配置：</p>
+<p>firewall-cmd –query-service https ##查看http服务是否支持，返回yes或者no<br>
+firewall-cmd –add-service=https ##临时开放https服务<br>
+firewall-cmd –add-service=https –permanent ##永久开放https服务<br>
+然后重启防火墙即可</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/38_5q2-N0/" class="post-title gt-a-link">
+                    IEEE标准
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

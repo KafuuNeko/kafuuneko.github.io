@@ -1,0 +1,865 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>PCQQ8.6协议分析 | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    PCQQ8.6协议分析
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-11-20 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/pDSTuDsDR/" class="post-tags">
+                            # 逆向
+                        </a>
+                    
+                        <a href="https://kafuuneko.me/tag/AJWNIgzwq/" class="post-tags">
+                            # 分享
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>最初发布地址：<a href="https://www.52pojie.cn/thread-825868-1-1.html">https://www.52pojie.cn/thread-825868-1-1.html</a></p>
+<p>进程：6880,QQ:..........,版本:QQ8.6<br>
+ecdhkey:03 42 D9 64 FC 18 11 6F <a href="tel:34%2044%2068%2057">34 44 68 57</a> C0 18 B9 8F<br>
+65 93 49 AF 05 92 D4 04 C2<br>
+decodekey:C7 17 C9 B0 6F 88 B9 B5 A7 2A 64 64 69 1B 42 40<br>
+0825Data0:<a href="tel:00%2018%2000%2016%2000%2001">00 18 00 16 00 01</a><br>
+0825Data2:<a href="tel:00%2000%2004%2053%2000%2000%2000">00 00 04 53 00 00 00</a> <a href="tel:01%2000%2000%2015%2079">01 00 00<br>
+15 79</a><br>
+0825令牌：CD 76 D3 81 A7 37 6A A6 DB 02 A8 F6 9B 86 EC 54 95 EA DB 97 14 6E 28<br>
+8C 34 FF 08 A9 11 B3 E1 6E B1 55 A0 60 F4 35 E3 00 91 E6 02 8C 32 84 9B 1D E8 D1<br>
+5F EC 85 D1 DC F7<br>
+publickey：03 42 D9 64 FC 18 11 6F <a href="tel:34%2044%2068%2057">34 44 68 57</a> C0 18 B9<br>
+8F 65 93 49 AF 05 92 D4 04 C2<br>
+0836Fix：31 27 D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 29<br>
+0826Key2：10 01 02 00 62 00 01 AF 86 DD F6 43 C1 88 1D 8C E9 45 89 A8 B6 BD C6<br>
+0836令牌：42 36 94 7B B6 65 A8 9C 75 FD 98 E0 AC 8F 84 76 20 D3 14 F4 5C 3D BC<br>
+90 0F D0 3E 92 B0 <a href="tel:37%2070%2009%2063%2012">37 70 09 63 12</a> 3F BD 20 8E F4 66<br>
+12 38 B6 1B 3D 13 50 0D 64 E7 35 75 2A DD C1 CB<br>
+MD51:46 65 AF 69 21 98 9E C9 0B AC 9D 5C 8D 4D 9F 42<br>
+MD52(密码和账户生成的)：E1 C6 0F FB B1 EF 96 AE 0E FF 08 0E FD A1 67 B7<br>
+tgtgkwy：8D 19 AE A0 07 7E 8E 8F D8 BA 61 F9 <a href="tel:23%2001%2056%2066">23 01 56<br>
+66</a></p>
+<p>0825发送包</p>
+<table>
+<thead>
+<tr>
+<th>01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16</th>
+<th>02 包头 36 61 版本 08 25 指令 7A 4D 标识 6A 4E AC D5 QQ [url=tel:03 00 00 00 01 01 01]03 00 00 00 01 01 01[/url] 00 00 67 FD [url=tel:00 00 00 00]00 00 00 00[/url] 固定 [url=tel:49 59 86 94 95 42]49 59 86 94 95 42[/url] 9F 0C 26 EC CF 36 BE 1B 96 1E 密匙 F0 6A B7 2E 15 12 下列全是密文 2D 6C E1 2D ED 19 37 FE 3F [url=tel:00 27 72 35]00 27 72 35[/url] 3E 28 9E  0E 64 B2 1B F6 76 25 14 DB F7 92 ED 68 89 1F 36  F4 BC CD D7 ED DB AE 03 F6 FC 85 0F 5F 6D C9 66  35 74 C6 3A 83 29 89 D6 86 79 9B 66 E5 41 22 DC  3B 24 FA 84 59 85 0F [url=tel:28 26 01 71 68 48 66]28 26 01 71 68 48 66[/url] 8C EF  35 9E 23 63 E8 8D 31 71 D9 [url=tel:14 40 52 94]14 40 52 94[/url] A0 1E 20  31 58 16 C8 4A 52 E4 79 A3 29 03 包尾</th>
+</tr>
+</thead>
+</table>
+<p>0825接收包</p>
+<p>02</p>
+<p>36 61</p>
+<p>08 25 7A 4D 和之前一样</p>
+<p>6A 4E AC D5 QQ</p>
+<p>00 00 00 固定</p>
+<p>0D 49 99 4E 8F 0B E3 B1 5A C0 5C 87 9C C9 9E 50 CF ED</p>
+<p>9B 61 8F 88 BA C6 6F AF 5A E5 1B 8E 20 A6 2D 10</p>
+<p>B7 <a href="tel:58%2023%2052%2032">58 23 52 32</a> AA CD FF 0A ** ** 85 D2 B4 C4 BB</p>
+<p>F1 AE 40 11 D3 97 5E 17 0E 5A D8 D7 8F E5 44 9A</p>
+<p>04 A1 EA ** ** ** ** ** 97 0D E2 BF 9F 9E 1D BA</p>
+<p>9D 91 70 96 D1 B5 08 10 C1 C5 25 60 91 C4 51 B0</p>
+<p>1E 19 13 6C C0 21 全是加密数据（为了我自己的隐私，部分内容*）</p>
+<p>03 包尾</p>
+<p>加密数据解密结果：</p>
+<p><a href="tel:00%2001%2012%2000%2038">00 01 12 00 38</a></p>
+<p>CD 76 D3 81 A7 37 6A A6 DB 02 A8 F6 9B 86 EC 54 95 EA DB 97 14 6E 28 8C 34FF 08<br>
+A9 11 B3 E1 6E B1 55 A0 60 F4 35 E3 00 91 E6 02 8C 32 84 9B 1D E8 D1 5FEC 85 D1<br>
+DC F7 0825Tokn</p>
+<p>00 17 00 0E 00 01</p>
+<p>5B F2 C5 E4 登录时间</p>
+<p>** ** ** ** 登录IP</p>
+<p>C4 DF <a href="tel:00%2000%2003%2010%2000%2004%2078">00 00 03 10 00 04 78</a> CC 11 7C</p>
+<p>0836发送包</p>
+<p>02</p>
+<p>36 61</p>
+<p>08 36</p>
+<p>66 77 数据包标识</p>
+<p>6A 4E AC D5 QQ</p>
+<p><a href="tel:03%2000%2000%2000%2001%2001%2001">03 00 00 00 01 01 01</a> 00 00 67 FD00 <a href="tel:00%2000%2000%2000%2001%2001%2002">00<br>
+00 00 00 01 01 02</a> 定义fix1</p>
+<p>00 19 publickey长度</p>
+<p>03 42 D9 64 FC 18 11 6F <a href="tel:34%2044%206857">34 44 6857</a> C0 18 B9 8F 65 93 49 AF<br>
+05 92 D4 04 C2 publickey</p>
+<p><a href="tel:00%2000%2000%2010">00 00 00 10</a></p>
+<p>8F 4E 4E 48 5B 4C 6B E7 DA 00 02 4F 5C 86 88 AD 0836Key1</p>
+<p>C1 03 76 下列全为加密数据</p>
+<p>5C FA 24 31 A0 36 27 9C 78 D7 DF 61 D3 FB 00 48</p>
+<p>C5 1C 8A 09 B9 6F 20 00 35 D6 42 59 0F 12 08 FB</p>
+<p>EB <a href="tel:74%2008%2089%2091%2062%2040">74 08 89 91 62 40</a> DE 05 A7 DA 9E FF 35 7C<br>
+41</p>
+<p>F6 4C A7 2D 89 80 BD 4A 23 0D 83 56 DE 05 87 9B</p>
+<p>75 4E B5 <a href="tel:36%2073%2043%2078%2031">36 73 43 78 31</a> 0C 44 09 60 DC 34 B8 D7</p>
+<p>E5 7C 34 52 EE 07 C1 C1 FD 9D AE DD 93 1C 5A F8</p>
+<p>87 53 C1 15 F0 02 A6 7C 54 E4 4E 37 27 54 B6 E4</p>
+<p>85 2C 5A 54 BC B5 7E 8B 83 70 B1 08 CC A4 37 A8</p>
+<p>11 41 6F 17 F6 AF C8 B8 5A F9 EF 04 E0 D1 A7 DD</p>
+<p>84 20 8F F1 11 B4 69 98 DE 0D CF DC 41 EC D5 6F</p>
+<p>CB 76 AD E8 7F 30 88 C5 9A 3C E5 2F CC 40 DF 37</p>
+<p>F2 09 6E 96 A4 61 96 A8 4F <a href="tel:46%2067%2031%2003%2022%2050">46 67 31 03 22 50</a><br>
+B2</p>
+<p>1E 65 6F 0C AB 87 BE 3F 24 9C <a href="tel:00%2037%2064%2075%2017%2095">00 37 64 75 17<br>
+95</a></p>
+<p>12 55 50 A5 FD 8B 5D DE 66 E5 C9 42 D5 61 8E 31</p>
+<p>1A 50 B6 E6 20 0B C3 B9 DC D1 3E 5C B3 73 39 70</p>
+<p>83 8F 8C 9E 1A 37 FA <a href="tel:69%2081%2041%2098">69 81 41 98</a> F5 CA 6A B0 B0</p>
+<p>47 87 D0 D1 CD D4 B0 72 5B <a href="tel:25%2029%2042%2066">25 29 42 66</a> A0 8D 9C</p>
+<p>8F 78 F6 56 67 FD D1 48 F1 39 71 31 E6 F7 80 DD</p>
+<p>7E 36 16 72 5B <a href="tel:09%2029%2033%2065">09 29 33 65</a> 9C 7A 96 56 9A 59 9E</p>
+<p>2E 7B ED 37 E9 5B F2 F9 D6 C6 BC EB A4 AC 51 13</p>
+<p>58 E0 67 6A 06 BC 27 DE 22 B1 90 23 50 9E 3F F0</p>
+<p>56 61 A0 C5 6F 46 5F B8 DA C1 63 C4 61 F9 C2 EA</p>
+<p>16 F7 44 4E 6F 82 D5 6B 78 2C 1B 35 D9 63 55 3E</p>
+<p>8D 3A 9F C4 3E D6 B9 23 6E 1F ED 4E 70 91 E5 3B</p>
+<p>5F CB 30 06 A7 7A E1 64 DA 25 07 EE 9F 80 19 E9</p>
+<p>96 4D 4F A2 58 6C 65 10 A1 F1 DE 54 80 F7 65 98</p>
+<p>E7 F2 EF 4C D7 8C C2 39 BA 0A 97 40 52 4F F9 B0</p>
+<p>46 3B E4 90 23 CD 9E B1 39 AD 6F 5B 98 7E AD 55</p>
+<p>22 6E D3 CD 61 B2 <a href="tel:31%2009%2047%2053">31 09 47 53</a> C5 9C A7 8E 39 34</p>
+<p>44 12 9C 44 B1 F0 D2 42 51 E0 3D 21 0B B2 8E A4</p>
+<p>EC 3F 24 AE E2 A8 3B EC E9 EF 15 59 03 F0 8E B9</p>
+<p>C9 <a href="tel:14%2007%2032%2010%2088%2075%2016">14 07 32 10 88 75 16</a> 65 A5 FF C9 73<br>
+92 D8 5F</p>
+<p>94 1C D5 1F 16 CE 89 4E 52 E8 62 50 10 EB 82 55</p>
+<p>51 8E B4 5A 2F 79 7C 53 BC C0 DE 9A D2 6B 0A D7</p>
+<p>1A B7 F6 4E 04 63 E6 93 CB 6B 68 92 9A 03</p>
+<p>加密数据解密结果：</p>
+<p>01 12</p>
+<p>00 38 固定</p>
+<p>CD 76 D3 81 A7 37 6A A6 DB 02 A8 F6</p>
+<p>9B 86 EC 54 95 EA DB 97 14 6E 28 8C 34 FF 08 A9</p>
+<p>11 B3 E1 6E B1 55 A0 60 F4 35 E3 00 91 E6 02 8C</p>
+<p>32 84 9B 1D E8 D1 5F EC 85 D1 DC F7 0826令牌</p>
+<p>03 0F TLV_030F</p>
+<p>00 0C 设备名长度+2</p>
+<p>00 0A 设备名长度</p>
+<p>4D 41 43 42 4F 4F 4B 50 52 4F 设备名</p>
+<p>00 05</p>
+<p>00 06</p>
+<p>00 02</p>
+<p>6A 4E AC D5 QQ</p>
+<p>00 06</p>
+<p>00 78 二次加密数据长度</p>
+<p>AA D8 A8 B9 37 8E</p>
+<p>2F 4E A4 63 91 E3 71 EA 62 F8 72 6E E8 B6 1E E8</p>
+<p>58 A3 CE 98 C6 0C 74 18 89 4C 83 EE BE AE 20 1B</p>
+<p>CE CB 80 C0 63 8F A8 C2 FA BE 8E 19 53 25 9E 02</p>
+<p>0D 26 D5 48 F3 65 94 E4 E3 C1 F2 27 20 03 7E 18</p>
+<p>C8 4D 4C FD F8 D4 33 54 8E D3 42 22 67 F8 5F A2</p>
+<p>D5 E1 B3 27 4A 3F 65 A5 2C 95 C4 39 9F 65 5E B7</p>
+<p>20 1E 3B 48 30 4B 76 C8 63 EF 3A 88 3B 78 E9 A9</p>
+<p>67 B8 二次加密数据长度到这全是加密的数据</p>
+<table>
+<thead>
+<tr>
+<th>01 02 03 04 05 06 07 08 09 10 11 12 13</th>
+<th>使用MD52解密 key：E1 C6 0F FB B1 EF 96 AE 0E FF 08 0E FD A1 67 B7： 56 8A E7 92 随机 00 02 6A 4E AC D5 QQ [url=tel:00 00 04 53 00 00 00]00 00 04 53 00 00 00[/url] [url=tel:01 00 00 15 85]01 00 00 15 85[/url] 2825Data2 00 00 01 46 65 AF 69 21 98 9E C9 0B AC 9D 5C 8D 4D 9F 42 MD51 5B F2 BF 72 登录时间 [url=tel:00 00 00 00 00 00 00]00 00 00 00 00 00 00[/url] [url=tel:00 00 00 00 00 00]00 00 00 00 00 00[/url] [url=tel:70 31 77 12]70 31 77 12[/url] 登录IP [url=tel:00 00 00 00 00 00 00]00 00 00 00 00 00 00[/url] 14 00 10 31 27 D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 29 0826Fix1 8D 19 AE</th>
+</tr>
+</thead>
+</table>
+<p>00 15</p>
+<p>00 30</p>
+<p>00 01 01 0E 1C D5 DB 00 10 04 F1 4A AD <a href="tel:00%2000%2000%2000%2000%2000%2000">00 00 00 00 00 00<br>
+00</a> <a href="tel:00%2000%2000%2000%200002%2086">00 00 00 00 0002<br>
+86</a> 10 6F DD 00 10</p>
+<p>31 27 D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 29 0836Fix</p>
+<p>00 1A</p>
+<p>00 40 固定</p>
+<p>B2 02 AA B6 9B 23 62 8F 74 B9 8F 23 BC 33 E5 EC 03 20 2A AA EF 2B 03 F8 2D 63 27<br>
+0A D0 37 C1 A5 F6 97 D3 D5 E8 5E 26 0F 12 26 45 4E 18 CF 39 CC 99 6D FF 9F A4 4F<br>
+D0 5A F0 BE 1C 7F FF C1 3F BC 加密的内容</p>
+<table>
+<thead>
+<tr>
+<th>1 2</th>
+<th>解密结果为：[url=tel:00 15 00 30 00 01 01]00 15 00 30 00 01 01[/url] 0E 1C D5 DB 00 10 04 F1 4A AD [url=tel:00 00 00 00 00 00 00]00 00 00 00 00 00 00[/url] [url=tel:00 00 00 00 00 02 86]00 00 00 00 00 02 86[/url] 10 6F DD [url=tel:00 10 31 27]00 10 31 27[/url] D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 2 其中：31 27 D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 2为之前定义的0836Fix，使用tgtgkey解密</th>
+</tr>
+</thead>
+</table>
+<p><a href="tel:00%2018%2000%2016%2000%2001">00 18 00 16 00 01</a> 0825Data0</p>
+<p><a href="tel:00%2000%2004%2053%2000%2000%2000">00 00 04 53 00 00 00</a> <a href="tel:01%2000%2000%2015%2079">01 00 00 15<br>
+79</a> 0825Data2</p>
+<p>6A 4E AC D5 QQ</p>
+<p><a href="tel:00%2001%2000%2000%2001%2003%2000">00 01 00 00 01 03 00</a> <a href="tel:14%2000%2001%2000%2010%2097%2025">14 00 01 00 10 97<br>
+25</a> CE F1 4D 99 CD 67 C9 58 BE</p>
+<p>DB 5F <a href="tel:06%2064%2053%2005%2007%2000%2011">06 64 53 05 07 00 11</a> 01 97 23 B9<br>
+72 5C 59</p>
+<p>AA 23 51 AB E5 0A 35 8A 4D 3B 以上数据全部定义为Fix3</p>
+<p><a href="tel:03%2012%2000%2005%2001%2000%2000">03 12 00 05 01 00 00</a> <a href="tel:00%2001%2005%2008%2000%2005%2001">00 01 05 08 00 05<br>
+01</a> <a href="tel:00%2000%2000%2000%2003%2013%2000">00 00 00 00 03 13<br>
+00</a> 19</p>
+<p><a href="tel:01%2001%2002%2000%2010">01 01 02 00 10</a> 7D 7B EF 63 A2 <a href="tel:63%2009%2046%2026%2009">63 09 46 26<br>
+09</a> 1D</p>
+<p>ED 8E 89 BD <a href="tel:47%2000%2000%2000">47 00 00 00</a> Fix3到此全部定义为Fix</p>
+<p><a href="tel:10%2001%2002%2000%2062%2000%2001">10 01 02 00 62 00 01</a> AF 86 DD F6 43 C1<br>
+88 1D 8C E9 45 89 A8 B6 BD C6 0826Key2</p>
+<p>00 38 固定</p>
+<p>42 36 94 7B B6 65 A8 9C 0836Token</p>
+<p>75 FD 98 E0 AC 8F 84 76 20 D3 14 F4 5C 3D BC 90</p>
+<p>0F D0 3E 92 B0 <a href="tel:37%2070%2009%2063%2012">37 70 09 63 12</a> 3F BD 20 8E F4 66</p>
+<p>12 38 B6 1B 3D 13 50 0D 64 E7 35 75 2A DD C1 CB ----</p>
+<p>00 14</p>
+<p>8E C5 CC 09 FA 66 21 0A 32 91 A7 6C 36 B8 35 94 crc32Data</p>
+<p>43 51 2D F6 crc32Code</p>
+<p>0836接收包</p>
+<p>02 包头</p>
+<p>36 61 版本</p>
+<p>08 36 指令</p>
+<p>66 77 标识</p>
+<p>6A 4E AC D5 QQ</p>
+<p>00 00 00 固定</p>
+<p>7C 99 红字为加密内容，使用decodekey可以完成第一次解密</p>
+<p>EA 0F 67 4D F5 7E E9 94 34 9C B4 <a href="tel:68%2054%2077%2056%2092">68 54 77 56 92</a></p>
+<p>5D D1 AA 2C 94 32 12 4C 2B FB E4 8C 5A 78 CF 3D</p>
+<p>93 2C B1 7B B2 7C 36 AB E6 68 3A 6F 42 A2 61 97</p>
+<p>7A 08 7A 12 F9 3A DC E1 9E 2B 3B 75 0F 76 18 8D</p>
+<p>4A 23 67 42 C4 75 67 D1 1A 78 4C A1 CB ED 40 FD</p>
+<p>CF 40 62 C8 C8 6E 01 E5 E3 51 49 B2 34 2E 51 BB</p>
+<p>9F A1 25 EC 11 20 6F A7 16 C7 57 26 D8 A7 81 54</p>
+<p>05 D0 E7 2A C4 EF FB AD 4E 67 FA CC BB 18 D6 00</p>
+<p>E3 16 35 5B 0F 29 7B F3 EC 15 0E 80 30 BB 18 41</p>
+<p>61 BC 9E A7 69 5E 24 FC 34 2D <a href="tel:74%2010%2047%2073">74 10 47 73</a> B2 2C</p>
+<p>CF 98 5A 49 69 71 F0 2E 6A BF 48 90 D3 1B AE FE</p>
+<p>68 9B A4 E2 BC B8 2C 91 8C 96 1D CE AE D2 DA 27</p>
+<p>60 CB 5B <a href="tel:13%2079%2039%2080%2055">13 79 39 80 55</a> 6A 96 0F E2 A0 D7 89 31</p>
+<p>43 1B 87 F1 5F 67 DD 4D 0B B5 80 6C FE 3E 52 06</p>
+<p>DC 3B 98 C1 3F F8 34 AC 21 46 32 E7 6C C0 74 D1</p>
+<p>F4 2A 5F 26 FF 39 9C C4 74 7F B3 79 95 D7 03</p>
+<p>红字第一次解密结果如下：</p>
+<p>CE 0E 0D <a href="tel:26%2099%2011%2075">26 99 11 75</a> CE 3E D1 B0 AE 14 77 3E 71</p>
+<p>27 53 DC 93 DA A8 F0 8A E9 2F E9 52 7A 12 6A 51</p>
+<p>EE 24 E8 5A ED 86 86 48 A0 ED 8A DD <a href="tel:78%2055%2036%2086">78 55 36 86</a></p>
+<p>18 57 0B C0 F9 ED 4A 14 63 5B A0 4B DC BE 66 58</p>
+<p>B4 C9 8B E2 3D 84 B0 B6 0E 92 DC 8F A5 BA BF F9</p>
+<p>7A 8D <a href="tel:81%2027%2063%2007">81 27 63 07</a> FC 34 A3 A3 BB 51 1B E9 7A 0E</p>
+<p>E1 <a href="tel:41%2094%2073%2066">41 94 73 66</a> AD FF 8E 9A C9 E5 82 6E 7E E4 55</p>
+<p>71 F5 20 8D B7 9B 84 C1 FF CB 75 37 E1 66 21 E1</p>
+<p>EF BF 6B 23 A6 08 82 55 B5 2B DB 4A C6 0C 00 73</p>
+<p>C0 B5 <a href="tel:60%2066%2064%2066">60 66 64 66</a> AA 2C 65 95 17 3B 5C DB 5A 3E</p>
+<p>78 EE 40 C6 85 57 CE 01 2B 7D CD 73 A3 F2 1C 9C</p>
+<p>B6 3C BF 43 DD B8 88 28 CD CE DC CE 22 AB 31 21</p>
+<p>AE 56 8D 55 AB A6 0D 17 9E AF B8 DC 87 8A 0B DE</p>
+<p>19 C5 71 82 42 BC F9 41 35 7A 04 75 EA 6A C2 35</p>
+<p>A3 B3 64 1C 0C 46 DD 5E 5F F2 33 CE EA 27 08 8B</p>
+<p>接着可以使用tgtgkey进行第二次解密：</p>
+<p>01 00 1E 00 10</p>
+<p>41 2E 51 2A 69 7A 21 47 65 3F 7D 5F 7A 50 62 79 更新tgtgkey</p>
+<p><a href="tel:00%2006%2000%2078">00 06 00 78</a></p>
+<p>19 96 7D 84 64 37 0F (K001)这些红字为密匙，可使用MD52进行解密</p>
+<p>93 23 CA 00 B6 B8 70 30 D2 AD 9D 7B FB 96 51 29</p>
+<p>86 05 DA 5F 3D 02 5C E7 A5 8B B6 AD 72 5D 61 06</p>
+<p>F3 CA C8 98 09 BC A3 E3 95 04 B4 FF F2 E1 C0 01</p>
+<p>AC D3 C1 8B 0E 07 77 AD 0C 0A 03 C2 FD 25 CC F5</p>
+<p>5A FD 84 94 C9 DC <a href="tel:47%2088%2080%2028">47 88 80 28</a> B0 <a href="tel:04%2072%2072%2087%2082">04 72 72 87<br>
+82</a></p>
+<p>4E 68 B4 7E 95 A1 <a href="tel:83%2015%2058%2075">83 15 58 75</a> 2A B1 CA 81 BE 75</p>
+<p>B0 10 43 B3 DF 5C D6 E1 A2 78 E4 3D A3 90 08 F7</p>
+<p>26</p>
+<p>01 10 00 3C <a href="tel:00%2001%2000%2038">00 01 00 38</a></p>
+<p>B4 A7 CC 61 48 CB 10 这里的红字是令牌</p>
+<p>22 CE AD 5A 8B 92 7C 64 14 40 B5 79 AA DB 60 A0</p>
+<p>3F 8A DB 12 37 FB 31 9F C9 2E EB CD 69 93 8F 97</p>
+<p>5C 93 22 2B CF BC 2D 73 25 7E 6E 4D 73 A0 C1 DD</p>
+<p>66</p>
+<p><a href="tel:01%2015%2000%2010">01 15 00 10</a></p>
+<p>86 8F 93 67 F9 85 FF 05 0C 91 33 8A 39 0C DB AA</p>
+<p>0836二次发送包</p>
+<p>02</p>
+<p>36 61</p>
+<p>08 36</p>
+<p>66 78 数据标识</p>
+<p>6A 4E AC D5 QQ</p>
+<p><a href="tel:03%2000%2000%2000%2001%2001%2001">03 00 00 00 01 01 01</a> 00 00 67 FD <a href="tel:00%2000%2000%2000%2000%2001%2001">00 00<br>
+00 00 00 01 01</a> 02 定义fix1</p>
+<p>00 19</p>
+<p>03 42 D9 64 FC 18 11 6F <a href="tel:34%2044%2068%2057">34 44 68 57</a> C0 18 B9 8F 65 93<br>
+49AF 05 92 D4 04 C2 publickey</p>
+<p><a href="tel:00%2000%2000%2010">00 00 00 10</a></p>
+<p>49 C2 39 1D C7 37 4F BC 89 58 F8 E3 EF D6 AD 77 0836Key1</p>
+<p>B5 3F EE 下列全为加密数据</p>
+<p>A2 5D 31 ED 14 CE 8E 0B 25 F5 AB E7 43 8E 0F 9E</p>
+<p>F6 B2 84 1A 58 24 C8 57 D0 24 8E 9E 66 8B 33 EB</p>
+<p>E9 1C 6D 85 9D CE 12 4C D8 FE C9 BA 0E 70 CA 38</p>
+<p>1B DC BB 35 DA 85 83 83 BC C2 4C EE 22 E8 14 A1</p>
+<p>57 8B 24 9A D6 FB 23 F2 6F 26 91 9B 3D AC C7 2C</p>
+<p>FD 60 E5 C7 4C 52 C4 40 3D 5E 76 0A 16 CC F1 56</p>
+<p>19 BA F3 A5 BA E9 49 8E 81 51 C2 B7 95 C4 21 B8</p>
+<p>63 F4 85 65 D2 D7 A4 C5 A2 F0 07 0E 8F 4A 4A D7</p>
+<p>8F C5 36 C3 AC 94 93 66 E9 82 B9 AF 91 8B EF D2</p>
+<p>77 01 2C C4 23 63 66 4F 5A 7D DD 49 B2 B2 8C 57</p>
+<p>5B 1C F0 87 6E C7 EA 6B 8A 29 60 BE 61 FE 9E BB</p>
+<p>AF 5D 6A 6B C1 25 7E BB AD 2D 5A 3D E0 2C 71 48</p>
+<p>06 A2 56 2A A7 03 7B 3E 9A 4E 49 D1 1F 73 DA 15</p>
+<p>45 96 6B 90 3E 83 86 DA 26 B6 39 84 FD 8E A2 50</p>
+<p>98 0E 05 E8 4D 83 03 91 A3 18 92 7E 20 B2 18 96</p>
+<p>E5 94 C4 B7 20 AA C8 83 72 3E 8A 5A BE D4 B9 7A</p>
+<p>FC 7B 30 59 13 7D 6A 39 49 3A 3A 46 7E 40 57 2C</p>
+<p>76 01 73 3C AD 00 B2 50 53 E8 99 A3 47 8B 41 0D</p>
+<p>42 BB DB 95 02 0C CC C1 B6 C2 EF F9 9F 6A 90 3A</p>
+<p>CB 66 6C 44 E3 69 E4 39 C9 AA 4A B9 8E 6E F2 33</p>
+<p>B9 4A 7F 7C 5C 0A 2E <a href="tel:24%2013%2065%2068">24 13 65 68</a> FF B3 68 71 C2</p>
+<p>F6 B4 BA A6 F6 3A 1F 27 F8 DE 46 FC F4 19 5D D3</p>
+<p>EA 39 71 3F 53 25 DB C1 9F CF D1 A2 CD 99 67 8E</p>
+<p>51 15 B4 23 BD 86 DA AE C5 F8 BE <a href="tel:96%2099%2002%2084">96 99 02 84</a> 6C</p>
+<p>DF BD F9 A8 1E 01 9E A2 <a href="tel:38%2071%2071%2016">38 71 71 16</a> 6E 53 F2 14</p>
+<p>EA 35 9A CD 28 F4 A0 1E 79 78 11 0B 26 2F 34 43</p>
+<p>44 7A 65 1D 66 A8 62 CB E5 92 76 C8 5B 48 4B B7</p>
+<p>A4 33 CA D5 8C ED 4C 85 69 9A 84 5D 64 FF 59 F5</p>
+<p>7B 3C 78 C5 70 9C 2A 7E 6F 20 5F <a href="tel:94%2037%2024%2031%2053">94 37 24 31 53</a></p>
+<p>15 B7 D7 2C E8 E8 23 A8 30 73 1D A9 4F 65 D9 1D</p>
+<p>96 BC 46 71 26 4D 2D 8B 12 BB 51 CA <a href="tel:55%2089%2028%2021">55 89 28 21</a></p>
+<p>7D 28 0B 4A D7 5C CB BA 14 94 9B AA 66 EF FA A0</p>
+<p>57 D4 6E F1 81 95 E6 <a href="tel:94%2053%2027%2072">94 53 27 72</a> 4F B3 90 C4 B3</p>
+<p>33 94 D9 11 0A A0 75 0A 74 BF 29 9E D8 0B 5C 3B</p>
+<p>58 B1 81 AD 78 98 E9 4C FE CC 22 9C E5 29 1F F4</p>
+<p>7A FD 16 50 EF F1 8C 2E 92 7F AA AA 98 01 1B DE</p>
+<p>6B 0D 6E 28 53 44 C3 95 9F EE CA EC 8A EC 3D 1A</p>
+<p>B5 72 5E 35 3E D6 5F 2D 6F ED E9 30 69 FA 58 A8</p>
+<p>18 98 83 2F FF CB <a href="tel:42%2013%2039%2067">42 13 39 67</a> B2 96 54 F0 36 D3</p>
+<p>34 EF C7 72 7C 33 A0 F6 EC FC 9C 44 4D E1 05 EC</p>
+<p>09 28 F0 42 29 0B 23 62 90 5F B1 86 9F 18 D2 C5</p>
+<p>D7 C6 C2 F8 15 E7 34 9B F5 86 5F 3F C7 45 48 7E</p>
+<p>62 6A AB 3B 4B 8A BE 4C C8 9C 7C B1 FC 5D 3F 2F</p>
+<p>6D D8 4F 73 BD 21 09 2D 50 F9 68 05 FE EF 65 D6</p>
+<p><a href="tel:81%2030%2049%2088">81 30 49 88</a> DD 84 A7 52 25 2D 19 A8 8F 37 11 BE</p>
+<p>41 0B CC 0C 56</p>
+<p>03 包尾</p>
+<p>解密后</p>
+<p>01 12</p>
+<p>00 38</p>
+<p>CD 76 D3 81 A7 37 6A A6 DB 02 A8 F6 0825令牌</p>
+<p>9B 86 EC 54 95 EA DB 97 14 6E 28 8C 34 FF 08 A9</p>
+<p>11 B3 E1 6E B1 55 A0 60 F4 35 E3 00 91 E6 02 8C</p>
+<p>32 84 9B 1D E8 D1 5F EC 85 D1 DC F7 ---------</p>
+<p>03 0F</p>
+<p>00 0C</p>
+<p>00 0A</p>
+<p>4D 41 43 42 4F 4F 4B 50 52 4F 以上全是设备信息</p>
+<p>00 05</p>
+<p>00 06</p>
+<p>00 02</p>
+<p>6A 4E AC D5 QQ</p>
+<p>00 06</p>
+<p>00 78 二次加密长度</p>
+<p>19 96 7D 84 64 37 二次加密数据</p>
+<p>0F 93 23 CA 00 B6 B8 70 30 D2 AD 9D 7B FB 96 51</p>
+<p>29 86 05 DA 5F 3D 02 5C E7 A5 8B B6 AD 72 5D 61</p>
+<p>06 F3 CA C8 98 09 BC A3 E3 95 04 B4 FF F2 E1 C0</p>
+<p>01 AC D3 C1 8B 0E 07 77 AD 0C 0A 03 C2 FD 25 CC</p>
+<p>F5 5A FD 84 94 C9 DC <a href="tel:47%2088%2080%2028">47 88 80 28</a> B0 <a href="tel:04%2072%2072%2087">04 72 72<br>
+87</a></p>
+<p>82 4E 68 B4 7E 95 A1 <a href="tel:83%2015%2058%2075">83 15 58 75</a> 2A B1 CA 81 BE</p>
+<p>75 B0 10 43 B3 DF 5C D6 E1 A2 78 E4 3D A3 90 08</p>
+<p>F7 26 加密数据到此为止</p>
+<p><a href="tel:00%2015%2000%2030%2000%2001%2001">00 15 00 30 00 01 01</a> 0E 1C D5 DB 00 10<br>
+04 fix2 then</p>
+<p>F1 4A AD <a href="tel:00%2000%2000%2000%2000%2000%2000">00 00 00 00 00 00 00</a> <a href="tel:00%2000%2000%2000%2000%2002%2086">00 00 00<br>
+00 00 02 86</a> 10 6FDD <a href="tel:00%2010%2031%2027">00 10 31<br>
+27</a> D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 29 fix2end</p>
+<p>00 1A</p>
+<p>00 40</p>
+<p>D5 B0 BB C3 29 B6 以下全是加密内容</p>
+<p>8C 78 6F CA 66 0B 4A 21 47 77 DA E7 47 AE 04 09</p>
+<p>B8 FD 5E A4 37 0E DF F9 9B 4D 85 D6 89 17 8A F5</p>
+<p>70 81 9A 66 AF 61 A7 F1 3D E9 E8 64 86 BC 1F D8</p>
+<p>9C 64 06 AC 51 22 E9 95 2B 96 以上全是加密内容</p>
+<p><a href="tel:00%2018%2000%2016%2000%2001">00 18 00 16 00 01</a> 0825Data0</p>
+<p><a href="tel:00%2000%2004%2053%2000%2000%2000">00 00 04 53 00 00 00</a> <a href="tel:01%2000%2000%2015%2079">01 00 00 15<br>
+79</a> 0825Data2</p>
+<p>6A 4E AC D5 QQ</p>
+<p><a href="tel:00%2001%2000%2000%2001%2003%2000">00 01 00 00 01 03 00</a> <a href="tel:14%2000%2001%2000%2010%2097%2025">14 00 01 00 10 97<br>
+25</a> CE F1 4D 99 CD67 C9 58 BE DB 5F <a href="tel:06%2064%2053%2001%2010%2000">06 64<br>
+53 01 10 00</a> 3C <a href="tel:00%2001%2000%2038">00 01 00<br>
+38</a></p>
+<p>B4 A7 令牌开始</p>
+<p>CC 61 48 CB 10 22 CE AD 5A 8B</p>
+<p>92 7C 64 14 40 B5 79 AA DB 60 A0 3F 8A DB 12 37</p>
+<p>FB 31 9F C9 2E EB CD 69 93 8F 97 5C 93 22 2B CF</p>
+<p>BC 2D 73 25 7E 6E 4D 73 A0 C1 DD 66 令牌结束</p>
+<p><a href="tel:05%2007%2000%2011%2001%2097%2023">05 07 00 11 01 97 23</a> B9 72 5C 59 AA 23<br>
+51 AB E5 0A 35 8A4D</p>
+<p>3B 固定</p>
+<p><a href="tel:00%2032%2000%2063">00 32 00 63</a> 固定</p>
+<p>3E <a href="tel:00%2063%2002%2004%2003%2004%2001%2000%2004">00 63 02 04 03 04 01 00 04</a><br>
+<a href="tel:00%2058%2056%2000%2000%2000%2000%2031">00 58 56 00 00 00 00 31</a> 27D7 14 2F<br>
+93 7E 10 6F 2A 51 29 AC <a href="tel:54%2050%2029%2003%2001%2000%2000">54 50 29 03 01 00<br>
+00</a> 67 FD <a href="tel:15%2079%2000%2000%2001%200200">15 79 00 00 01<br>
+0200</a> <a href="tel:00%2000%2000%2007">00 00 00 07</a> DE<br>
+<a href="tel:00%2003%2000%2006%2000%2001%2000">00 03 00 06 00 01 00</a> <a href="tel:04%2000%2003%2000%2004%2020">04 00 03 00 04<br>
+20</a> 5C 00 固定 93 76 BB 9A 07 0F CF 47 71 A0 2B<br>
+47 52 BB 14 2F 0B C5 DDF7 A7 7E BD 2A 23 B0 37 69 3B DC 1B 6C<br>
+MD5_32(算法不明)<a href="tel:68%2003%2012%2000%2005%2001%2000">68 03 12 00 05 01 00</a> <a href="tel:00%200001%2005%2008%2000%2005">00<br>
+0001 05 08 00 05</a> <a href="tel:01%2000%2000%2000%200003%2013">01 00 00 00 0003<br>
+13</a> <a href="tel:00%2019%2001%2001%2002%2000%2010">00 19 01 01 02 00<br>
+10</a> 7D 7B EF 63 A2 <a href="tel:63%2009%2046%2026%2009">63 09 46 26<br>
+09</a> 1D ED 8E 89 BD <a href="tel:47%2000%2000%2000">47 00 00<br>
+00</a> 固定内容 在此定义为Fix3<br>
+10 01 代表无需验证码（如果需要验证码则为0F 01）<br>
+<a href="tel:02%2000%2062%2000%2001">02 00 62 00 01</a> 固定内容</p>
+<p>58 63 E8 59 39 75 DC 43 6C 47 63 F3 CA 21 38 8C 0836Key2</p>
+<p>00 38 固定</p>
+<p>FB 0836Token</p>
+<p>DA 66 39 8D 9B 00 13 44 E5 13 45 B1 D6 D9 6D 06</p>
+<p>A8 2F 46 29 7A <a href="tel:49%2085%2007%2053">49 85 07 53</a> A5 00 2B 64 3D 15 8F</p>
+<p>8D 01 4A B2 23 84 31 EA F1 F6 8F FC 7C 52 BC EA</p>
+<p>8C D8 4D 0C E7 BE F1 ----------</p>
+<p>00 14</p>
+<p>48 7E 97 7F A6 74 1F A2 D1 39 E8 D7 EC E8 2F B9 crc32Data</p>
+<p>3890 C1 2F</p>
+<p>00BA验证码获取：<br>
+02<br>
+36 61<br>
+00 BA<br>
+5C 2F<br>
+97 91 CF 4D qq<br>
+03 00 00 00 01 01 01 00 00 67 FD 00 00 00 00<br>
+EA 40 FD FA 13 8C 05 56 E2 B4 0B 12 86 81 BB F9 BaKey<br>
+AB 8E 32 22 EB 84 红字全为加密的数据，可使用BaKey解密<br>
+0B CB F9 C1 2F 8C 42 09 8F 34 94 71 FB CF BD 50<br>
+46 74 F6 FD B0 30 91 A1 91 9A 24 EE 2A AE 82 4A<br>
+01 B2 3E 7D F4 C5 00 8F FA 3E 5E 7A 2D 9F 1D 15<br>
+A0 13 60 57 8D 75 6E EC 9A 95 F7 EA E9 A0 E5 78<br>
+AA F5 68 A7 B3 3E 7B 41 A2 6C 88 EF D3 24 AB F1<br>
+36 08 E9 5C D0 56 9B F3 65 45 17 35 1D 71 2B 59<br>
+E8 8B C0 63 08 63 2C A4 3A 03 3C 4C BC D4 46 14<br>
+26 32 74 71 EF 94 38 D9 43 2B 97 D9 18 BA E8 3C<br>
+9F 27 A0 99 0F 97 70 5A 99 07 4F 7D 13 E2 CE 66<br>
+83 F9 C0 27 04 40 FB BC E2 33 75 BB 81 44 B2 01<br>
+6E 2C D3 00 25 4E ED AC D2 30 74 B6 58 E2 F2 78<br>
+E2 67 05 7C 31 D5 2B B0 FE AF 03</p>
+<p>解密结果：<br>
+00 02 00 00 08 04 01 E0 这些都可以固定<br>
+00 00 04 53 00 00 00 01 00 00 15 79 0825Data2<br>
+00 00 38 固定<br>
+BB E4 28 C2 42 0A 0B 42 A7 m_0825token<br>
+C4 86 AC F8 29 4B CE E3 E9 51 D4 77 8B 08 37 A2<br>
+D2 1C 53 88 D4 2D 9D BB 39 98 DA DA 43 35 6C 59<br>
+03 07 BD 4E 6E 22 C3 B3 17 29 6E 33 90 A3 E6<br>
+01 02 00 19 这些固定<br>
+03 7A 28 54 39 E1 9E CC 90 1B 86 FC EB 7F F0 F0 95 6B 54 6E EB 9F E0 71 EE<br>
+ecdhkey<br>
+13 00 05 00 00 00 00<br>
+01 sequence<br>
+00 28 固定<br>
+EE 2E AA 1D 77 92 AA BC 32 2C 00BaToken<br>
+D4 18 96 35 08 B1 4F 86 54 EF F5 24 9A 21 2F 79<br>
+6D 03 89 7A FE C4 7E 44 B6 E2 1E AE F8 59<br>
+00 10<br>
+97 25 CE F1 4D 99 CD 67 C9 58 BE DB 5F 06 64 53 这是一个密匙，这里定义为00BAKey1</p>
+<p>0836成功接收包</p>
+<p>02 包头</p>
+<p>36 61 版本</p>
+<p>08 36 指令</p>
+<p>66 78 标识</p>
+<p>6A 4E AC D5 QQ</p>
+<p>00 00 00</p>
+<p>81 12 加密的内容，使用decodekey进行第一次解密之后再用新的tgtgkey进行解密</p>
+<p>2E 65 B4 E8 61 1C D2 E6 0D 2C 9F 30 AD A1 9D 21</p>
+<p>03 D5 8E 8E 34 1E 5F 33 F4 B1 75 F3 23 C6 A0 90</p>
+<p>23 9D 06 6B F5 24 76 2D 9F 59 E4 D9 9B 81 3E 85</p>
+<p>B6 53 55 EE C9 45 0B 9D 10 D9 4D 39 13 6C 3C 07</p>
+<p>56 1A 54 79 0A 74 3B B1 E9 8E DE 6D 54 B8 F7 68</p>
+<p>B1 C5 AF 65 4F 8E 03 BF 9B 35 ED EA A3 BC D3 EF</p>
+<p>97 2C 68 3C 36 ED 4A 7D 5F DF D4 98 BF 5A 5F 87</p>
+<p>88 E4 54 67 27 68 69 26 46 5F DD 7D 70 96 B6 A2</p>
+<p>FE 78 58 9B B4 BB FC AA A9 5C 3F 1F 3D 0C FF D1</p>
+<p>D6 D8 AE 47 A1 35 FB D5 81 52 20 AC C8 71 BD D6</p>
+<p>AA 8F 11 68 5C 79 75 8C E6 23 7C 4C 36 98 D5 B4</p>
+<p>90 42 B8 B5 45 EB 13 F5 70 FB 4B 92 E5 3A A5 78</p>
+<p>60 5F DF 6F 00 A8 61 E9 44 F4 2D 05 1B 3E DE E2</p>
+<p>DD 1F E3 71 F8 05 EF 13 6F D8 06 35 2E 98 3D DC</p>
+<p>56 5C 08 6B 95 B5 41 16 DF 4E E8 E9 1F 6C 52 87</p>
+<p>68 EF 2C E9 C5 C2 17 F1 DD 8B 6B D0 0E 0A 22 A3</p>
+<p>F1 39 44 59 A3 3E A9 33 2F A1 DB 28 CB C7 2E B6</p>
+<p>9B E3 DC 56 AA B5 AA BF 56 87 3B C4 55 D6 A9 79</p>
+<p>F4 F3 4C 84 B8 07 F4 36 29 7E F2 18 9E 23 89 44</p>
+<p>FA B5 B6 A6 22 45 2F 71 9E 78 03 91 E3 BA 4B A5</p>
+<p>34 85 74 24 32 B3 81 45 0B 38 97 BB 56 D0 A1 15</p>
+<p>E7 5B 4A CD 5C 7E D1 2A E0 72 FF 5C 61 0F 2A A3</p>
+<p>77 1E 9F D0 0D 52 7B 30 E2 E1 ED 8F D1 0F 74 40</p>
+<p>BD 9B 70 7E CA 57 3B 96 61 39 3D 41 5B E6 37 15</p>
+<p>1A 9D 06 A3 EF 29 86 41 9C 0A B6 29 3A 39 58 18</p>
+<p>F3 D8 5C 3C A3 EC CD CC 70 9A 81 20 4E C5 1A 1D</p>
+<p>C7 BD E0 D8 8F 96 9D B7 D4 8D DE 0F A5 3E CD BE</p>
+<p>87 53 04 52 F9 A0 71 0B 06 66 64 29 14 0E 07 12</p>
+<p>DE 58 7B D8 8C C9 CD 20 DC 64 DE 0F 9B 11 F4 65</p>
+<p>56 27 0E 02 E0 A6 53 66 47 3E 80 82 6B E7 1C 75</p>
+<p>06 9E B6 62 44 F7 AA C9 DC 51 85 5B F8 42 81 03</p>
+<p>5E CA A5 CD CC 2F 1A F1 C8 3C 11 56 85 14 BA 9A</p>
+<p>40 7F DB C6 C7 DD 11 9D B1 D9 AA AD 6C CA 76 5A</p>
+<p>E8 D7 10 F0 35 9E F1 16 F1 36 17 BF 7E 37 57 02</p>
+<p>9E 24 94 02 54 F4 34 82 CD 84 FE FF FD 15 6B D7</p>
+<p>B7 76 08 36 E0 EA 55 6F E6 F7 10 F3 43 65 17 92</p>
+<p>07 76 A2 61 DB FE 0B A2 35 BC 8B 70 33 FB 5A 81</p>
+<p>C4 32 C1 51 C4 DE 0C 7A BC 7E 9C 14 63 06 F9 02</p>
+<p>81 F1 0C 83 C4 26 A8 05 FA 03 D1 12 2D DA 87 30</p>
+<p>26 18 50 F5 5F 2D A1 3C 64 2B 81 5E 12 A0 2A CF</p>
+<p>80 EF 21 88 7D E7 01 C6 1D 85 8D 37 60 5B B4 1B</p>
+<p>F4 D9 92 30 2D 3C A7 92 56 80 1C D2 C9 F3 DC 41</p>
+<p>4B F8 53 6D 1A 11 80 47 47 4A 95 6F CF 1C C3 D3</p>
+<p>D8 EB 45 74 67 79 16 92 8F 3D 8B DF B0 CF 48 81</p>
+<p>E7 DF E0 08 B1 50 2C 7E 8A 01 0C 4E 89 B0 03</p>
+<p>解密的结果为：</p>
+<p>* m_0828_rec_decr_key：38 42 75 51 34 24 4E 37 44 2C 3E 60 2E 52 2A 60</p>
+<p>* nick_length：03</p>
+<p>* m_nick：E6 A2 A6</p>
+<p>* m_age：02 78</p>
+<p>* m_gender：02</p>
+<p>* 38Token：D4 40 93 9D B1 84 82 F9 92 F4 A2 46 02 41 CD DD 1A E3 2B 48 1E52 F1<br>
+0E 80 FB 22 C9 17 20 E1 EC 9C CB CA 76 F3 A2 A0 29 94 16 22 B0 35 FF FDE6 41 9F<br>
+57 71 43 D8 DF 2B* 88Token：00 04 5B F2 C5 E5 70 31 77 12 00 00 00 00 00 78 08<br>
+29 E0 22 8E1A 80 58 45 5C D9 F4 F9 B0 9A D0 69 CE 3E 0E 7F 7F 4C 81 05 3B 4E CA<br>
+B2 D1 1A3C 8A 97 B6 76 7F 99 8A 19 74 49 EE 5A 52 F2 FB 60 A0 8E 35 F5 3B 01 7A<br>
+24 9C04 94 FD 6F 1C 06 27 69 9D DF 67 02 0A 59 B6 21 1A A5 23 AF 39 05 CA DB 47<br>
+7A75 A8 47 12 4E EF 28 3E AA 77 C5 59 A7 B4 08 26 F0 FE 82 75 A3 EF 44 DB 0E<br>
+BACC F6 2E 0D 2B 05 06 FE C7 76 B0</p>
+<p>* Key：DB 20 0D 2E E3 EC 17 F5 49 C1 8F E8 91 F6 9F 72（用来加密0828发送包的）</p>
+<p>00 01 09 00 70 00 01 DB 20 0D 2E E3 EC 17 F5 49 C1 8F E8 91 F6 9F 72 0038 D4 40<br>
+93 9D B1 84 82 F9 92 F4 A2 46 02 41 CD DD 1A E3 2B 48 1E 52 F1 0E 80FB 22 C9 17<br>
+20 E1 EC 9C CB CA 76 F3 A2 A0 29 94 16 22 B0 35 FF FD E6 41 9F 5771 43 D8 DF 2B<br>
+00 20 77 D7 D1 7C 49 DA 28 C5 E8 61 F2 6D D0 E2 EC 45 1A B5 D073 85 25 97 24 C8<br>
+E0 1E AF 24 B1 F7 E6 00 00 01 03 00 14 00 01 00 10 97 25 CEF1 4D 99 CD 67 C9 58<br>
+BE DB 5F 06 64 53 00 33 00 18 C4 B5 76 45 E8 8D 76 F5 289B A8 F0 D6 AA 21 BB 48<br>
+E3 A7 47 DA C2 77 FC 01 07 01 D3 00 01 00 16 00 00 0001 00 00 00 64 00 00 0D D6<br>
+00 09 3A 80 00 00 00 3C 00 02 38 42 75 51 34 24 4E37 44 2C 3E 60 2E 52 2A 60 00<br>
+88 00 04 5B F2 C5 E5 70 31 77 12 00 00 00 00 0078 08 29 E0 22 8E 1A 80 58 45 5C<br>
+D9 F4 F9 B0 9A D0 69 CE 3E 0E 7F 7F 4C 81 053B 4E CA B2 D1 1A 3C 8A 97 B6 76 7F<br>
+99 8A 19 74 49 EE 5A 52 F2 FB 60 A0 8E 35F5 3B 01 7A 24 9C 04 94 FD 6F 1C 06 27<br>
+69 9D DF 67 02 0A 59 B6 21 1A A5 23 AF39 05 CA DB 47 7A 75 A8 47 12 4E EF 28 3E<br>
+AA 77 C5 59 A7 B4 08 26 F0 FE 82 75A3 EF 44 DB 0E BA CC F6 2E 0D 2B 05 06 FE C7<br>
+76 B0 7B 36 6B 47 3E 76 65 74 3771 3F 42 65 45 33 7B 00 78 00 01 5B F2 C5 E5 00<br>
+70 65 4E E1 DD 27 7F 9F 7E D35A F8 44 F4 3C 66 CF AB B0 BD CB 33 A7 3C 30 C1 AC<br>
+D1 9F 18 3F 7B 69 A3 33 4F54 19 8B AF D7 DF 9E 73 0A AA BB 16 77 24 3B E9 F4 95<br>
+F8 21 33 47 69 C6 14 F47A A4 E5 A2 49 3D 90 95 5B 31 98 BF C2 23 FD 46 5E C5 CD<br>
+0A B4 71 3E CD 77 EFD8 03 21 6A 69 23 B7 A3 62 15 F6 AA 26 FA 4C 8D A5 4B B6 B4<br>
+9A 25 03 53 87 0083 01 7D 62 59 77 48 39 43 34 72 48 47 6E 2C 3D 45 7B 00 70 00<br>
+01 5B F2 C5 E500 68 6D 03 29 DF C0 20 A0 75 4E 23 10 CD FD 95 BA 62 1F 51 80 E5<br>
+87 C6 B3 CE25 40 4F 95 10 B6 23 B9 C6 6C 2B 24 BB C4 9D B6 25 D5 40 4C F0 7D 98<br>
+88 FB D461 16 7A 8F 2A F0 BC A9 85 55 58 7B 12 C8 0C D1 4F 97 81 85 F2 01 59 38<br>
+AC 25B4 AF 69 43 F3 8D 7F EE 0A 87 EB 16 8D AA 90 42 AE 98 A9 84 B4 19 56 63 57<br>
+A730 5B 3E 43 5D 5B 66 78 50 42 21 77 66 6D 73 4A 53 42 01 08 00 18 00 01 00<br>
+1400 0C 02 B8 03 E6 A2 A6 02 00 00 02 02 78 00 04 00 00 00 01 01 15 00 10 4A<br>
+B38F D8 46 C6 89 4C 81 11 DE 62 9C 37 FF 45</p>
+<p>0828发送包</p>
+<p>02</p>
+<p>36 61 版本</p>
+<p>08 28 指令</p>
+<p>5A 6D 标识</p>
+<p>6A 4E AC D5 QQ号</p>
+<p>02 00 00 00 01 01 01 00 00 67 FD 00 30 00 3A 固定</p>
+<p>00 38 令牌长度</p>
+<p>D4 40 93 9D</p>
+<p>B1 84 82 F9 92 F4 A2 46 02 41 CD DD 1A E3 2B 48</p>
+<p>1E 52 F1 0E 80 FB 22 C9 17 20 E1 EC 9C CB CA 76</p>
+<p>F3 A2 A0 29 94 16 22 B0 35 FF FD E6 41 9F 57 71</p>
+<p>43 D8 DF 2B</p>
+<p>F0 EE 0B 25 B9 03 9C C7 F0 30 51 FC</p>
+<p>60 70 1D 4D 34 E5 9E 66 A8 BE A2 42 5F B2 C2 1E</p>
+<p>87 41 AD 4A 11 FE 57 FD BC 14 99 BA 5C 6C B5 5F</p>
+<p>08 74 27 97 70 E9 58 C3 57 6A 8C C7 42 FD B0 B1</p>
+<p>15 D5 BF 6E B3 33 CF A5 04 BB AA EF 49 01 5A 2B</p>
+<p>40 A5 DC 1B C5 2A 7A 93 0C 4A A2 70 D2 FB 9B 33</p>
+<p>8C 3B 04 9B 7B 4B 01 A4 3B 29 71 50 78 DA DF 66</p>
+<p>9D F0 89 6C 99 B4 AA 4D 95 A6 43 A1 76 6A AF 9B</p>
+<p>C3 6D 54 A6 42 C7 7F 0A B5 B0 7E 63 F9 39 11 5E</p>
+<p>B9 0A 89 8A 7D 68 BA A7 02 20 8D 61 7E E8 78 BB</p>
+<p>E4 58 AD 11 04 B7 DD 93 4D CF 99 2D 52 D2 82 43</p>
+<p>6E EE 3A F4 00 1A 56 0B 8A BC 51 A9 5E EF 84 41</p>
+<p>71 DD 22 73 D2 84 96 47 8C D9 A5 03 7F 83 47 F8</p>
+<p>6D B1 2F 56 02 CB D9 0A 4E 5B ED CF D0 2E F9 8E</p>
+<p>8A AE 7E 8E E5 2A 15 9C 7D 5B E7 2E 22 6E 75 BC</p>
+<p>4F 7E 2A 8A 2A FD 71 A9 37 5C 77 BB B1 65 BC 5D</p>
+<p>A8 AB E4 10 7E 51 FC 75 C4 8D EE 38 23 F9 5E 8E</p>
+<p>44 62 75 35 1D B2 54 2F F0 AD CF 84 8C 11 9C 28</p>
+<p>DF 3D E1 4A B8 A5 F3 C9 FB EC 9E 23 AB ED CE AB</p>
+<p>5E 9A AB 6F BD 62 7B DE 4A 7D C4 74 C2 6A E7 8D</p>
+<p>78 ED AF 16 78 D2 C4 8E D5 18 FB 16 76 5B A3 FA</p>
+<p>C4 58 51 FF 90 35 3A 1B 93 ED E4 8A 47 88 78 82</p>
+<p>FE 32 C7 65 9E 3B 41 27 37 CB C6 BE 58 A4 2B 59</p>
+<p>8C B5 6A 45 61 F3 02 97 B1 B8 6D 40 9A 3F 60 DD</p>
+<p>54 66 C0 20 67 5F 2E 9C AD A2 D6 86 EF B7 78 95</p>
+<p>36 B1 3B 1C 1E BE 63 A0 9A 7D 7C 9D 34 8F E1 4D</p>
+<p>54 DE 42 9D DA 11 E2 7A EE A7 4B 30 9C 65 2F DD</p>
+<p>30 7A A6 02 03 C9 FB 78 E1 FE B7 98 63 5A 21 76</p>
+<p>AD 8A B0 DC 84 93 53 E3 6A 40 8E CB 17 7B D9 38</p>
+<p>D0 3C DD A6 72 87 EC 14 03 9C 60 C4 53 F6 00 01</p>
+<p>00 DE 87 45 C6 99 73 45 51 82 94 B2 DB C9 0C EE</p>
+<p>64 AB 27 35 19 F7 A5 28 F2 93 0C 0C 9B C4 D0 B3</p>
+<p>6F 05 A5 A1 33 A4 EA 85 18 AD A6 E4 3C 2B CE 39</p>
+<p>9F 2F B2 12 16 49 C9 E2 85 E9 DC 74 85 2D 0B E1</p>
+<p>5F 1C AD E3 69 64 49 9D 62 9E E1 E5 20 43 94 CB</p>
+<p>8B 39 59 E0 49 D0 74 C1 F9 D1 1D 7C 09 95 9F 85</p>
+<p>42 D7 79 62 04 62 01 D8 A1 F1 55 45 02 97 79 10</p>
+<p>D7 9E F4 6B A3 1B 67 A6 4A 86 FD A1 6A EF 9B 27</p>
+<p>B4 4C 15 AB 绿色的都是加密内容</p>
+<p>03</p>
+<p>解密后结果：</p>
+<p>00 07 00 88</p>
+<p>00 04 5B F2 C5 E5 70 31 77 12 00 00 这里都是88Token</p>
+<p>00 00 00 78 08 29 E0 22 8E 1A 80 58 45 5C D9 F4</p>
+<p>F9 B0 9A D0 69 CE 3E 0E 7F 7F 4C 81 05 3B 4E CA</p>
+<p>B2 D1 1A 3C 8A 97 B6 76 7F 99 8A 19 74 49 EE 5A</p>
+<p>52 F2 FB 60 A0 8E 35 F5 3B 01 7A 24 9C 04 94 FD</p>
+<p>6F 1C 06 27 69 9D DF 67 02 0A 59 B6 21 1A A5 23</p>
+<p>AF 39 05 CA DB 47 7A 75 A8 47 12 4E EF 28 3E AA</p>
+<p>77 C5 59 A7 B4 08 26 F0 FE 82 75 A3 EF 44 DB 0E</p>
+<p>BA CC F6 2E 0D 2B 05 06 FE C7 76 B0</p>
+<p>00 0C 00 16 00 02 00 00 00 00 00 14 00 00 00 00</p>
+<p>78 CC 11 12 这是服务器IP</p>
+<p>1F 40 00 00 00 00 00 15 00 30 00 01 定义为Fix1</p>
+<p>01 FF 68 9D F1</p>
+<p>00 10 04 F1 4A AD E1 47 5B 95 DE F9 CD 5D 76 17 96 88 02 86 10 6F DD 0010</p>
+<p>31 27 D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 29 _0836Fix</p>
+<p>00 36 00 12 00 02 00 01 00 00 00</p>
+<p>05 00 00 00 00 00 00 00 00 00 00</p>
+<p>00 18 00 16 00 01 0825Data0</p>
+<p>00 00 04 53 00 00 00 01 00 00 15 79 0825Data2</p>
+<p>6A 4E AC D5 QQ号</p>
+<p>00 01 00 00 00 1F 00 22 00 01</p>
+<p>62 72 FF A2 44 A5 43 21 DA C0 10 13 E2 9F 58 62 04 B8 96 28 CC A1 D5 7C56 1E 92<br>
+BC 34 0C 6A F3 deviceID(随机生成32位)</p>
+<p>--------------tlv0105-----------------</p>
+<p>在获取回话密匙时下次登录会使用，如果第一次没有可以使用以下代码制取</p>
+<p>g_tlv0105 ＝ “01 05 00 30 ” ＋ “00 01 01 02 00 14 01 01 00 10 ” ＋ GetRandomKey<br>
+(16) ＋ “00 14 0102 00 10 ” ＋GetRandomKey (16)</p>
+<p>01 05 00 88 00 01 01 02</p>
+<p>00 40 02 01 03 3C 01 03 00 00</p>
+<p>EB 4A EE 9E BB 10 A0 C1 7A A3 26 83 B3 28 FC 6D 0A E9 15 7F B8 2B 84 B320 AA 1A<br>
+96 EE C2 61 B1 27 0B 72 0B A8 6C 95 7E 54 88 45 1F 1A DE E1 71 45 E393 99 FA 87<br>
+90 A2</p>
+<p>00 40 02 02 03 3C 01 03 00 00</p>
+<p>FE C9 1A 9D 20 97 76 D0 8C D2 36 98 A5 1B 46 AB 94 27 29 91 EC 5B 94 3699 49 39<br>
+3C DA A2 7C 2A FF AC 48 0C 76 3B EC 89 83 92 0C 03 2D 3C 68 69 07 C9D5 09 48 37<br>
+98 5B</p>
+<p>---------------tlv0105------------------</p>
+<p>01 0B 00 85 00 02</p>
+<p>AB 5C 3C 06 9E 5A 48 9F 42 97 A2 2E E5 78 4C 4F 定义为Fix2</p>
+<p>7D 随机获取一位‘GetRandomKey (1)’</p>
+<p>10 00 00 00 00 00 00 00 02</p>
+<p>----------fix3----------</p>
+<p>00 63 3E 00 63 02 04 03 04 01 00 04 00</p>
+<p>58 56 00 00 00 00 31 27 D7 14 2F 93 7E 10 6F 2A 51 29 AC 54 50 29 03 0100 00 67<br>
+FD 15 79 00 00 01 02 00 00 00 00 07 DE 00 03 00 06 00 01 00 04 00 0300 04 20 5C<br>
+0093 76 BB 9A 07 0F CF 47 71 A0 2B 47 52 BB 14 2F 0B C5DD F7 A7 7E BD 2A 23 B0<br>
+37 69 3B DC 1B 6C MD5_32(之前随机获取的那个)</p>
+<p>68</p>
+<p>-------------------------</p>
+<p>00 00 00 00 00 2D 00 06 00 01</p>
+<p>C0 A8 01 65</p>
+<p>02 36 61 00 02 3D 78 6A 4E AC D5 02 00 00 00 01<br>
+01 01 00 00 67 FD 66 A6 41 52 B7 13 A7 2A 61 09<br>
+DC 25 66 E5 61 AD B8 17 15 26 35 BF A7 C7 03 C4<br>
+94 F6 AD 00 BB 49 19 00 0E 8A B7 FE 4C 6D E6 16<br>
+ED F7 CD 15 F1 ED 3D 0B 7B 00 C8 CA 09 9A 7A E8<br>
+7E B8 CC 83 DE 68 4A AB 83 FE 0C 45 31 71 68 C7<br>
+EB CD 89 5B CC CB AC 07 9E E3 F1 2D AE E9 4F 59<br>
+33 27 B8 F2 28 72 BF E0 7B C9 26 AE 5D 07 03</p>
+<p>使用会话密匙解密结果如下：<br>
+2A 固定<br>
+38 BA 32 6C 群ID<br>
+00 55 长度<br>
+00 01 01 00 00 00 00 00 00 00 4D 53 47 00 00 00 00 00 固定<br>
+5B F8 E2 14 时间戳<br>
+34 4D D3 15 随机<br>
+00 00 00 00 0A 00 86 00 00 0C E5 BE AE E8 BD AF E9 9B 85 E9 BB 91 00 00 固定<br>
+01 00 固定<br>
+09 长度+3<br>
+01 00 固定<br>
+06 长度<br>
+E6 B5 8B E8 AF 95 消息内容</p>
+<p>02 00 14 01 00 01 0D FF 00 02 14 4E 0B 00 08 00 01 00 04 52 CC 85 50<br>
+这应该是表情吧</p>
+<p>02 36 61 00 CD 00 9F 6A 4E AC D5 02 00 00 00 01<br>
+01 01 00 00 67 FD<br>
+以上这些都是固定模式：包头+版本+命令标识+QQ+fixVer<br>
+9B 37 40 47 B8 93 02 1F 64 49<br>
+60 57 D8 79 4B 15 1C 62 8A 5D 9E B2 79 ED F8 F0<br>
+A0 DA CE FC 77 E1 EA 89 C9 84 53 18 95 3E 3F 23<br>
+E5 87 DB 62 E1 10 B2 CB 4C B0 FF A7 66 1A D7 DE<br>
+A8 9E 42 6D 79 EF 4A 0A 24 EA 00 35 3C 7D 40 46<br>
+A6 C1 D1 D5 55 51 24 76 02 50 B3 13 F2 66 B5 8E<br>
+01 4D AA B6 6A DE 5F DD DB 1E AC 77 EE BD 19 C5<br>
+B9 5A F1 4A B8 E6 1A ED 06 42 07 2E 4B F5 00 72<br>
+70 AA 0F 59 51 BC 2F 25 71 45 6A 79 E9 47 8C D0<br>
+2E 02 6C F4 C1 31 D3 C3 FD 6A ED 70 42 37 26 5D<br>
+76 65 F2 6A CF 61 这些是加密的内容，使用会话密匙解密<br>
+03</p>
+<p>解密结果;<br>
+6A 4E AC D5 发送者QQ<br>
+03 F6 98 06 接收者QQ<br>
+00 00 00 0D 00 01 00 04 00 00 00 00 00 03 00 01 01 36 61 固定<br>
+6A 4E AC D5 发送者QQ<br>
+03 F6 98 06 接收者QQ<br>
+51 AE 02 2E F2 C2 97 AA 5E 55 F8 70 68 10 19 AF 00 0B 6F EF 固定<br>
+5B F8 E2 08 时间戳<br>
+02 B8 00 00 00 00 01 00 00 00 01 4D 53 47 00 00 00 00 00<br>
+5B F8 E2 08 时间戳<br>
+72 6F 3C 52 随机<br>
+00 00 00 00 0A 00 86 00 00 0C E5 BE AE E8 BD AF E9 9B 85 E9 BB 91 00 00<br>
+01 00 固定 一般在长度前<br>
+09 消息长度+3<br>
+01 00 固定 一般在长度前<br>
+06 消息长度<br>
+E6 B5 8B E8 AF 95 消息内容<br>
+02 00 14 01 00 01 这玩意应该是表情<br>
+0D FF 00 02 14 4E 0B 00 08 00 01 00 04 52 CC 85<br>
+50</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>

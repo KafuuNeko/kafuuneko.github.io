@@ -1,0 +1,221 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Windows下使用VSCode调试C/C++ | Kafuu</title>
+
+<link rel="shortcut icon" href="https://kafuuneko.me/favicon.ico?v=1751443822601">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://kafuuneko.me/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+
+<view class="bg-fixed bg">
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <a class="site-name gt-c-content-color-first" href="/">
+            Kafuu
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1751443822601" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Windows下使用VSCode调试C/C++
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-10-22 ·
+                    </time>
+                    
+                        <a href="https://kafuuneko.me/tag/LfhFVuP3_/" class="post-tags">
+                            # 计科基础
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <blockquote>
+<p>本教程面向C/C++初学者，提供VSCode最简便的C/C++学习环境，因此只安装必要的编译器以及ide确保可运行代码查看效果，关于智能提示或有项目需求的请自行查阅clangd、cmake教程。</p>
+</blockquote>
+<h2 id="一-请抛弃贵校古老且难用的vc60拥抱更现代化的ide">一. 请抛弃贵校古老且难用的VC6.0拥抱更现代化的ide</h2>
+<p>VSCode官网：https://code.visualstudio.com/<br>
+进入后VSCode官网点击Download按钮下载VSCode安装包并安装<br>
+注意事项：安装路径最好不要有中文或其它非ASCII字符<br>
+<img src="https://kafuuneko.me/post-images/1666422759685.png" alt="" loading="lazy"><br>
+<img src="https://kafuuneko.me/post-images/1666422771250.png" alt="" loading="lazy"><br>
+<img src="https://kafuuneko.me/post-images/1666422775555.png" alt="" loading="lazy"></p>
+<h2 id="二-配置llvmclang编译环境">二. 配置LLVM/Clang编译环境</h2>
+<blockquote>
+<p>Clang是基于LLVM的C/C++/Objective-C编译器</p>
+</blockquote>
+<p>32位版：<a href="https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-ucrt-r2/winlibs-i686-posix-dwarf-gcc-12.2.0-llvm-14.0.6-mingw-w64ucrt-10.0.0-r2.7z">Github</a><br>
+64位版：<a href="https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-ucrt-r2/winlibs-x86_64-posix-seh-gcc-12.2.0-llvm-14.0.6-mingw-w64ucrt-10.0.0-r2.7z">Github</a></p>
+<p>点击上方超链接即可下载一套完整的编译环境(GCC 12.2.0+LLVM/Clang/LLD/LLDB 14.0.6+MinGW-w64 10.0.0)</p>
+<p>下载完成后请解压压缩包，并在解压路径找到mingw64文件夹，将其拷贝到C盘根目录下（或者其它路径无中文名的位置）</p>
+<h4 id="按下快捷键windows-e打开文件浏览器右击此电脑并选择属性">按下快捷键Windows + E打开文件浏览器，右击‘此电脑’并选择属性</h4>
+<figure data-type="image" tabindex="1"><img src="https://kafuuneko.me/post-images/1666422813808.png" alt="" loading="lazy"></figure>
+<h4 id="进入高级系统设置">进入‘高级系统设置</h4>
+<figure data-type="image" tabindex="2"><img src="https://kafuuneko.me/post-images/1666422819060.png" alt="" loading="lazy"></figure>
+<h4 id="在高级选项卡选择环境变量">在‘高级’选项卡选择‘环境变量’</h4>
+<figure data-type="image" tabindex="3"><img src="https://kafuuneko.me/post-images/1666422831756.png" alt="" loading="lazy"></figure>
+<h4 id="在系统变量找到path并双击进入环境变量编辑页面">在系统变量找到‘Path’并双击进入环境变量编辑页面</h4>
+<figure data-type="image" tabindex="4"><img src="https://kafuuneko.me/post-images/1666422896666.png" alt="" loading="lazy"></figure>
+<h4 id="添加您mingw64中的bin路径">添加您mingw64中的bin路径</h4>
+<blockquote>
+<p>如果您的mingw64存储在C盘根目录下，则您要添加的路径为：C:\mingw64\bin</p>
+</blockquote>
+<figure data-type="image" tabindex="5"><img src="https://kafuuneko.me/post-images/1666422840754.png" alt="" loading="lazy"></figure>
+<h4 id="完成以上步骤后确定即完成编译环境配置">完成以上步骤后确定即完成编译环境配置</h4>
+<h2 id="三-vscode配置">三. VSCode配置</h2>
+<h4 id="运行vscode并在拓展选项卡搜索code-runner并安装">运行VSCode，并在拓展选项卡搜索Code Runner并安装</h4>
+<figure data-type="image" tabindex="6"><img src="https://kafuuneko.me/post-images/1666423517889.png" alt="" loading="lazy"></figure>
+<h4 id="安装完成后点击管理按钮进入拓展设置">安装完成后点击管理按钮进入拓展设置</h4>
+<figure data-type="image" tabindex="7"><img src="https://kafuuneko.me/post-images/1666423660383.png" alt="" loading="lazy"></figure>
+<h4 id="找到code-runner-run-in-terminal选项并勾选">找到'Code-runner: Run In Terminal'选项并勾选</h4>
+<figure data-type="image" tabindex="8"><img src="https://kafuuneko.me/post-images/1666423745838.png" alt="" loading="lazy"></figure>
+<h4 id="完成以上操作后关闭设置并使用快捷键-ctrln-创建一个新文件键入测试代码后使用快捷键ctrl-s-保存到任意目录注意选择保存类型为c或c完成保存操作后在代码编辑页面内右击鼠标选择run-code或者使用快捷键ctrl-alt-n运行代码">完成以上操作后关闭设置，并使用快捷键 Ctrl+N 创建一个新文件，键入测试代码后使用快捷键Ctrl + S 保存到任意目录（注意选择保存类型为c或c++），完成保存操作后在代码编辑页面内右击鼠标选择Run Code（或者使用快捷键Ctrl + Alt + N）运行代码。</h4>
+<figure data-type="image" tabindex="9"><img src="https://kafuuneko.me/post-images/1666424102866.png" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://kafuuneko.me/post/U47kbdCG5/" class="post-title gt-a-link">
+                    BVD for Android - Bilibili视频下载器
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first"><body><script language="javaScript">
+now = new Date(),hour = now.getHours()
+if(hour < 6){document.write("凌晨好！")}
+else if (hour < 9){document.write("早上好！")}
+else if (hour < 12){document.write("上午好！")}
+else if (hour < 14){document.write("中午好！")}
+else if (hour < 17){document.write("下午好！")}
+else if (hour < 19){document.write("傍晚好！")}
+else {document.write("晚上好！")}
+document.write("欢迎来到我的博客～～")
+</script></body></div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/KafuuNeko" target="_blank">
+                    <i class="fab fa-twitter gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Background is from 《Is the order a rabbit?? 》
+
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="https://kafuuneko.me/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</view>
+</body>
+</html>
